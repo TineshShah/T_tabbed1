@@ -18,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import static android.widget.Toast.*;
 
 public class TabTin extends AppCompatActivity {
 
@@ -40,6 +43,7 @@ public class TabTin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
+        addListenerOnButton();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -65,6 +69,11 @@ public class TabTin extends AppCompatActivity {
 
     }
 
+    private void addListenerOnButton() {
+
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,6 +95,14 @@ public class TabTin extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void setLogin(View view) {
+
+    }
+
+    public void Something(View view) {
+        makeText(this, "Clicked on Button", LENGTH_LONG).show();
     }
 
     /**

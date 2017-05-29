@@ -7,8 +7,20 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:text="tab1"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="229dp"
-        android:text="tab1" />
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="46dp" />
+
+    <Button
+        android:id="@+id/buttontab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true"
+        android:onClick="Something"/>
 </RelativeLayout>
