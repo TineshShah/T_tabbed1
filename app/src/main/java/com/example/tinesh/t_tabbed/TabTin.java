@@ -43,7 +43,7 @@ public class TabTin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
-        addListenerOnButton();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -66,11 +66,6 @@ public class TabTin extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-    }
-
-    private void addListenerOnButton() {
-
 
     }
 
