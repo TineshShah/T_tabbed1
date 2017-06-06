@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:onClick="tab1myMethod">
 
     <TextView
         android:id="@+id/textView"
@@ -9,18 +11,18 @@
         android:text="tab1"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_marginBottom="23dp"
-        android:layout_above="@+id/buttontab1"
-        android:layout_alignStart="@+id/buttontab1" />
+        android:layout_above="@+id/btnSendTab1"
+        android:layout_alignStart="@+id/btnSendTab1" />
 
     <Button
-        android:id="@+id/buttontab1"
+        android:id="@+id/btnSendTab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="59dp"
+        android:layout_marginBottom="8dp"
         android:onClick="Something"
-        android:text="@string/button"
+        android:text="Send"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/buttonLoadPicture" />
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/imgView"
@@ -36,11 +38,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="39dp"
         android:layout_weight="0.02"
         android:text="Load Picture"
-        android:layout_below="@+id/imgView"
-        android:layout_centerHorizontal="true"
-        android:onClick="LoadPic" />
+        android:onClick="LoadPic"
+        android:layout_above="@+id/sharelocation"
+        android:layout_centerHorizontal="true" />
+
+    <Switch
+        android:id="@+id/sharelocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Share Location"
+        android:textSize="20sp"
+        android:layout_marginStart="23dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
