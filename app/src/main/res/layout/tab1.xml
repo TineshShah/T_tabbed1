@@ -4,21 +4,10 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:onClick="tab1myMethod">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="tab1"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-        android:layout_marginBottom="23dp"
-        android:layout_above="@+id/btnSendTab1"
-        android:layout_alignStart="@+id/btnSendTab1" />
-
     <Button
         android:id="@+id/btnSendTab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:onClick="Something"
         android:text="Send"
         android:layout_alignParentBottom="true"
@@ -30,7 +19,8 @@
         android:layout_height="202dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
-        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
+        android:layout_below="@+id/editText4"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -41,7 +31,8 @@
         android:layout_weight="0.02"
         android:text="Load Picture"
         android:onClick="LoadPic"
-        android:layout_above="@+id/sharelocation"
+        android:layout_marginTop="19dp"
+        android:layout_below="@+id/imgView"
         android:layout_centerHorizontal="true" />
 
     <Switch
@@ -51,8 +42,29 @@
         android:checked="true"
         android:text="Share Location"
         android:textSize="20sp"
-        android:layout_marginStart="23dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@+id/buttonLoadPicture"
+        android:layout_alignStart="@+id/editText4" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Enter Description"
+        android:inputType="textMultiLine" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="33dp"
+        android:layout_above="@+id/btnSendTab1"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
