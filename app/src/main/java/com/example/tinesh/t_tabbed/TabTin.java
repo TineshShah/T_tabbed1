@@ -6,34 +6,30 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import static android.widget.Toast.*;
+import me.toptas.fancyshowcase.FancyShowCaseQueue;
+import me.toptas.fancyshowcase.FancyShowCaseView;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.makeText;
 
 public class TabTin extends AppCompatActivity {
-
+   int count=0;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -50,12 +46,12 @@ public class TabTin extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private static int RESULT_LOAD_IMAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
         addListenerOnButton();
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,11 +73,13 @@ public class TabTin extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+
+        }
+        );
 
     }
 
-    @Override  //Uploads the image aftre selection into the ImageView
+    @Override  //Uploads the image after selection into the ImageView
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -110,36 +108,50 @@ public class TabTin extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tab_tin, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void setLogin(View view) {
 
     }
+    //Touch anywhere on Tab1
 
+    public void tab1myMethod(View pView) {
+        if(count==0)
+
+        {
+            new FancyShowCaseQueue()
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.btnSendTab1))
+                            .title("Click to send the report")
+                            .build()
+
+                                  )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.tabs))
+                            .title("Seperate Tabs")
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.buttonLoadPicture))
+                            .title("Click this button to load pictures")
+                            .build()
+                    )
+                    .show();
+
+            count++;
+        }
+    }
     public void Something(View view) {
+
+        new FancyShowCaseView.Builder(this)
+                .title("Focus")
+                .focusOn(findViewById(R.id.btnSendTab1))
+                //.focusOn(findViewById(R.id.tabs))
+                .focusCircleRadiusFactor(2.0)
+                .build()
+                .show();
+
         makeText(this, "Clicked on Button", LENGTH_LONG).show();
     }
-
+             //click on loadpic button
     public void LoadPic(View view) {
         //Opens permission dialogue for android 6 Marshmellow and then calls OnRequestPermissionResult();
         ActivityCompat.requestPermissions(TabTin.this,
@@ -195,37 +207,7 @@ public class TabTin extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_tab_tin, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -266,11 +248,11 @@ public class TabTin extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Issues";
                 case 1:
-                    return "SECTION 2";
+                    return "Suggesions";
                 case 2:
-                    return "SECTION 3";
+                    return "Interface";
             }
             return null;
         }
