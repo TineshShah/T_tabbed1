@@ -63,8 +63,7 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="33dp"
-        android:layout_above="@+id/btnSendTab1"
+        android:layout_below="@+id/sharelocation"
         android:layout_centerHorizontal="true" />
 
     <TextView
