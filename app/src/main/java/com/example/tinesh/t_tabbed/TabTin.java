@@ -9,8 +9,11 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -21,6 +24,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,7 +74,7 @@ public class TabTin extends AppCompatActivity {
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
+            textView.append("\n " + location.getLongitude() + " " + location.getLatitude());
 
             }
 
@@ -86,23 +90,11 @@ public class TabTin extends AppCompatActivity {
 
             @Override //checks if gps is off,if so it takes user to settings where he enables gps
             public void onProviderDisabled(String provider) {
-
+                Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(i);
             }
+
         };
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        locationManager.requestLocationUpdates("gps", 5000, 0, listener); //using gps with refresh rate of 5 sec.updates if location has changed atleast by min distince meter.Here every 5sec updated
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,6 +119,52 @@ public class TabTin extends AppCompatActivity {
 
         }
         );
+
+        //configure_button();
+
+    }
+
+     void configure_button() {
+        if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                        ,10);
+            }
+            return;
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //noinspection MissingPermission
+                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
+            }
+        });
+
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) //Activity called after the Oncreate
+    {
+
+        new FancyShowCaseQueue()
+                .add(new FancyShowCaseView.Builder(this)
+                        .focusOn(findViewById(R.id.btnSendTab1))
+                        .title("Click to send the report")
+                        .build()
+                )
+                .add(new FancyShowCaseView.Builder(this)
+                        .focusOn(findViewById(R.id.tabs))
+                        .title("Seperate Tabs")
+                        .build()
+                )
+                .add(new FancyShowCaseView.Builder(this)
+                        .focusOn(findViewById(R.id.buttonLoadPicture))
+                        .title("Click this button to load pictures")
+                        .build()
+                )
+                .show();
+return true;
 
     }
 
@@ -170,8 +208,9 @@ public class TabTin extends AppCompatActivity {
         {
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
+                             .title("Click to send the report")
                             .focusOn(findViewById(R.id.btnSendTab1))
-                            .title("Click to send the report")
+                             .focusCircleRadiusFactor(2.0)
                             .build()
 
                                   )
@@ -221,9 +260,21 @@ public class TabTin extends AppCompatActivity {
         //});
 
     }
+
+    public void loadpermission(View view)
+    {
+        ActivityCompat.requestPermissions(TabTin.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET},
+                10);
+
+
+
+    }
     public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+                                           @NonNull String[] permissions,@NonNull int[] grantResults) {
         switch (requestCode) {
+            case 10: configure_button();
+                break;
             case 1: {
 
                 // If request is cancelled, the result arrays are empty.
