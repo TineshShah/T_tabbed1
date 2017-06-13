@@ -37,15 +37,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -63,7 +54,7 @@ public class TabTin extends AppCompatActivity {
     private TextView textView;
     private LocationManager locationManager;
     private LocationListener listener;
-private RequestQueue requestQueue;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -86,11 +77,6 @@ private RequestQueue requestQueue;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
-        //textView = (TextView) findViewById(R.id.textView);
-
-        //b = (Button)findViewById(R.id.buttonlocation);
-
-        requestQueue= Volley.newRequestQueue(this);//Volley is used for easy networking
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
             @Override
@@ -265,19 +251,6 @@ return true;
 
         makeText(this, "Clicked on Button", LENGTH_LONG).show();
 
-        //request for accessing gps
-       /* if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
-                        ,10);
-            }
-            return;
-
-        }
-        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-                //noinspection MissingPermission
-                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
-*/
     }
              //click on loadpic button
     public void LoadPic(View view) {
