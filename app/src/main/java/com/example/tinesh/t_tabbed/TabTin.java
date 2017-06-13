@@ -5,6 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimatedStateListDrawable;
+import android.icu.util.JapaneseCalendar;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,26 +28,42 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.tinesh.t_tabbed.R.id.container;
 
 public class TabTin extends AppCompatActivity {
     int count = 0;
-    private Button button;
+    private Button b;
     private TextView textView;
     private LocationManager locationManager;
     private LocationListener listener;
-
+private RequestQueue requestQueue;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -66,16 +86,40 @@ public class TabTin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
-        addListenerOnButton();
+        //textView = (TextView) findViewById(R.id.textView);
 
-        button = (Button) findViewById(R.id.button);
-        textView = (TextView) findViewById(R.id.textView);
+        //b = (Button)findViewById(R.id.buttonlocation);
+
+        requestQueue= Volley.newRequestQueue(this);//Volley is used for easy networking
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-            textView.append("\n " + location.getLongitude() + " " + location.getLatitude());
+                //setContentView(R.layout.tab1);
+               // textView = (TextView) findViewById(R.id.textView1);
+                //textView.setText("\n " + location.getLongitude() + " " + location.getLatitude());
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                try {
+                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
+                    if(null!=addresses&&addresses.size()>0){
+                        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                        String city = addresses.get(0).getLocality();
+                        String state = addresses.get(0).getAdminArea();
+                        String country = addresses.get(0).getCountryName();
+                        String postalCode = addresses.get(0).getPostalCode();
+                        String knownName = addresses.get(0).getFeatureName();
+
+                        textView = (TextView) findViewById(R.id.textView1);
+                        textView.setText(address+"City is :"+city+"state is :"+state+"country is "+country+"postal code "+postalCode+"known name "+knownName);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                /*Tab1 myFragment = new Tab1();
+                myFragment.setTextViewText("\n " + location.getLongitude() + " " + location.getLatitude());
+                */
             }
 
             @Override
@@ -96,6 +140,7 @@ public class TabTin extends AppCompatActivity {
 
         };
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -103,7 +148,7 @@ public class TabTin extends AppCompatActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -120,29 +165,13 @@ public class TabTin extends AppCompatActivity {
         }
         );
 
-        //configure_button();
+    }
+
+    void configure_button() {
 
     }
 
-     void configure_button() {
-        if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
-                        ,10);
-            }
-            return;
-        }
-        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //noinspection MissingPermission
-                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
-            }
-        });
 
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) //Activity called after the Oncreate
     {
@@ -164,6 +193,7 @@ public class TabTin extends AppCompatActivity {
                         .build()
                 )
                 .show();
+        //configure_button();
 return true;
 
     }
@@ -191,15 +221,9 @@ return true;
 
 
     }
-    private void addListenerOnButton() {
 
 
-    }
 
-
-    public void setLogin(View view) {
-
-    }
     //Touch anywhere on Tab1
 
     public void tab1myMethod(View pView) {
@@ -240,6 +264,20 @@ return true;
                 .show();
 
         makeText(this, "Clicked on Button", LENGTH_LONG).show();
+
+        //request for accessing gps
+       /* if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                        ,10);
+            }
+            return;
+
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+                //noinspection MissingPermission
+                locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
+*/
     }
              //click on loadpic button
     public void LoadPic(View view) {
@@ -248,32 +286,26 @@ return true;
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 1);
 
-
-        //Button buttonLoadImage = (Button) findViewById(R.id.buttonLoadPicture);
-        //buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-
-            //@Override
-            //public void onClick(View arg0) {
-
-
-            //}
-        //});
-
     }
 
-    public void loadpermission(View view)
-    {
-        ActivityCompat.requestPermissions(TabTin.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET},
-                10);
-
-
-
-    }
-    public void onRequestPermissionsResult(int requestCode,
+       public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,@NonNull int[] grantResults) {
         switch (requestCode) {
-            case 10: configure_button();
+            case 10:  if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                            ,10);
+                }
+                return;
+            }
+                // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //noinspection MissingPermission
+                        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
+                    }
+                });
                 break;
             case 1: {
 
@@ -305,6 +337,21 @@ return true;
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+
+    public void switchOn(View view) {
+        if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                        ,10);
+            }
+            return;
+
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+        //noinspection MissingPermission
+        locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
+
     }
     /**
      * A placeholder fragment containing a simple view.
