@@ -1,18 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:scrollbars="none">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:onClick="tab1myMethod">
 
-    <Button
-        android:id="@+id/btnSendTab1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="Something"
-        android:text="Send"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
 
+        <EditText
+            android:id="@+id/editTextAppname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:ems="10"
+            android:hint="Enter AppName"
+            android:inputType="textMultiLine"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/editTextDescription" />
+        <EditText
+            android:id="@+id/editTextDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Enter Description"
+            android:inputType="textMultiLine"
+            android:layout_below="@+id/editTextAppname"
+            android:layout_alignStart="@+id/sharelocation" />
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="149dp"
@@ -20,7 +37,7 @@
         android:adjustViewBounds="false"
         android:cropToPadding="false"
         android:layout_marginTop="14dp"
-        android:layout_below="@+id/editText4"
+        android:layout_below="@+id/editTextDescription"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -48,22 +65,13 @@
         android:layout_alignStart="@+id/editText4"
         android:onClick="switchOn"/>
 
-    <EditText
-        android:id="@+id/editText4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Enter Description"
-        android:inputType="textMultiLine" />
+
 
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
         android:layout_below="@+id/sharelocation"
         android:layout_centerHorizontal="true" />
 
@@ -74,15 +82,18 @@
         android:text="Coordinates: "
         android:textSize="30sp"
         android:id="@+id/textView1"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sharelocation"
         android:layout_alignParentStart="true" />
-   <!-- <Button
+    <Button
+        android:id="@+id/btnSendTab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Request Lcation"
-        android:onClick="loadpermission"
-        android:id="@+id/buttonlocation"
-        android:layout_below="@+id/imgView"
-        android:layout_alignStart="@+id/imgView" />-->
+        android:onClick="Something"
+        android:text="@string/Send"
+        android:layout_marginTop="56dp"
+        android:layout_below="@+id/ratingBar"
+        android:layout_centerHorizontal="true" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+    </ScrollView>

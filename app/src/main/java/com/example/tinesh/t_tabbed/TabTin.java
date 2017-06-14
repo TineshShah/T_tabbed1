@@ -3,6 +3,7 @@ package com.example.tinesh.t_tabbed;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimatedStateListDrawable;
@@ -77,6 +78,7 @@ public class TabTin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
             @Override
