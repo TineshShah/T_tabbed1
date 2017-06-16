@@ -29,4 +29,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.github.faruktoptas:FancyShowCaseView:0.1.0' //for showcase
     compile 'com.mcxiaoke.volley:library:1.0.19' //for networking for conveting gps to address
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

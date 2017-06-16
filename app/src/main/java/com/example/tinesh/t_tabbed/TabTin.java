@@ -147,8 +147,19 @@ public class TabTin extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
-                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                                               .setAction("Action", null).show();
+//                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                                               .setAction("Action", null).show();
+                                       Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
+                                       i.setType("message/rfc822");
+                                       i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Feedback_for_@gmail.com"});
+                                       i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                                       i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                                       try {
+                                           startActivity(Intent.createChooser(i, "Select an Email application"));
+                                       } catch (android.content.ActivityNotFoundException ex) {
+                                           Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                                       }
+
                                    }
 
                                }
@@ -177,7 +188,7 @@ public class TabTin extends AppCompatActivity {
                         .build()
                 )
                 .add(new FancyShowCaseView.Builder(this)
-                        .focusOn(findViewById(R.id.buttonLoadPicture))
+                        .focusOn(findViewById(R.id.floatingAdd))
                         .title("Click this button to load pictures")
                         .build()
                 )
@@ -232,7 +243,7 @@ public class TabTin extends AppCompatActivity {
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.buttonLoadPicture))
+                            .focusOn(findViewById(R.id.floatingAdd))
                             .title("Click this button to load pictures")
                             .build()
                     )
@@ -253,16 +264,7 @@ public class TabTin extends AppCompatActivity {
                 .show();
 
         makeText(this, "Clicked on Button", LENGTH_LONG).show();
-        Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Feedback_for_@gmail.com"});
-        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
-        try {
-            startActivity(Intent.createChooser(i, "Select an Email application"));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-        }
+
 
     }
 
@@ -350,6 +352,35 @@ public class TabTin extends AppCompatActivity {
         }
 
         }
+
+    public void AddPic(View view) {
+        ActivityCompat.requestPermissions(TabTin.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
+
+    }
+
+    public void btnhelp(View view) { new FancyShowCaseQueue()
+            .add(new FancyShowCaseView.Builder(this)
+                    .title("Click to send the report")
+                    .focusOn(findViewById(R.id.btnSendTab1))
+                    .focusCircleRadiusFactor(2.0)
+                    .build()
+
+            )
+            .add(new FancyShowCaseView.Builder(this)
+                    .focusOn(findViewById(R.id.tabs))
+                    .title("Seperate Tabs")
+                    .build()
+            )
+            .add(new FancyShowCaseView.Builder(this)
+                    .focusOn(findViewById(R.id.floatingAdd))
+                    .title("Click this button to load pictures")
+                    .build()
+            )
+            .show();
+
+    }
     /**
      * A placeholder fragment containing a simple view.
      */
