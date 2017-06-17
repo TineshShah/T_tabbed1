@@ -29,6 +29,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -38,6 +39,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jaredrummler.android.device.DeviceName;
 
 import java.io.IOException;
 import java.util.List;
@@ -143,35 +146,36 @@ public class TabTin extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floSend);
         fab.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
+                                       //Gathering values
+                                       String deviceName= DeviceName.getDeviceName();
+                                       String reqString = Build.MANUFACTURER
+                                               + " " + Build.MODEL + " " + Build.VERSION.RELEASE
+                                               + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+
+                                       Log.e("ok",reqString);
+
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
                                        Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
                                        i.setType("message/rfc822");
                                        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Feedback_for_@gmail.com"});
                                        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                                       i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+                                       i.putExtra(Intent.EXTRA_TEXT   ,deviceName );
                                        try {
                                            startActivity(Intent.createChooser(i, "Select an Email application"));
                                        } catch (android.content.ActivityNotFoundException ex) {
                                            Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                                        }
-
                                    }
 
                                }
         );
 
     }
-
-    void configure_button() {
-
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) //Activity called after the Oncreate
     {
@@ -193,11 +197,8 @@ public class TabTin extends AppCompatActivity {
                         .build()
                 )
                 .show();
-        //configure_button();
         return true;
-
     }
-
     @Override  //Uploads the image after selection into the ImageView
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -216,18 +217,11 @@ public class TabTin extends AppCompatActivity {
 
             ImageView imageView = (ImageView) findViewById(R.id.imgView);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-
         }
-
-
     }
-
-
     //Touch anywhere on Tab1
-
     public void tab1myMethod(View pView) {
         if (count == 0)
-
         {
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
@@ -264,8 +258,6 @@ public class TabTin extends AppCompatActivity {
                 .show();
 
         makeText(this, "Clicked on Button", LENGTH_LONG).show();
-
-
     }
 
     //click on loadpic button
@@ -276,7 +268,6 @@ public class TabTin extends AppCompatActivity {
                 1);
 
     }
-
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -295,33 +286,25 @@ public class TabTin extends AppCompatActivity {
                          }
                       return;
                 }
-
-
-
             case 1: {
-
                 // If request is cancelled, the result arrays are empty.
                 //Request granted , so open the gallary and pick up ny picture
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     Intent i = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                     startActivityForResult(i, RESULT_LOAD_IMAGE);
                     //After this it calls onActivityResult() to upload the picture
-
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else
 
                     {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(TabTin.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
-                }
+                    }
                 return;
             }
 
@@ -384,8 +367,6 @@ public class TabTin extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
