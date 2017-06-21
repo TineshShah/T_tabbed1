@@ -49,9 +49,12 @@ import java.util.Locale;
 import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 
+import static android.R.attr.fragment;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.tinesh.t_tabbed.R.id.btnSendTab1;
 import static com.example.tinesh.t_tabbed.R.id.container;
+import static com.example.tinesh.t_tabbed.R.id.tab1_layout;
 
 public class TabTin extends AppCompatActivity {
     int count = 0;
@@ -79,6 +82,7 @@ public class TabTin extends AppCompatActivity {
     private static int RESULT_LOAD_IMAGE = 1;
     private File filetosend;
     private Uri fileuri;
+    private int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +152,9 @@ public class TabTin extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floSend);
+        final FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        fabSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
            filetosend =generateNoteOnSD(TabTin.this,"ok1","hello");
@@ -229,23 +233,25 @@ public class TabTin extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) //Activity called after the Oncreate
     {
 
-        new FancyShowCaseQueue()
-                .add(new FancyShowCaseView.Builder(this)
-                        .focusOn(findViewById(R.id.btnSendTab1))
-                        .title("Click to send the report")
-                        .build()
-                )
-                .add(new FancyShowCaseView.Builder(this)
-                        .focusOn(findViewById(R.id.tabs))
-                        .title("Seperate Tabs")
-                        .build()
-                )
-                .add(new FancyShowCaseView.Builder(this)
-                        .focusOn(findViewById(R.id.floatingAdd))
-                        .title("Click this button to load pictures")
-                        .build()
-                )
-                .show();
+            new FancyShowCaseQueue()
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.btnSendTab1))
+                            .title("Click to send the report")
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.tabs))
+                            .title("Seperate Tabs")
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.floatingAdd))
+                            .title("Click this button to load pictures")
+                            .build()
+                    )
+                    .show();
+
+
         return true;
     }
     String picturePath ;
@@ -329,15 +335,7 @@ public class TabTin extends AppCompatActivity {
         makeText(this, "Clicked on Button", LENGTH_LONG).show();
     }
 
-    //click on loadpic button
-    public void LoadPic(View view) {
-        //Opens permission dialogue for android 6 Marshmellow and then calls OnRequestPermissionResult();
-        ActivityCompat.requestPermissions(TabTin.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                1);
-
-    }
-    public void onRequestPermissionsResult(int requestCode,
+       public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 10:
@@ -412,25 +410,35 @@ public class TabTin extends AppCompatActivity {
 
     }
 
-    public void btnhelp(View view) { new FancyShowCaseQueue()
-            .add(new FancyShowCaseView.Builder(this)
-                    .title("Click to send the report")
-                    .focusOn(findViewById(R.id.btnSendTab1))
-                    .focusCircleRadiusFactor(2.0)
-                    .build()
 
-            )
-            .add(new FancyShowCaseView.Builder(this)
-                    .focusOn(findViewById(R.id.tabs))
-                    .title("Seperate Tabs")
-                    .build()
-            )
-            .add(new FancyShowCaseView.Builder(this)
-                    .focusOn(findViewById(R.id.floatingAdd))
-                    .title("Click this button to load pictures")
-                    .build()
-            )
-            .show();
+    public void btnhelp(View view) {
+
+        mViewPager = (ViewPager) findViewById(container);
+        if (mViewPager.getCurrentItem()==0) //display the following when the viewpager is in first Tab.
+
+        {
+
+            new FancyShowCaseQueue()
+                    .add(new FancyShowCaseView.Builder(this)
+                            .title("Click to send the report")
+                            .focusOn(findViewById(R.id.btnSendTab1))
+                            .focusCircleRadiusFactor(2.0)
+                            .build()
+
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.tabs))
+                            .title("Seperate Tabs")
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.floatingAdd))
+                            .title("Click this button to load pictures")
+                            .build()
+                    )
+                    .show();
+        }
+
 
     }
     /**
@@ -475,10 +483,13 @@ public class TabTin extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
+
                     return "Issues";
                 case 1:
+
                     return "Suggesions";
                 case 2:
+
                     return "Interface";
             }
             return null;

@@ -23,18 +23,20 @@ import static com.example.tinesh.t_tabbed.R.layout.tab1;
 
 public class Tab1 extends Fragment  {
     TextView mTextView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
 
         View view=inflater.inflate(tab1,container,false);
         RelativeLayout fragment_linearlayout= (RelativeLayout)view.findViewById(R.id.tab1_layout);
-        fragment_linearlayout.setOnLongClickListener(new View.OnLongClickListener() {
+
+        fragment_linearlayout.setOnLongClickListener(new View.OnLongClickListener() {//On long press
 
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(container.getContext(), "Long Pressed", Toast.LENGTH_SHORT).show();
-                Log.e("dsjdji","fskiiioooo");
+                Log.e("Long press","Long press");
                 return true;
 
             }});

@@ -32,13 +32,14 @@
             android:inputType="textMultiLine"
             android:layout_below="@+id/editTextAppname"
             android:layout_alignStart="@+id/sharelocation" />
-    <ImageView
+
+        <ImageView
         android:id="@+id/imgView"
         android:layout_width="149dp"
         android:layout_height="202dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
-        android:layout_marginTop="21dp"
+        android:layout_marginTop="1dp"
         android:layout_below="@+id/editTextDescription"
         android:layout_centerHorizontal="true" />
 
