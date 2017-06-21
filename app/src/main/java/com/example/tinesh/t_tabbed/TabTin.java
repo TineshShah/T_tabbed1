@@ -3,24 +3,22 @@ package com.example.tinesh.t_tabbed;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimatedStateListDrawable;
-import android.icu.util.JapaneseCalendar;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -30,10 +28,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -42,7 +38,11 @@ import android.widget.Toast;
 
 import com.jaredrummler.android.device.DeviceName;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -77,6 +77,8 @@ public class TabTin extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private static int RESULT_LOAD_IMAGE = 1;
+    private File filetosend;
+    private Uri fileuri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,35 +148,82 @@ public class TabTin extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floSend);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.floSend);
+
         fab.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View view) {
-                                       //Gathering values
-                                       String deviceName= DeviceName.getDeviceName();
-                                       String reqString = Build.MANUFACTURER
-                                               + " " + Build.MODEL + " " + Build.VERSION.RELEASE
-                                               + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+            @Override
+            public void onClick(View view) {
+           filetosend =generateNoteOnSD(TabTin.this,"ok1","hello");
+                new SaveAsyncTask().execute(); //new thread
+            }
+            class SaveAsyncTask extends AsyncTask<Object, Object, Void> {
 
-                                       Log.e("ok",reqString);
+                protected void onPostExecute(Intent i) {
+                }
 
+                @Override
+                protected Void doInBackground(Object... params) {
+                    String deviceName = DeviceName.getDeviceName();
+                    String reqString = Build.MANUFACTURER
+                            + " " + Build.MODEL + " " + Build.VERSION.RELEASE
+                            + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+
+                    Log.e("ok", reqString);
+
+                    ArrayList<Uri> imageUris = new ArrayList<Uri>();//create array list to store URI for image and Report
+                    imageUris.add(selectedImageUri); // Add your image URIs to array
+                    imageUris.add(Uri.parse("file://" + filetosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
-                                       Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
-                                       i.setType("message/rfc822");
-                                       i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"Feedback_for_@gmail.com"});
-                                       i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                                       i.putExtra(Intent.EXTRA_TEXT   ,deviceName );
-                                       try {
-                                           startActivity(Intent.createChooser(i, "Select an Email application"));
-                                       } catch (android.content.ActivityNotFoundException ex) {
-                                           Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-                                       }
-                                   }
+                    Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
 
-                               }
-        );
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"Feedback_for_@gmail.com"});
+                    i.putExtra(Intent.EXTRA_CC,new String[]{"Feedback_for_@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                    i.putExtra(Intent.EXTRA_TEXT, deviceName);
+                    //i.setType("image/*");
 
+                    Log.e("ok", filetosend.getAbsolutePath());
+                    i.setType("message/rfc822");
+                    i.putExtra(Intent.EXTRA_STREAM,imageUris); //all the Urls in the arraylist are added to the email application(text file and image)
+                    //i.putExtra(Intent.EXTRA_STREAM,Uri.parse("file://" + filetosend.getAbsoluteFile()));
+                    try {
+                        startActivity(Intent.createChooser(i, "Select an Email application"));
+                    }
+                    catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                    }
+                    return null;
+                }
+
+            }
+
+
+            //Gathering values
+
+
+            });
+
+
+    }
+    public File generateNoteOnSD(TabTin context, String sFileName, String sBody) {
+        File gpxfile = null;
+        try {
+            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            gpxfile = new File(root, sFileName);
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+            Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return gpxfile;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) //Activity called after the Oncreate
@@ -199,12 +248,17 @@ public class TabTin extends AppCompatActivity {
                 .show();
         return true;
     }
+    String picturePath ;
+    Uri selectedImage;
+    String uritv;
+    private String selectedImagePath;
+    Uri selectedImageUri;
     @Override  //Uploads the image after selection into the ImageView
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
             String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
             Cursor cursor = getContentResolver().query(selectedImage,
@@ -212,13 +266,28 @@ public class TabTin extends AppCompatActivity {
             cursor.moveToFirst();
 
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            picturePath = cursor.getString(columnIndex);
             cursor.close();
 
             ImageView imageView = (ImageView) findViewById(R.id.imgView);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+
+            selectedImageUri = data.getData();
+
+            //selectedImagePath = getPath(selectedImageUri);
+            //uritv=selectedImagePath.toString();
         }
     }
+
+    private String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
     //Touch anywhere on Tab1
     public void tab1myMethod(View pView) {
         if (count == 0)
