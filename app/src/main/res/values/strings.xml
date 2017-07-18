@@ -1,7 +1,23 @@
 <resources>
     <string name="app_name">T_tabbed</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings" translatable="false">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="button">Button</string>
     <string name="Send">Send</string>
+    <string name="Coordinates">Cooordinates:</string>
+    <string name="ShareLocation">Share Location</string>
+    <string name="EnterAppName">App Name</string>
+    <string name="EnterIssue">Enter(or)Tap on Mike to describe the issue</string>
+    <string name="Category">Category</string>
+    <string name="country_prompt">Choose a country</string>
+    <string-array name="country_arrays">
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
+    </string-array>
 </resources>

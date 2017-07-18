@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">T_tabbed</string>
+    <string name="Category">Kategorie</string>
+    <string name="Coordinates">Koordinaten</string>
+    <string name="EnterAppName">Geben App Namen</string>
+    <string name="Send">Senden</string>
+    <string name="ShareLocation">Ort Tielen</string>
+    <string name="button">Taste</string>
+    <string name="EnterIssue">Das Thema</string>
+    <string name="country_prompt" translatable="false">Choose country</string>
+</resources>
