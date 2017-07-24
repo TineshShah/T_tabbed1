@@ -1,9 +1,10 @@
 package com.example.tinesh.t_tabbed;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -16,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
@@ -28,24 +28,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.ActivityNotFoundException;
 import android.widget.ViewAnimator;
 
 import com.jaredrummler.android.device.DeviceName;
@@ -53,21 +47,17 @@ import com.jaredrummler.android.device.DeviceName;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
-import android.support.v7.app.ActionBarActivity;
-import static android.R.attr.fragment;
+
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
-import static com.example.tinesh.t_tabbed.R.id.btnSendTab1;
 import static com.example.tinesh.t_tabbed.R.id.container;
-import static com.example.tinesh.t_tabbed.R.id.imageView;
-import static com.example.tinesh.t_tabbed.R.id.tab1_layout;
+import static java.security.AccessController.getContext;
 
 public class TabTin extends AppCompatActivity{
 
@@ -101,15 +91,13 @@ public class TabTin extends AppCompatActivity{
     private ImageButton mSpeakBtn;
     Button btnNext,btnPrevious;
     ViewAnimator viewAnimator;
-TextView tv;
+    TextView tv;
+    private String txtCompleteAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
-
-
-
 
         //location Manager for getting location Details
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -133,6 +121,9 @@ TextView tv;
 
                         textView = (TextView) findViewById(R.id.textView7);
                         textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
+                        txtCompleteAddress=address + "  City is :"+city + "  state is :" + state + "  country is " + country +"  postal code " + postalCode + "  known name" + knownName;
+                        Log.e("Address",txtCompleteAddress);
+
                     }
                 }
                 catch (IOException e) {
