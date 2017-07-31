@@ -1,5 +1,4 @@
 package com.example.tinesh.t_tabbed;
-
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -27,6 +26,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,9 @@ import com.jaredrummler.android.device.DeviceName;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -88,11 +91,13 @@ public class TabTin extends AppCompatActivity{
     private Uri fileuri;
     private int flag;
     private EditText mVoiceInputTv;
+    private EditText mVoiceInputTv1;
     private ImageButton mSpeakBtn;
     Button btnNext,btnPrevious;
     ViewAnimator viewAnimator;
     TextView tv;
-    private String txtCompleteAddress;
+    public String CompleteAddress;
+    private String Mal_Per_other; //type of issue
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +113,7 @@ public class TabTin extends AppCompatActivity{
                 // textView = (TextView) findViewById(R.id.textView1);
                 //textView.setText("\n " + location.getLongitude() + " " + location.getLatitude());
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
                 try {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
 
@@ -121,8 +127,9 @@ public class TabTin extends AppCompatActivity{
 
                         textView = (TextView) findViewById(R.id.textView7);
                         textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
-                        txtCompleteAddress=address + "  City is :"+city + "  state is :" + state + "  country is " + country +"  postal code " + postalCode + "  known name" + knownName;
-                        Log.e("Address",txtCompleteAddress);
+                        CompleteAddress="Complete Address_"+address + "  City is :"+city + "  state is :" + state + "  country is " + country +"  postal code " + postalCode + "  known name" + knownName;
+
+                        Log.e("Address",CompleteAddress);
 
                     }
                 }
@@ -170,22 +177,36 @@ public class TabTin extends AppCompatActivity{
                 if (mViewPager.getCurrentItem()==0)
                 {
                     FileName="Issues_";
+                    filetosend =generateNoteOnSD(TabTin.this,FileName,"Reported Issue: "+Mal_Per_other+"Address :"+ CompleteAddress); //(context,Name of file,Content of file)
+                    new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
                 {
                     FileName="Suggestions_";
+                    EditText mEdit;
+                    String like="";
+                    String dontlike="";
+                    mEdit   = (EditText)findViewById(R.id.txtLike);
+                    like="Liked_"+mEdit.getText().toString();
+                    mEdit   = (EditText)findViewById(R.id.txtDontLike);
+                    dontlike="NotLiked_"+mEdit.getText().toString();
+                    filetosend =generateNoteOnSD(TabTin.this,FileName,like+dontlike); //(context,Name of file,Content of file)
+                    new SaveAsyncTask().execute(); //new thread
 
                 }
                 else if(mViewPager.getCurrentItem()==2)
                 {
                     FileName="LookandFeel_";
+                    filetosend =generateNoteOnSD(TabTin.this,FileName,CompleteAddress); //(context,Name of file,Content of file)
+                    new SaveAsyncTask().execute(); //new thread
                 }
                 else
                 {
                     FileName="Default";
+                    filetosend =generateNoteOnSD(TabTin.this,FileName,"hello"); //(context,Name of file,Content of file)
+                    new SaveAsyncTask().execute(); //new thread
                 }
-           filetosend =generateNoteOnSD(TabTin.this,FileName,"hello"); //(context,Name of file,Content of file)
-                new SaveAsyncTask().execute(); //new thread
+
             }
             class SaveAsyncTask extends AsyncTask<Object, Object, Void> {
 
@@ -193,21 +214,23 @@ public class TabTin extends AppCompatActivity{
                 }
                 @Override
                 protected Void doInBackground(Object... params) {
+
                     String deviceName = DeviceName.getDeviceName();
                     String reqString = Build.MANUFACTURER
                             + " " + Build.MODEL + " " + Build.VERSION.RELEASE
                             + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
                     Log.e("ok", reqString);
-                    ArrayList<Uri> imageUris = new ArrayList<Uri>();//create array list to store URI for image and Report
+                    ArrayList<Uri> imageUris = new ArrayList<>();//create array list to store URI for image and Report
                     imageUris.add(selectedImageUri); // Add your image URIs to array
                     imageUris.add(Uri.parse("file://" + filetosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
+
                     Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"Feedback_for_@gmail.com"});
                     i.putExtra(Intent.EXTRA_CC,new String[]{"Feedback_for_@gmail.com"});
                     i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
-                    i.putExtra(Intent.EXTRA_TEXT, deviceName);
+                    i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback");
                     //i.setType("image/*");
                     Log.e("ok", filetosend.getAbsolutePath());
                     i.setType("message/rfc822");
@@ -309,19 +332,53 @@ public class TabTin extends AppCompatActivity{
 //    }
     public File generateNoteOnSD(TabTin context, String sFileName, String sBody) {
         File gpxfile = null;
-        try {
-            File root = new File(Environment.getExternalStorageDirectory(), "Notes");
+        try
+        {
+
+
+//            if (ContextCompat.checkSelfPermission(context,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//
+//                // Should we show an explanation?
+//                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                    Toast.makeText(context,"Permission required",Toast.LENGTH_SHORT).show();
+//                    // Show an explanation to the user *asynchronously* -- don't block
+//                    // this thread waiting for the user's response! After the user
+//                    // sees the explanation, try again to request the permission.
+//
+//                }
+//                else
+//
+//                {
+//                    // No explanation needed, we can request the permission.
+//                    ActivityCompat.requestPermissions(this,
+//                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                            11);
+//                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+//                    // app-defined int constant. The callback method gets the
+//                    // result of the request.
+//                }
+//            }
+            File root = new File(Environment.getExternalStorageDirectory(), "Notes"); //save in Notes folder
             if (!root.exists()) {
                 root.mkdirs();
             }
-            gpxfile = new File(root, sFileName);
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_FFF");
+            Date now = new Date();
+            String yymmdd = formatter.format(now) ;
+
+            gpxfile = new File(root, sFileName+yymmdd+".txt");
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(sBody);
             writer.flush();
             writer.close();
             Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
 
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         return gpxfile;
@@ -347,7 +404,6 @@ public class TabTin extends AppCompatActivity{
                             .build()
                     )
                     .show();
-
 
         return true;
     }
@@ -385,11 +441,13 @@ public class TabTin extends AppCompatActivity{
                 break;
              }
             case REQ_CODE_SPEECH_INPUT: {
-                mVoiceInputTv = (EditText)findViewById(R.id.editTextDescription);
+                //mVoiceInputTv = (EditText)findViewById(R.id.editTextDescription);
+                mVoiceInputTv1 = (EditText)findViewById(R.id.editTextDescription1);
                      if (resultCode == RESULT_OK && null != data) {
                         ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                         String text =result.get(0);
-                        mVoiceInputTv.setText(text);
+                        //mVoiceInputTv.setText(text);
+                         mVoiceInputTv1.setText(text);
                     }
 
                     break;
@@ -483,11 +541,13 @@ public class TabTin extends AppCompatActivity{
                          }
                       return;
                 }
-            case 1: {
+            case 1:
+                {
                 // If request is cancelled, the result arrays are empty.
                 //Request granted , so open the gallary and pick up ny picture
-                if (grantResults.length > 0
+                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                     Intent i = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -495,14 +555,33 @@ public class TabTin extends AppCompatActivity{
                     //After this it calls onActivityResult() to upload the picture
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                } else
+                 }
+                else
                     {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(TabTin.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
                     }
-                return;
 
+                    return;
+
+            }
+            case 11: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+
+                    Toast.makeText(TabTin.this, "Permission denied to read your storage Files", Toast.LENGTH_SHORT).show();
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
             }
             // other 'case' lines to check for other
             // permissions this app might request
@@ -519,16 +598,15 @@ public class TabTin extends AppCompatActivity{
                             , 10);
                 }
                 return;
-
             }
             // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
             //noinspection MissingPermission
             locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
         }
-        else
-         {
+            else
+        {
             Toast.makeText(TabTin.this, "Switch is off", Toast.LENGTH_SHORT).show();
-         }
+        }
     }
 
     public void AddPic(View view) {
@@ -599,7 +677,7 @@ public class TabTin extends AppCompatActivity{
         }
         else
         {
-            Toast.makeText(TabTin.this, "Switch is off", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TabTin.this, "Switch is off.Location data wont be shared", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -635,6 +713,31 @@ public class TabTin extends AppCompatActivity{
 
     }
 
+    public void OnRadioClick_Issue(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.Doesnt_work:
+                if (checked)
+                    Mal_Per_other="Malfunction_Reported";
+                    // Pirates are the best
+                    break;
+            case R.id.Too_slow:
+                if (checked)
+                    Mal_Per_other="PerformanceIssue_Reported";
+                    // Ninjas rule
+                    break;
+            case R.id.Other_Issues:
+                if (checked)
+                    Mal_Per_other="OtherIssues_Reported";
+                    // Ninjas rule
+                    break;
+
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -654,14 +757,18 @@ public class TabTin extends AppCompatActivity{
             // Return a PlaceholderFragment (defined as a static inner class below).
          switch(position)
          {case 0:
+             return new Tab3();
+          case 1:
+             Tab2 tab2=new Tab2();
+                 //On startup request for permissions for reading content on the device.
+             ActivityCompat.requestPermissions(TabTin.this,
+                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                         11);
+             return tab2;
+
+         case 2:
              Tab1 tab1=new Tab1();
              return tab1;
-             case 1:
-             Tab2 tab2=new Tab2();
-             return tab2;
-             case 2:
-             Tab3 tab3=new Tab3();
-             return tab3;
 
          }
          return null;
@@ -697,5 +804,25 @@ public class TabTin extends AppCompatActivity{
 
             return null;
         }
+    }
+    public void Likeselected(View view) {
+        EditText txtlike;
+        EditText txtdontlike;
+        txtlike = (EditText)findViewById(R.id.txtLike);
+        txtdontlike = (EditText)findViewById(R.id.txtDontLike);
+
+        txtlike.setVisibility(view.VISIBLE);
+        txtdontlike.setVisibility(view.INVISIBLE);
+    }
+
+    public void Dontlikeselected(View view) {
+        EditText txtlike;
+        EditText txtdontlike;
+        txtlike = (EditText)findViewById(R.id.txtLike);
+        txtdontlike = (EditText)findViewById(R.id.txtDontLike);
+
+        txtlike.setVisibility(view.INVISIBLE);
+        txtdontlike.setVisibility(view.VISIBLE);
+
     }
 }

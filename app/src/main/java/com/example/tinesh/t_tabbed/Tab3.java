@@ -35,7 +35,8 @@ import static com.example.tinesh.t_tabbed.R.layout.tab3;
  * Created by Tinesh on 5/29/2017.
  */
 //OK //ok
-public class Tab3 extends Fragment{
+public class
+Tab3 extends Fragment{
     Button buttonPrev, buttonNext;
 
     TextView txtView7;
@@ -128,8 +129,8 @@ public class Tab3 extends Fragment{
         txtviewSend.setText(text2);
 
 
-        slide_in_left = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
-        //slide_out_right = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+        slide_in_left = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        slide_out_right = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
 
 
 
@@ -142,6 +143,7 @@ public class Tab3 extends Fragment{
             public void onClick(View view1) {
                 viewAnimator.setInAnimation(slide_in_left);
                 viewAnimator.showPrevious();
+                getView(view1);
             }});
 
         buttonNext.setOnClickListener(new View.OnClickListener(){
@@ -150,10 +152,32 @@ public class Tab3 extends Fragment{
             public void onClick(View view1) {
                 viewAnimator.setOutAnimation(slide_out_right);
                 viewAnimator.showNext();
+                getView(view1);
             }});
         return view;
     }
 
+    private View getView(View view) {
+        if(viewAnimator.getDisplayedChild()==2)
+        {
+            buttonNext.setVisibility(view.INVISIBLE);
+            buttonPrev.setVisibility(view.VISIBLE);
+
+        }
+        if(viewAnimator.getDisplayedChild()==1)
+        {
+            buttonNext.setVisibility(view.VISIBLE);
+            buttonPrev.setVisibility(view.VISIBLE);
+
+        }
+        if(viewAnimator.getDisplayedChild()==0)
+        {
+            buttonNext.setVisibility(view.VISIBLE);
+            buttonPrev.setVisibility(view.INVISIBLE);
+
+        }
+        return view;
+    }
 
 
 }

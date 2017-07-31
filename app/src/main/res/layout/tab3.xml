@@ -8,7 +8,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:weightSum="1">
 
 
     <ViewAnimator
@@ -18,7 +19,7 @@
 
 
         <LinearLayout
-            android:layout_width="338dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="1">
@@ -36,34 +37,66 @@
                 android:layout_weight="0.07">
 
                 <RadioButton
-                    android:id="@+id/radioButton8"
+                    android:id="@+id/Doesnt_work"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/something_doesnt_work" />
+                    android:text="@string/something_doesnt_work"
+                    android:onClick="OnRadioClick_Issue"/>
 
                 <RadioButton
-                    android:id="@+id/radioButton9"
+                    android:id="@+id/Too_slow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/something_is_too_slow" />
+                    android:text="@string/something_is_too_slow"
+                    android:onClick="OnRadioClick_Issue"/>
 
                 <RadioButton
-                    android:id="@+id/radioButton10"
+                    android:id="@+id/Other_Issues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/other_issues" />
+                    android:text="@string/other_issues"
+                    android:onClick="OnRadioClick_Issue"/>
             </RadioGroup>
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/describe_the_issue"
-                android:inputType="textMultiLine" />
+            <LinearLayout
+                android:layout_width="393dp"
+                android:layout_height="123dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/editTextDescription1"
+                    android:layout_width="273dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.84"
+                    android:ems="10"
+                    android:hint="@string/describe_the_issue"
+                    android:inputType="textMultiLine" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    style="@android:style/Widget.ImageButton"
+                    android:layout_width="58dp"
+                    android:layout_height="75dp"
+                    android:layout_alignBottom="@+id/editTextDescription1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="11dp"
+                    android:layout_weight="0.21"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:backgroundTint="@color/colorAccent"
+                    android:cropToPadding="true"
+                    android:elevation="1dp"
+                    android:onClick="btnSpeech"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@android:drawable/presence_audio_online"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -154,7 +187,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="previous" />
+            android:text="previous"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/next"
@@ -164,9 +198,10 @@
             android:text="next" />
     </LinearLayout>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="113dp"
+        android:layout_weight="0.83"
         android:paddingTop="100dp">
 
         <TextView

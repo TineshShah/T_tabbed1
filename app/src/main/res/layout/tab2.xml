@@ -6,41 +6,76 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="12dp"
-        android:layout_alignParentTop="true">
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true">
 
-        <ViewAnimator
-            android:layout_width="296dp"
-            android:layout_height="196dp">
-
-            <Spinner
-        android:id="@+id/spinner2"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
 
 
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginTop="23dp"
-        android:animationCache="true"
-        android:background="@android:drawable/btn_dropdown"
-        android:entries="@array/country_arrays"
-        android:fadingEdge="horizontal|vertical"
-        android:hapticFeedbackEnabled="true"
-        android:padding="10dp"
-        android:prompt="@string/country_prompt" />
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginTop="23dp"
+            android:layout_weight="1"
+            android:animationCache="true"
+            android:background="@android:drawable/btn_dropdown"
+            android:entries="@array/country_arrays"
+            android:fadingEdge="horizontal|vertical"
+            android:hapticFeedbackEnabled="true"
+            android:padding="10dp"
+            android:prompt="@string/country_prompt" />
 
-            <TextView
-                android:id="@+id/textView2"
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1772.45" >
+
+            <RadioButton
+                android:id="@+id/liketoseeFeature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:onClick="Likeselected"
+                android:text="@string/Rbtn_LiketoseeFeature" />
+
+            <EditText
+                android:id="@+id/txtLike"
+                android:layout_width="343dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Describe the Feature you would like to see"
+                android:inputType="textMultiLine"
+                android:visibility="visible" />
+
+            <RadioButton
+                android:id="@+id/dontLikeToSeeFeature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
-        </ViewAnimator>
+                android:layout_weight="1"
+                android:text="@string/Rbth_dontlikeFeature"
+                android:onClick="Dontlikeselected"/>
+
+
+            <EditText
+                android:id="@+id/txtDontLike"
+                android:layout_width="302dp"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Describe the Feature you dont like"
+                android:inputType="textMultiLine"
+                android:visibility="invisible"
+                />
+        </RadioGroup>
+
     </LinearLayout>
 
 </RelativeLayout>

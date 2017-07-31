@@ -25,17 +25,47 @@
             android:layout_alignParentTop="true"
             android:layout_alignStart="@+id/editTextDescription" />
 
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:layout_weight="0.07"
+            android:layout_below="@+id/editTextAppname"
+            android:layout_alignParentStart="true">
+
+            <RadioButton
+                android:id="@+id/radioButton8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/something_doesnt_work" />
+
+            <RadioButton
+                android:id="@+id/radioButton9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/something_is_too_slow" />
+
+            <RadioButton
+                android:id="@+id/radioButton10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/other_issues" />
+        </RadioGroup>
+
         <EditText
             android:id="@+id/editTextDescription"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/EnterIssue"
             android:inputType="textMultiLine"
-            android:layout_below="@+id/editTextAppname"
+            android:layout_below="@+id/radioGroup"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/btnSpeak"
-            android:layout_alignEnd="@+id/ratingBar" />
+            android:layout_marginTop="30dp" />
 
         <ImageButton
             android:id="@+id/btnSpeak"
@@ -52,16 +82,18 @@
             android:padding="16dp"
             android:scaleType="fitCenter"
             android:src="@android:drawable/presence_audio_online"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:layout_toEndOf="@+id/ratingBar"
+            android:layout_below="@+id/radioGroup" />
         <ImageView
         android:id="@+id/imgView"
         android:layout_width="149dp"
         android:layout_height="202dp"
         android:adjustViewBounds="false"
         android:cropToPadding="false"
-        android:layout_marginTop="12dp"
-            android:layout_below="@+id/editTextDescription"
-            android:layout_centerHorizontal="true" />
+            android:layout_below="@+id/radioGroup"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="83dp" />
 
         <Switch
         android:id="@+id/sharelocation"
