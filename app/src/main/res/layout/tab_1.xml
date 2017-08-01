@@ -187,7 +187,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="previous"
+            android:text="@string/previous"
             android:visibility="invisible" />
 
         <Button
@@ -195,7 +195,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="next" />
+            android:text="@string/next" />
     </LinearLayout>
 
     <RelativeLayout
@@ -215,7 +215,7 @@
             android:maxLines="1"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="Simple application"
+            android:text="@string/information"
             android:textColor="#ff4500" />
 
         <TextView

@@ -17,6 +17,9 @@
     <string name="describe_the_issue">Enter(or)Tap on Mike to describe the issue</string>
     <string name="Rbtn_LiketoseeFeature">I would like to see the following feature</string>
     <string name="Rbth_dontlikeFeature">I dont like the following feature</string>
+    <string name="previous">previous</string>
+    <string name="next">Next</string>
+    <string name="information">Information..</string>
     <string-array name="country_arrays">
         <item>Malaysia</item>
         <item>United States</item>

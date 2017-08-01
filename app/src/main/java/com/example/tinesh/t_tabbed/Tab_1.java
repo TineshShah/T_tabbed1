@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewAnimator;
 import android.content.Context;
 
@@ -29,14 +27,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import static com.example.tinesh.t_tabbed.R.layout.tab3;
+import static com.example.tinesh.t_tabbed.R.layout.tab_1;
 
 /**
  * Created by Tinesh on 5/29/2017.
  */
 //OK //ok
 public class
-Tab3 extends Fragment{
+Tab_1 extends Fragment{
     Button buttonPrev, buttonNext;
 
     TextView txtView7;
@@ -54,7 +52,7 @@ Tab3 extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view=inflater.inflate(tab3,container,false);
+        View view=inflater.inflate(tab_1,container,false);
 
 
         tv = (TextView) view.findViewById(R.id.mywidget);
@@ -69,7 +67,7 @@ Tab3 extends Fragment{
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                //setContentView(R.layout.tab1);
+                //setContentView(R.layout.tab_3);
                 // textView = (TextView) findViewById(R.id.textView1);
                 //textView.setText("\n " + location.getLongitude() + " " + location.getLatitude());
                 Geocoder geocoder = new Geocoder(getContext().getApplicationContext(), Locale.getDefault());
@@ -92,7 +90,7 @@ Tab3 extends Fragment{
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*Tab1 myFragment = new Tab1();
+                /*Tab_3 myFragment = new Tab_3();
                 myFragment.setTextViewText("\n " + location.getLongitude() + " " + location.getLatitude());
                 */
             }

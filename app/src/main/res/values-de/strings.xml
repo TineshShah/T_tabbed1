@@ -9,4 +9,15 @@
     <string name="button">Taste</string>
     <string name="EnterIssue">Das Thema</string>
     <string name="country_prompt" translatable="false">Choose country</string>
+    <string name="thank_you_for_the_information_please_click_on_the_send_button_below">Vielen Dank für die Informationen.Bitte klicken Sie auf die Schaltfläche "Senden" unten.</string>
+    <string name="something_doesnt_work">Etwas funktioniert nicht</string>
+    <string name="something_is_too_slow">Etwas ist zu langsam</string>
+    <string name="other_issues">Andere Probleme</string>
+    <string name="describe_the_issue">Enter (oder) Tippen Sie auf Mike, um das Problem zu beschreiben</string>
+    <string name="Rbtn_LiketoseeFeature">Ich möchte die folgende Funktion sehen</string>
+    <string name="Rbth_dontlikeFeature">Ich mag nicht die folgende Funktion</string>
+    <string name="previous">Zurück</string>
+    <string name="next">Weiter</string>
+    <string name="information">Information..</string>
+
 </resources>

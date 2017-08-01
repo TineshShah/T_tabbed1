@@ -26,7 +26,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +60,6 @@ import me.toptas.fancyshowcase.FancyShowCaseView;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.tinesh.t_tabbed.R.id.container;
-import static java.security.AccessController.getContext;
 
 public class TabTin extends AppCompatActivity{
 
@@ -103,20 +102,17 @@ public class TabTin extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
-
         //location Manager for getting location Details
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                //setContentView(R.layout.tab1);
+                //setContentView(R.layout.tab_3);
                 // textView = (TextView) findViewById(R.id.textView1);
                 //textView.setText("\n " + location.getLongitude() + " " + location.getLatitude());
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
-
                 try {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
                     if (null != addresses && addresses.size() > 0) {
                         String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                         String city = addresses.get(0).getLocality();
@@ -127,7 +123,7 @@ public class TabTin extends AppCompatActivity{
 
                         textView = (TextView) findViewById(R.id.textView7);
                         textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
-                        CompleteAddress="Complete Address_"+address + "  City is :"+city + "  state is :" + state + "  country is " + country +"  postal code " + postalCode + "  known name" + knownName;
+                        CompleteAddress="Complete Address_"+address + "  City_"+city + "  state_" + state + "  country_" + country +"  postalcode_" + postalCode + "  knownname_" + knownName;
 
                         Log.e("Address",CompleteAddress);
 
@@ -136,7 +132,7 @@ public class TabTin extends AppCompatActivity{
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*Tab1 myFragment = new Tab1();
+                /*Tab_3 myFragment = new Tab_3();
                 myFragment.setTextViewText("\n " + location.getLongitude() + " " + location.getLatitude());
                 */
             }
@@ -174,10 +170,18 @@ public class TabTin extends AppCompatActivity{
                 //Depending on the current position,Filename changes
                 mViewPager = (ViewPager) findViewById(container);
                 String FileName;
+                RatingBar ratingBar;
                 if (mViewPager.getCurrentItem()==0)
-                {
+                {   EditText IssueDescription;
+                    String issuedesc;
+
                     FileName="Issues_";
-                    filetosend =generateNoteOnSD(TabTin.this,FileName,"Reported Issue: "+Mal_Per_other+"Address :"+ CompleteAddress); //(context,Name of file,Content of file)
+                    IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
+                    issuedesc=IssueDescription.getText().toString();
+
+                    ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
+                    String ratings=String.valueOf(ratingBar.getRating());
+                    filetosend =generateNoteOnSD(TabTin.this,FileName," ReportedIssue_"+Mal_Per_other+" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating"+ratings); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -234,7 +238,9 @@ public class TabTin extends AppCompatActivity{
                     //i.setType("image/*");
                     Log.e("ok", filetosend.getAbsolutePath());
                     i.setType("message/rfc822");
-                    i.putExtra(Intent.EXTRA_STREAM,imageUris); //all the Urls in the arraylist are added to the email application(text file and image)
+                    i.putExtra(Intent.EXTRA_STREAM,imageUris);
+                    i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+                    //all the Urls in the arraylist are added to the email application(text file and image)
                     //i.putExtra(Intent.EXTRA_STREAM,Uri.parse("file://" + filetosend.getAbsoluteFile()));
                     try {
                         startActivity(Intent.createChooser(i, "Select an Email application"));
@@ -469,7 +475,7 @@ public class TabTin extends AppCompatActivity{
         return cursor.getString(column_index);
     }
 
-    //Touch anywhere on Tab1
+    //Touch anywhere on Tab_3
     public void tab1myMethod(View pView) {
         if (count == 0)
         {
@@ -530,21 +536,20 @@ public class TabTin extends AppCompatActivity{
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(TabTin.this, "Permission denied for location access", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TabTin.this, "Permission denied for location access. Note:Providing access will help in quicker resolution of the issue.", Toast.LENGTH_SHORT).show();
                         //return;
                     }
                     else
-                        {
-                    Toast.makeText(TabTin.this, "Permission granted for location access.Please switch on Location", Toast.LENGTH_SHORT).show();
+                    {
+                        Toast.makeText(TabTin.this, "Permission granted for location access.Please switch on Location", Toast.LENGTH_SHORT).show();
                     // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
                          locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
-                         }
+                    }
                       return;
                 }
-            case 1:
-                {
+            case 1: {
                 // If request is cancelled, the result arrays are empty.
-                //Request granted , so open the gallary and pick up ny picture
+                //Request granted , so open the gallary and pick up any picture
                  if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
@@ -557,6 +562,7 @@ public class TabTin extends AppCompatActivity{
                     // contacts-related task you need to do.
                  }
                 else
+
                     {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -564,6 +570,7 @@ public class TabTin extends AppCompatActivity{
                     }
 
                     return;
+
 
             }
             case 11: {
@@ -658,7 +665,7 @@ public class TabTin extends AppCompatActivity{
         }
     }
 
-    public void switchOn3(View view) { //Switch for location in tab3
+    public void switchOn3(View view) { //Switch for location in tab_1
         Switch simpleSwitch1;
         simpleSwitch1 = (Switch) findViewById(R.id.switch1);
         if (simpleSwitch1.isChecked())
@@ -669,7 +676,6 @@ public class TabTin extends AppCompatActivity{
                             , 10);
                 }
                 return;
-
             }
             // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
             //noinspection MissingPermission
@@ -721,17 +727,17 @@ public class TabTin extends AppCompatActivity{
         switch(view.getId()) {
             case R.id.Doesnt_work:
                 if (checked)
-                    Mal_Per_other="Malfunction_Reported";
+                    Mal_Per_other="MalfunctionIssue";
                     // Pirates are the best
                     break;
             case R.id.Too_slow:
                 if (checked)
-                    Mal_Per_other="PerformanceIssue_Reported";
+                    Mal_Per_other="PerformanceIssue";
                     // Ninjas rule
                     break;
             case R.id.Other_Issues:
                 if (checked)
-                    Mal_Per_other="OtherIssues_Reported";
+                    Mal_Per_other="OtherIssues";
                     // Ninjas rule
                     break;
 
@@ -757,7 +763,7 @@ public class TabTin extends AppCompatActivity{
             // Return a PlaceholderFragment (defined as a static inner class below).
          switch(position)
          {case 0:
-             return new Tab3();
+             return new Tab_1();
           case 1:
              Tab2 tab2=new Tab2();
                  //On startup request for permissions for reading content on the device.
@@ -765,10 +771,9 @@ public class TabTin extends AppCompatActivity{
                          new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                          11);
              return tab2;
-
          case 2:
-             Tab1 tab1=new Tab1();
-             return tab1;
+             Tab_3 tab3=new Tab_3();
+             return tab3;
 
          }
          return null;
