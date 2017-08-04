@@ -30,6 +30,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,7 @@ import java.util.Locale;
 
 import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.FocusShape;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
@@ -647,7 +649,31 @@ public class TabTin extends AppCompatActivity{
                     .show();
         }
 
-
+        if (mViewPager.getCurrentItem()==1) //display the following when the viewpager is in first Tab.
+        {
+            new FancyShowCaseQueue()
+                    .add(new FancyShowCaseView.Builder(this)
+                            .title("Select to describe the feature you would like to see in future")
+                            .focusOn(findViewById(R.id.txtLike))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .focusCircleRadiusFactor(0.25)
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.txtDontLike))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .title("Select to describe the feature you dont like or want to improve in future")
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.floSend))
+                            .title("Once done,click here to send the feedback")
+                            .build()
+                    )
+                    .show();
+        }
     }
 
     public void btnSpeech(View view) {

@@ -15,6 +15,13 @@
         android:orientation="vertical"
         android:layout_alignParentEnd="true">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="36.31"
+            android:text="App Name" />
+
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="150dp"
@@ -35,11 +42,11 @@
 
         <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1772.45" >
+            android:layout_height="wrap_content"
+            android:layout_weight="29.12">
 
             <RadioButton
-                android:id="@+id/liketoseeFeature"
+                android:id="@+id/RbtnliketoseeFeature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -57,7 +64,7 @@
                 android:visibility="visible" />
 
             <RadioButton
-                android:id="@+id/dontLikeToSeeFeature"
+                android:id="@+id/RbtndontLikeToSeeFeature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
