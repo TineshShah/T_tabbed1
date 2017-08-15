@@ -1,5 +1,7 @@
 package com.example.tinesh.t_tabbed;
 
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +22,15 @@ import static com.example.tinesh.t_tabbed.R.layout.tab_3;
 
 public class Tab_3 extends Fragment  {
     TextView mTextView;
+//    //For recording
+//    private static final int RECORD_REQUEST_CODE  = 101;
+//    private static final int STORAGE_REQUEST_CODE = 102;
+//    private static final int AUDIO_REQUEST_CODE   = 103;
+//    private static final long DELAY = 31000;
+//    private MediaProjectionManager projectionManager;
+//    private MediaProjection mediaProjection;
+//    private RecordService recordService;
+
 
     @Nullable
     @Override

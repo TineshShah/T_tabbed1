@@ -1,11 +1,14 @@
 package com.example.tinesh.t_tabbed;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -19,7 +22,9 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 import android.content.Context;
 
@@ -47,18 +52,19 @@ Tab_1 extends Fragment{
     Animation slide_in_left, slide_out_right;
     private LocationManager locationManager3;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View view=inflater.inflate(tab_1,container,false);
 
+        View view=inflater.inflate(tab_1,container,false);
 
         tv = (TextView) view.findViewById(R.id.mywidget);
         tv.setSelected(true);
         tv.setEllipsize(TextUtils.TruncateAt.MARQUEE);
-        tv.setText("General Information.. ... general information... General Information");
+        tv.setText("Please provide us all the details for a faster resolution of the Issue..");
         tv.setSelected(true);
         tv.setSingleLine(true);
 

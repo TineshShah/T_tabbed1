@@ -1,21 +1,30 @@
 package com.example.tinesh.t_tabbed;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.AnimatedStateListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
@@ -26,17 +35,22 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.Switch;
@@ -50,6 +64,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,8 +77,24 @@ import me.toptas.fancyshowcase.FocusShape;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.tinesh.t_tabbed.R.id.container;
+import static com.example.tinesh.t_tabbed.R.layout.activity_tab_tin;
+import static com.example.tinesh.t_tabbed.R.layout.tab_1;
+
 
 public class TabTin extends AppCompatActivity{
+
+    //For recording
+    private static final int RECORD_REQUEST_CODE  = 105;
+    private static final int STORAGE_REQUEST_CODE = 102;
+    private static final int AUDIO_REQUEST_CODE   = 103;
+    private static final long DELAY = 31000;
+    private MediaProjectionManager projectionManager;
+    private MediaProjection mediaProjection;
+    private RecordService recordService;
+
+    //end of recording
+
+
 
     int count = 0;
     private Button b;
@@ -99,11 +130,12 @@ public class TabTin extends AppCompatActivity{
     TextView tv;
     public String CompleteAddress;
     private String Mal_Per_other; //type of issue
-
+    private ImageButton startBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
+        projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         //location Manager for getting location Details
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
@@ -163,6 +195,47 @@ public class TabTin extends AppCompatActivity{
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        //For Video Recording
+
+
+
+          View inflatedView = getLayoutInflater().inflate(R.layout.tab_1,null);
+
+//            LayoutInflater  inflater = LayoutInflater.from(getBaseContext());
+//        View v = inflater.inflate(R.layout.tab_1, null);
+//          startBtn = (ImageButton)v.findViewById(R.id.imageButton2);
+//          startBtn.setEnabled(false);
+//          startBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //setContentView(R.layout.tab_1);
+//                if (recordService.isRunning()) {
+//                    recordService.stopRecord();
+//                    Toast.makeText(getApplicationContext(),"Recording Stopped", Toast.LENGTH_SHORT).show();
+//                    startBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
+//
+//                } else {
+//                    Intent captureIntent = projectionManager.createScreenCaptureIntent();
+//                    startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
+//                }
+//            }
+//        });
+        if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_REQUEST_CODE);
+        }
+
+        if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[] {Manifest.permission.RECORD_AUDIO}, AUDIO_REQUEST_CODE);
+        }
+        Intent intent = new Intent(this, RecordService.class);
+        bindService(intent, connection, BIND_AUTO_CREATE);
+
+
 
         //send button
         final FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
@@ -253,122 +326,26 @@ public class TabTin extends AppCompatActivity{
                     return null;
                 }
             }
+
+
+
             //Gathering values
             });
     }
 
-    //@Override
-//    protected void onResume() {
-//        super.onResume();
-//        ArrayList<ItemData> list=new ArrayList<>();
-//        list.add(new ItemData("En",R.mipmap.us_fllag));
-//        list.add(new ItemData("De",R.mipmap.ic_launcher));
-//        //list.add(new ItemData("Usd",R.drawable.usd));
-//        //list.add(new ItemData("Jpy",R.drawable.jpy));
-//        //list.add(new ItemData("Aud",R.drawable.aud));
-//        Spinner sp=(Spinner)findViewById(R.id.spinner);
-//        SpinnerAdapter adapter=new SpinnerAdapter(this,
-//                R.layout.spinner_layout,R.id.txt,list);
-//
-//        sp.setAdapter(adapter);
-//        final int iCurrentSelection = sp.getSelectedItemPosition();
-//        sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//                switch (position) {
-//                    case 0:
-//                        Toast.makeText(parent.getContext(), "Spinner item 1!", Toast.LENGTH_SHORT).show();
-//                        String languageToLoad = "default"; // your language
-//                            Locale locale = new Locale(languageToLoad);
-//                            Locale.setDefault(locale);
-//                            Configuration config = new Configuration();
-//                            config.locale = locale;
-//                            getBaseContext().getResources().updateConfiguration(config,
-//                                    getBaseContext().getResources().getDisplayMetrics());
-//
-//
-//                        break;
-//                    case 1:
-//                        Toast.makeText(parent.getContext(), "Spinner item 2!", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case 2:
-//                        Toast.makeText(parent.getContext(), "Spinner item 3!", Toast.LENGTH_SHORT).show();
-//                        break;
-//                }
-////                    if (position == 0) {
-////                        if(iCurrentSelection==1) {
-////                            ImageView imageView = (ImageView) parent.findViewById(R.id.img);
-////                            imageView.setImageResource(R.mipmap.ic_launcher);
-////                            String languageToLoad = "de"; // your language
-////                            Locale locale = new Locale(languageToLoad);
-////                            Locale.setDefault(locale);
-////                            Configuration config = new Configuration();
-////                            config.locale = locale;
-////                            getBaseContext().getResources().updateConfiguration(config,
-////                                    getBaseContext().getResources().getDisplayMetrics());
-////
-////                        }
-////                    }
-////                    if (position == 1) {
-////                        if (iCurrentSelection == 0) {
-////                            String languageToLoad = "Default"; // your language
-////                            Locale locale = new Locale(languageToLoad);
-////                            Locale.setDefault(locale);
-////                            Configuration config = new Configuration();
-////                            config.locale = locale;
-////                            getBaseContext().getResources().updateConfiguration(config,
-////                                    getBaseContext().getResources().getDisplayMetrics());
-////                            ImageView imageView = (ImageView) parent.findViewById(R.id.img);
-////                            imageView.setImageResource(R.mipmap.us_fllag);
-////                            finish();
-////                            startActivity(getIntent());
-////
-////                        }
-////                    }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//
-//        });
-//
-//
-//
-//    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
+
+
+
     public File generateNoteOnSD(TabTin context, String sFileName, String sBody) {
         File gpxfile = null;
         try
         {
 
-
-//            if (ContextCompat.checkSelfPermission(context,
-//                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//
-//                // Should we show an explanation?
-//                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                        Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//                    Toast.makeText(context,"Permission required",Toast.LENGTH_SHORT).show();
-//                    // Show an explanation to the user *asynchronously* -- don't block
-//                    // this thread waiting for the user's response! After the user
-//                    // sees the explanation, try again to request the permission.
-//
-//                }
-//                else
-//
-//                {
-//                    // No explanation needed, we can request the permission.
-//                    ActivityCompat.requestPermissions(this,
-//                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-//                            11);
-//                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-//                    // app-defined int constant. The callback method gets the
-//                    // result of the request.
-//                }
-//            }
             File root = new File(Environment.getExternalStorageDirectory(), "Notes"); //save in Notes folder
             if (!root.exists()) {
                 root.mkdirs();
@@ -426,6 +403,7 @@ public class TabTin extends AppCompatActivity{
     @Override  //Uploads the image after selection into the ImageView //Shows the text of the speech input.
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         switch (requestCode){
             case RESULT_LOAD_IMAGE:
             {
@@ -462,11 +440,49 @@ public class TabTin extends AppCompatActivity{
 
             }//End of case2
         } //End of switch
+        if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK) {
+            mediaProjection = projectionManager.getMediaProjection(resultCode, data);
+            recordService.setMediaProject(mediaProjection);
+            recordService.startRecord();
+            startBtn = (ImageButton)findViewById(R.id.imageButton2);
+
+            startBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
+
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {//Stops and becomes Green again in 30 seconds
+                @Override
+                public void run() {
+
+                    Toast.makeText(getApplicationContext(), "30 seconds finished.", Toast.LENGTH_SHORT).show();
+                    recordService.stopRecord();
+
+                    startBtn = (ImageButton)findViewById(R.id.imageButton2);
+                    startBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+                }
+            }, DELAY);
+
+        }
     }
             //selectedImagePath = getPath(selectedImageUri);
             //uritv=selectedImagePath.toString();
 
+    private ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            RecordService.RecordBinder binder = (RecordService.RecordBinder) service;
+            recordService = binder.getRecordService();
+            recordService.setConfig(metrics.widthPixels, metrics.heightPixels, metrics.densityDpi);
 
+            //startBtn.setEnabled(true);
+            //////startBtn.setText(recordService.isRunning() ? R.string.stop_record : R.string.start_record);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {}
+    };
 
     private String getPath(Uri uri) {
         String[] projection = { MediaStore.Images.Media.DATA };
@@ -533,6 +549,13 @@ public class TabTin extends AppCompatActivity{
 
        public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+           super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+           if (requestCode == STORAGE_REQUEST_CODE || requestCode == AUDIO_REQUEST_CODE) {
+               if ( grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                   finish();
+               }
+           }
         switch (requestCode) {
             case 10:
                 if (grantResults.length > 0
@@ -592,6 +615,8 @@ public class TabTin extends AppCompatActivity{
                 }
                 return;
             }
+
+
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -767,6 +792,18 @@ public class TabTin extends AppCompatActivity{
                     // Ninjas rule
                     break;
 
+        }
+    }
+
+    public void recordVideo(View view) {
+        if (recordService.isRunning()) {
+            recordService.stopRecord();
+            Toast.makeText(getApplicationContext(),"Recording Stopped", Toast.LENGTH_SHORT).show();
+            startBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
+
+        } else {
+            Intent captureIntent = projectionManager.createScreenCaptureIntent();
+            startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
         }
     }
 
