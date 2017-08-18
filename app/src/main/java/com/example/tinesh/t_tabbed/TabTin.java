@@ -131,6 +131,7 @@ public class TabTin extends AppCompatActivity{
     public String CompleteAddress;
     private String Mal_Per_other; //type of issue
     private ImageButton startBtn;
+    private FloatingActionButton VideoStartBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,9 +159,7 @@ public class TabTin extends AppCompatActivity{
                         textView = (TextView) findViewById(R.id.textView7);
                         textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
                         CompleteAddress="Complete Address_"+address + "  City_"+city + "  state_" + state + "  country_" + country +"  postalcode_" + postalCode + "  knownname_" + knownName;
-
                         Log.e("Address",CompleteAddress);
-
                     }
                 }
                 catch (IOException e) {
@@ -438,31 +437,63 @@ public class TabTin extends AppCompatActivity{
 
                     break;
 
-            }//End of case2
-        } //End of switch
-        if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK) {
-            mediaProjection = projectionManager.getMediaProjection(resultCode, data);
-            recordService.setMediaProject(mediaProjection);
-            recordService.startRecord();
-            startBtn = (ImageButton)findViewById(R.id.imageButton2);
+            }
+            case RECORD_REQUEST_CODE: {
+                if (resultCode == RESULT_OK && null != data) {
+                    mediaProjection = projectionManager.getMediaProjection(resultCode, data);
+                    recordService.setMediaProject(mediaProjection);
+                    recordService.startRecord();
+                    Toast.makeText(getApplicationContext(), "It will be saved under......BLAH BLAH", Toast.LENGTH_SHORT).show();
+                    startBtn = (ImageButton) findViewById(R.id.imageButton2);
+                    VideoStartBtn = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
+                    startBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
+                    VideoStartBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
 
-            startBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {//Stops and becomes Green again in 30 seconds
+                        @Override
+                        public void run() {
 
+                            Toast.makeText(getApplicationContext(), "30 seconds finished.", Toast.LENGTH_SHORT).show();
+                            recordService.stopRecord();
 
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {//Stops and becomes Green again in 30 seconds
-                @Override
-                public void run() {
-
-                    Toast.makeText(getApplicationContext(), "30 seconds finished.", Toast.LENGTH_SHORT).show();
-                    recordService.stopRecord();
-
-                    startBtn = (ImageButton)findViewById(R.id.imageButton2);
-                    startBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+                            startBtn = (ImageButton) findViewById(R.id.imageButton2);
+                            VideoStartBtn = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
+                            VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+                            startBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+                        }
+                    }, DELAY);
                 }
-            }, DELAY);
+                break;
+            }
 
-        }
+            //End of case2
+        } //End of switch
+//        if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK) {
+//            mediaProjection = projectionManager.getMediaProjection(resultCode, data);
+//            recordService.setMediaProject(mediaProjection);
+//            recordService.startRecord();
+//            startBtn = (ImageButton)findViewById(R.id.imageButton2);
+//            VideoStartBtn=(FloatingActionButton)findViewById(R.id.floatingActionButton2) ;
+//            startBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
+//            VideoStartBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
+//
+//            Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {//Stops and becomes Green again in 30 seconds
+//                @Override
+//                public void run() {
+//
+//                    Toast.makeText(getApplicationContext(), "30 seconds finished.", Toast.LENGTH_SHORT).show();
+//                    recordService.stopRecord();
+//
+//                    startBtn = (ImageButton)findViewById(R.id.imageButton2);
+//                    VideoStartBtn=(FloatingActionButton)findViewById(R.id.floatingActionButton2);
+//                    VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+//                    startBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+//                }
+//            }, DELAY);
+//
+//        }
     }
             //selectedImagePath = getPath(selectedImageUri);
             //uritv=selectedImagePath.toString();
@@ -550,13 +581,21 @@ public class TabTin extends AppCompatActivity{
        public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-           super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-           if (requestCode == STORAGE_REQUEST_CODE || requestCode == AUDIO_REQUEST_CODE) {
-               if ( grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                   finish();
-               }
-           }
+           //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//           if (requestCode == STORAGE_REQUEST_CODE || requestCode == AUDIO_REQUEST_CODE) {
+//               if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+//                   finish();
+//               }
+//           }
         switch (requestCode) {
+            case STORAGE_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    finish();
+                }
+            case AUDIO_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    finish();
+                }
             case 10:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -796,10 +835,11 @@ public class TabTin extends AppCompatActivity{
     }
 
     public void recordVideo(View view) {
-        if (recordService.isRunning()) {
+        if (recordService.isRunning()) { //if already running
             recordService.stopRecord();
-            Toast.makeText(getApplicationContext(),"Recording Stopped", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Recording stopped and File is saved", Toast.LENGTH_SHORT).show();
             startBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
+            VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
 
         } else {
             Intent captureIntent = projectionManager.createScreenCaptureIntent();
