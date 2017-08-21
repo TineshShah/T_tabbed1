@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
+import android.widget.MediaController;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -51,6 +52,7 @@ import android.widget.RatingBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 import android.widget.ViewAnimator;
 
 import com.jaredrummler.android.device.DeviceName;
@@ -181,27 +183,7 @@ public class TabTin extends AppCompatActivity{
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         //For Video Recording
-          //View inflatedView = getLayoutInflater().inflate(R.layout.tab_1,null);
 
-//            LayoutInflater  inflater = LayoutInflater.from(getBaseContext());
-//        View v = inflater.inflate(R.layout.tab_1, null);
-//          startBtn = (ImageButton)v.findViewById(R.id.imageButton2);
-//          startBtn.setEnabled(false);
-//          startBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //setContentView(R.layout.tab_1);
-//                if (recordService.isRunning()) {
-//                    recordService.stopRecord();
-//                    Toast.makeText(getApplicationContext(),"Recording Stopped", Toast.LENGTH_SHORT).show();
-//                    startBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
-//
-//                } else {
-//                    Intent captureIntent = projectionManager.createScreenCaptureIntent();
-//                    startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
-//                }
-//            }
-//        });
         if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)    {
             if (ActivityCompat.shouldShowRequestPermissionRationale(TabTin.this,
@@ -217,8 +199,6 @@ public class TabTin extends AppCompatActivity{
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_REQUEST_CODE);
             }
         }
-
-
         Intent intent = new Intent(this, RecordService.class);
         bindService(intent, connection, BIND_AUTO_CREATE);
 
@@ -317,6 +297,8 @@ public class TabTin extends AppCompatActivity{
             }
             //Gathering values
             });
+
+
     }
     @Override
     protected void onDestroy() {
@@ -352,7 +334,6 @@ public class TabTin extends AppCompatActivity{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) //Activity called after the Oncreate
     {
-
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
                             .focusOn(findViewById(R.id.btnSendTab1))
@@ -799,6 +780,13 @@ public class TabTin extends AppCompatActivity{
         if (recordService.isRunning()) { //if already running
             recordService.stopRecord();
             Toast.makeText(getApplicationContext(),"Recording stopped and File is saved", Toast.LENGTH_SHORT).show();
+            Uri uri = Uri.parse(MP4File); //Declare your url here.
+
+            VideoView mVideoView  = (VideoView)findViewById(R.id.videoView2);
+            mVideoView.setMediaController(new MediaController(this));
+            mVideoView.setVideoURI(uri);
+            mVideoView.requestFocus();
+            mVideoView.start();
 
             VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
 
@@ -811,6 +799,15 @@ public class TabTin extends AppCompatActivity{
             }
             Intent captureIntent = projectionManager.createScreenCaptureIntent();
             startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
+
+//            //VideoView
+//            Uri uri = Uri.parse(MP4File); //Declare your url here.
+//
+//            VideoView mVideoView  = (VideoView)findViewById(R.id.videoView2);
+//            mVideoView.setMediaController(new MediaController(this));
+//            mVideoView.setVideoURI(uri);
+//            mVideoView.requestFocus();
+//            mVideoView.start();
         }
     }
 
@@ -894,4 +891,5 @@ public class TabTin extends AppCompatActivity{
         txtdontlike.setVisibility(view.VISIBLE);
 
     }
+
 }
