@@ -6,6 +6,7 @@ import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.MediaRecorder;
 import android.media.projection.MediaProjection;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Environment;
 import android.os.HandlerThread;
@@ -28,6 +29,7 @@ public class RecordService extends Service {
     private int width = 720;
     private int height = 1080;
     private int dpi;
+    public static String MP4File;
 
 
     @Override
@@ -100,10 +102,13 @@ public class RecordService extends Service {
     }
 
     private void initRecorder() {
+
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mediaRecorder.setOutputFile(getsaveDirectory() + System.currentTimeMillis() + "screenrecord"+".mp4");
+        mediaRecorder.setOutputFile(MP4File = getsaveDirectory() + System.currentTimeMillis() + "screenrecord"+".mp4");
+        Toast.makeText(getApplicationContext(),MP4File,Toast.LENGTH_SHORT).show();
+        //MP4File= Uri.parse(getsaveDirectory() + Sy stem.currentTimeMillis() + "screenrecord"+".mp4");
         mediaRecorder.setVideoSize(width, height);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);

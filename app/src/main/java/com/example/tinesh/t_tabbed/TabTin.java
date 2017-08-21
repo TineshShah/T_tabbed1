@@ -2,7 +2,6 @@ package com.example.tinesh.t_tabbed;
 import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -10,7 +9,6 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.AnimatedStateListDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -42,15 +40,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.Switch;
@@ -64,7 +59,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -77,8 +71,7 @@ import me.toptas.fancyshowcase.FocusShape;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.tinesh.t_tabbed.R.id.container;
-import static com.example.tinesh.t_tabbed.R.layout.activity_tab_tin;
-import static com.example.tinesh.t_tabbed.R.layout.tab_1;
+import static com.example.tinesh.t_tabbed.RecordService.MP4File;
 
 
 public class TabTin extends AppCompatActivity{
@@ -93,9 +86,6 @@ public class TabTin extends AppCompatActivity{
     private RecordService recordService;
 
     //end of recording
-
-
-
     int count = 0;
     private Button b;
     private TextView textView;
@@ -119,7 +109,7 @@ public class TabTin extends AppCompatActivity{
      */
     private ViewPager mViewPager;
     //private static int RESULT_LOAD_IMAGE = 1;
-    private File filetosend;
+    private File textfiletosend;
     private Uri fileuri;
     private int flag;
     private EditText mVoiceInputTv;
@@ -130,7 +120,7 @@ public class TabTin extends AppCompatActivity{
     TextView tv;
     public String CompleteAddress;
     private String Mal_Per_other; //type of issue
-    private ImageButton startBtn;
+
     private FloatingActionButton VideoStartBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +145,6 @@ public class TabTin extends AppCompatActivity{
                         String country = addresses.get(0).getCountryName();
                         String postalCode = addresses.get(0).getPostalCode();
                         String knownName = addresses.get(0).getFeatureName();
-
                         textView = (TextView) findViewById(R.id.textView7);
                         textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
                         CompleteAddress="Complete Address_"+address + "  City_"+city + "  state_" + state + "  country_" + country +"  postalcode_" + postalCode + "  knownname_" + knownName;
@@ -165,9 +154,7 @@ public class TabTin extends AppCompatActivity{
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-                /*Tab_3 myFragment = new Tab_3();
-                myFragment.setTextViewText("\n " + location.getLongitude() + " " + location.getLatitude());
-                */
+
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -183,7 +170,6 @@ public class TabTin extends AppCompatActivity{
         };
 
         Locale.getDefault().getDisplayLanguage();  //Load Default language
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
@@ -194,12 +180,8 @@ public class TabTin extends AppCompatActivity{
         mViewPager.setAdapter(mSectionsPagerAdapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
         //For Video Recording
-
-
-
-          View inflatedView = getLayoutInflater().inflate(R.layout.tab_1,null);
+          //View inflatedView = getLayoutInflater().inflate(R.layout.tab_1,null);
 
 //            LayoutInflater  inflater = LayoutInflater.from(getBaseContext());
 //        View v = inflater.inflate(R.layout.tab_1, null);
@@ -221,20 +203,24 @@ public class TabTin extends AppCompatActivity{
 //            }
 //        });
         if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_REQUEST_CODE);
+                != PackageManager.PERMISSION_GRANTED)    {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(TabTin.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                Toast.makeText(getApplicationContext(),"Permission denied again.Providing the permission helps in storing & sending the required data", Toast.LENGTH_SHORT).show();
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            }
+            else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, STORAGE_REQUEST_CODE);
+            }
         }
 
-        if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[] {Manifest.permission.RECORD_AUDIO}, AUDIO_REQUEST_CODE);
-        }
+
         Intent intent = new Intent(this, RecordService.class);
         bindService(intent, connection, BIND_AUTO_CREATE);
-
-
 
         //send button
         final FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
@@ -245,6 +231,7 @@ public class TabTin extends AppCompatActivity{
                 mViewPager = (ViewPager) findViewById(container);
                 String FileName;
                 RatingBar ratingBar;
+                String deviceName = DeviceName.getDeviceName();
                 if (mViewPager.getCurrentItem()==0)
                 {   EditText IssueDescription;
                     String issuedesc;
@@ -252,10 +239,9 @@ public class TabTin extends AppCompatActivity{
                     FileName="Issues_";
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
-
                     ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
                     String ratings=String.valueOf(ratingBar.getRating());
-                    filetosend =generateNoteOnSD(TabTin.this,FileName," ReportedIssue_"+Mal_Per_other+" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating"+ratings); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this,FileName," ReportedIssue_"+Mal_Per_other+" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -268,41 +254,45 @@ public class TabTin extends AppCompatActivity{
                     like="Liked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtDontLike);
                     dontlike="NotLiked_"+mEdit.getText().toString();
-                    filetosend =generateNoteOnSD(TabTin.this,FileName,like+dontlike); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this,FileName,like+dontlike); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
                 else if(mViewPager.getCurrentItem()==2)
                 {
                     FileName="LookandFeel_";
-                    filetosend =generateNoteOnSD(TabTin.this,FileName,CompleteAddress); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this,FileName,CompleteAddress); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
                 {
                     FileName="Default";
-                    filetosend =generateNoteOnSD(TabTin.this,FileName,"hello"); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this,FileName,"hello"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
 
             }
             class SaveAsyncTask extends AsyncTask<Object, Object, Void> {
-
                 protected void onPostExecute(Intent i) {
                 }
                 @Override
                 protected Void doInBackground(Object... params) {
 
-                    String deviceName = DeviceName.getDeviceName();
-                    String reqString = Build.MANUFACTURER
+                    String devicedetails = Build.MANUFACTURER
                             + " " + Build.MODEL + " " + Build.VERSION.RELEASE
                             + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
-                    Log.e("ok", reqString);
+
+
                     ArrayList<Uri> imageUris = new ArrayList<>();//create array list to store URI for image and Report
                     imageUris.add(selectedImageUri); // Add your image URIs to array
-                    imageUris.add(Uri.parse("file://" + filetosend.getAbsoluteFile())); //add Report/textfile Uri to array
+                    imageUris.add(Uri.parse("file://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
+                    imageUris.add(Uri.parse("file://"+MP4File));
+
+                    Log.e("DEVICE_DETAILS", devicedetails);
+                    Log.e("Link of Mp4",MP4File);
+                    Log.e("ok", textfiletosend.getAbsolutePath());
 
                     Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"Feedback_for_@gmail.com"});
@@ -310,7 +300,7 @@ public class TabTin extends AppCompatActivity{
                     i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
                     i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback");
                     //i.setType("image/*");
-                    Log.e("ok", filetosend.getAbsolutePath());
+
                     i.setType("message/rfc822");
                     i.putExtra(Intent.EXTRA_STREAM,imageUris);
                     i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
@@ -325,31 +315,23 @@ public class TabTin extends AppCompatActivity{
                     return null;
                 }
             }
-
-
-
             //Gathering values
             });
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbindService(connection);
     }
 
-
-
     public File generateNoteOnSD(TabTin context, String sFileName, String sBody) {
         File gpxfile = null;
         try
         {
-
             File root = new File(Environment.getExternalStorageDirectory(), "Notes"); //save in Notes folder
             if (!root.exists()) {
                 root.mkdirs();
             }
-
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_FFF");
             Date now = new Date();
             String yymmdd = formatter.format(now) ;
@@ -391,8 +373,6 @@ public class TabTin extends AppCompatActivity{
 
         return true;
     }
-
-
     private static final int RESULT_LOAD_IMAGE = 101;
     String picturePath ;
     Uri selectedImage;
@@ -443,24 +423,18 @@ public class TabTin extends AppCompatActivity{
                     mediaProjection = projectionManager.getMediaProjection(resultCode, data);
                     recordService.setMediaProject(mediaProjection);
                     recordService.startRecord();
-                    Toast.makeText(getApplicationContext(), "It will be saved under......BLAH BLAH", Toast.LENGTH_SHORT).show();
-                    startBtn = (ImageButton) findViewById(R.id.imageButton2);
                     VideoStartBtn = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
-                    startBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
                     VideoStartBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
-
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {//Stops and becomes Green again in 30 seconds
                         @Override
                         public void run() {
-
                             Toast.makeText(getApplicationContext(), "30 seconds finished.", Toast.LENGTH_SHORT).show();
                             recordService.stopRecord();
 
-                            startBtn = (ImageButton) findViewById(R.id.imageButton2);
                             VideoStartBtn = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
                             VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
-                            startBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
+
                         }
                     }, DELAY);
                 }
@@ -506,8 +480,6 @@ public class TabTin extends AppCompatActivity{
             RecordService.RecordBinder binder = (RecordService.RecordBinder) service;
             recordService = binder.getRecordService();
             recordService.setConfig(metrics.widthPixels, metrics.heightPixels, metrics.densityDpi);
-
-            //startBtn.setEnabled(true);
             //////startBtn.setText(recordService.isRunning() ? R.string.stop_record : R.string.start_record);
         }
 
@@ -523,7 +495,6 @@ public class TabTin extends AppCompatActivity{
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-
     //Touch anywhere on Tab_3
     public void tab1myMethod(View pView) {
         if (count == 0)
@@ -547,7 +518,6 @@ public class TabTin extends AppCompatActivity{
                             .build()
                     )
                     .show();
-
             count++;
         }
     }
@@ -591,11 +561,14 @@ public class TabTin extends AppCompatActivity{
             case STORAGE_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     finish();
+                    return;
                 }
             case AUDIO_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     finish();
+
                 }
+                    return;
             case 10:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -626,29 +599,21 @@ public class TabTin extends AppCompatActivity{
                     // contacts-related task you need to do.
                  }
                 else
-
                     {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(TabTin.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TabTin.this, "Permission has been denied.Please accept the Permission to share the picture from your storage", Toast.LENGTH_SHORT).show();
                     }
-
                     return;
-
-
             }
             case 11: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-
                 } else {
-
-                    Toast.makeText(TabTin.this, "Permission denied to read your storage Files", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TabTin.this, "Permission denied to read your storage Files.Providing the permission would help in quicker issue resolution", Toast.LENGTH_SHORT).show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -789,7 +754,6 @@ public class TabTin extends AppCompatActivity{
         startActivity(getIntent());
         ImageButton imgb=new ImageButton(this);
         imgb.setVisibility(view.GONE);
-
     }
 
     public void inEnglish(View view) {
@@ -804,9 +768,6 @@ public class TabTin extends AppCompatActivity{
         startActivity(getIntent());
         //ImageButton imgb=new ImageButton(this);
         //imgb.setVisibility(view.GONE);
-
-
-
     }
 
     public void OnRadioClick_Issue(View view) {
@@ -838,10 +799,16 @@ public class TabTin extends AppCompatActivity{
         if (recordService.isRunning()) { //if already running
             recordService.stopRecord();
             Toast.makeText(getApplicationContext(),"Recording stopped and File is saved", Toast.LENGTH_SHORT).show();
-            startBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
+
             VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
 
         } else {
+
+            if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.RECORD_AUDIO)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[] {Manifest.permission.RECORD_AUDIO}, AUDIO_REQUEST_CODE);
+            }
             Intent captureIntent = projectionManager.createScreenCaptureIntent();
             startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
         }
@@ -855,11 +822,9 @@ public class TabTin extends AppCompatActivity{
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
-
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
@@ -873,11 +838,11 @@ public class TabTin extends AppCompatActivity{
              ActivityCompat.requestPermissions(TabTin.this,
                          new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                          11);
+
              return tab2;
          case 2:
              Tab_3 tab3=new Tab_3();
              return tab3;
-
          }
          return null;
         }
@@ -892,7 +857,6 @@ public class TabTin extends AppCompatActivity{
         public CharSequence getPageTitle(int position) {
             String a = Locale.getDefault().getLanguage();
             switch (position) {
-
                 case 0:
                     if (a == "de")
                         return "Probleme";
@@ -909,7 +873,6 @@ public class TabTin extends AppCompatActivity{
                     else
                         return "Look & Feel";
             }
-
             return null;
         }
     }
@@ -918,7 +881,6 @@ public class TabTin extends AppCompatActivity{
         EditText txtdontlike;
         txtlike = (EditText)findViewById(R.id.txtLike);
         txtdontlike = (EditText)findViewById(R.id.txtDontLike);
-
         txtlike.setVisibility(view.VISIBLE);
         txtdontlike.setVisibility(view.INVISIBLE);
     }
@@ -928,7 +890,6 @@ public class TabTin extends AppCompatActivity{
         EditText txtdontlike;
         txtlike = (EditText)findViewById(R.id.txtLike);
         txtdontlike = (EditText)findViewById(R.id.txtDontLike);
-
         txtlike.setVisibility(view.INVISIBLE);
         txtdontlike.setVisibility(view.VISIBLE);
 
