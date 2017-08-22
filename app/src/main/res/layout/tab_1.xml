@@ -9,58 +9,125 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
 
-    tools:context=".MainActivity"
+    tools:context=".TabTin"
     android:weightSum="1">
 
 
     <ViewAnimator
         android:id="@+id/viewanimator"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:backgroundTint="@android:drawable/screen_background_light">
 
 
         <LinearLayout
             android:layout_width="369dp"
-            android:layout_height="match_parent"
+            android:layout_height="389dp"
             android:orientation="vertical"
-            android:weightSum="1">
+            android:weightSum="1"
+            >
 
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.40"
                 android:textStyle="bold" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:layout_marginTop="14dp"
-                android:layout_weight="3.26"
-                android:clickable="true"
-                android:onClick="AddPic"
-                app:backgroundTint="@color/colorAccent"
-                app:fabSize="mini"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                android:layout_height="130dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border">
 
-            <ImageView
-                android:id="@+id/imgView"
+                <FrameLayout
+                    android:layout_width="117dp"
+                    android:layout_height="86dp"
+                    android:layout_marginBottom="1dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:background="@android:color/background_light"
+                        android:elevation="7dp"
+                        android:text="@string/screenshot"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/floatingActionButton"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:onClick="AddPic"
+                        app:backgroundTint="@color/colorAccent"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_menu_camera" />
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/imgView"
+                    android:layout_width="379dp"
+                    android:layout_height="108dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="108dp"
-                android:layout_marginTop="12dp"
-                android:adjustViewBounds="false"
-                android:cropToPadding="false" />
+                android:layout_height="158dp"
+                android:layout_weight="0.57"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="180dp"
-                android:clickable="true"
-                android:onClick="recordVideo"
-                app:fabSize="mini"
-                app:srcCompat="@android:drawable/presence_video_busy" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="86dp"
+                    android:layout_marginBottom="1dp"
+                    android:elevation="7dp">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/floatingActionButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="74dp"
+                        android:clickable="true"
+                        android:onClick="recordVideo"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/presence_video_busy" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:background="@android:color/background_light"
+                        android:elevation="8dp"
+                        android:text="@string/record_screen"
+                        android:textColor="@color/colorAccent" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="100dp">
+
+                    <VideoView
+                        android:id="@+id/videoView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:focusable="false" />
+                </FrameLayout>
+
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/switch1"
@@ -96,24 +163,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/something_doesnt_work"
-                    android:onClick="OnRadioClick_Issue"/>
+                    android:onClick="OnRadioClick_Issue"
+                    android:text="@string/something_doesnt_work" />
 
                 <RadioButton
                     android:id="@+id/Too_slow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/something_is_too_slow"
-                    android:onClick="OnRadioClick_Issue"/>
+                    android:onClick="OnRadioClick_Issue"
+                    android:text="@string/something_is_too_slow" />
 
                 <RadioButton
                     android:id="@+id/Other_Issues"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/other_issues"
-                    android:onClick="OnRadioClick_Issue"/>
+                    android:onClick="OnRadioClick_Issue"
+                    android:text="@string/other_issues" />
             </RadioGroup>
 
             <LinearLayout
@@ -188,15 +255,6 @@
 
     </ViewAnimator>
 
-    <VideoView
-        android:id="@+id/videoView2"
-        android:layout_width="match_parent"
-        android:layout_height="165dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
-
     <TextView
         android:id="@+id/mywidget"
         android:layout_width="match_parent"
@@ -233,8 +291,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="113dp"
-        android:layout_weight="0.83"
+        android:layout_height="90dp"
         android:paddingTop="100dp">
 
         <TextView
@@ -242,7 +299,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/mywidget"
             android:layout_marginTop="55dp"
             android:gravity="center"
             android:text="@string/Coordinates"

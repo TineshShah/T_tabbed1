@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import static com.example.tinesh.t_tabbed.R.layout.activity_tab_tin;
 import static com.example.tinesh.t_tabbed.R.layout.tab_1;
 
 /**
@@ -52,7 +54,6 @@ Tab_1 extends Fragment{
     Animation slide_in_left, slide_out_right;
     private LocationManager locationManager3;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ Tab_1 extends Fragment{
 
 
         View view=inflater.inflate(tab_1,container,false);
+
 
         tv = (TextView) view.findViewById(R.id.mywidget);
         tv.setSelected(true);
@@ -112,7 +114,7 @@ Tab_1 extends Fragment{
                 startActivity(i);
             }
         };
-
+        ((TabTin) getActivity()).hideFloatingActionButton(); //Hide send flo button initially
 
         buttonPrev = (Button)view.findViewById(R.id.prev);
         buttonNext = (Button)view.findViewById(R.id.next);
@@ -135,11 +137,6 @@ Tab_1 extends Fragment{
 
         slide_in_left = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         slide_out_right = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
-
-
-
-
-
 
         buttonPrev.setOnClickListener(new View.OnClickListener(){
 
@@ -166,19 +163,19 @@ Tab_1 extends Fragment{
         {
             buttonNext.setVisibility(view.INVISIBLE);
             buttonPrev.setVisibility(view.VISIBLE);
-
+            ((TabTin) getActivity()).showFloatingActionButton(); //Show send button finally
         }
         if(viewAnimator.getDisplayedChild()==1)
         {
             buttonNext.setVisibility(view.VISIBLE);
             buttonPrev.setVisibility(view.VISIBLE);
-
+            ((TabTin) getActivity()).hideFloatingActionButton();
         }
         if(viewAnimator.getDisplayedChild()==0)
         {
             buttonNext.setVisibility(view.VISIBLE);
             buttonPrev.setVisibility(view.INVISIBLE);
-
+            ((TabTin) getActivity()).hideFloatingActionButton();//hide send button
         }
         return view;
     }

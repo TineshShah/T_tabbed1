@@ -16,6 +16,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -128,6 +130,7 @@ public class TabTin extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
+        hideFloatingActionButton();//Hide send button
         projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         //location Manager for getting location Details
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -201,32 +204,33 @@ public class TabTin extends AppCompatActivity{
         }
         Intent intent = new Intent(this, RecordService.class);
         bindService(intent, connection, BIND_AUTO_CREATE);
-
+        final String[] FileName = new String[1];
         //send button
         final FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
+
         fabSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Depending on the current position,Filename changes
                 mViewPager = (ViewPager) findViewById(container);
-                String FileName;
+                //String FileName;
                 RatingBar ratingBar;
                 String deviceName = DeviceName.getDeviceName();
                 if (mViewPager.getCurrentItem()==0)
                 {   EditText IssueDescription;
                     String issuedesc;
 
-                    FileName="Issues_";
+                    FileName[0] ="Issues_";
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
                     ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
                     String ratings=String.valueOf(ratingBar.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this,FileName," ReportedIssue_"+Mal_Per_other+" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssue_"+Mal_Per_other+" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
                 {
-                    FileName="Suggestions_";
+                    FileName[0] ="Suggestions_";
                     EditText mEdit;
                     String like="";
                     String dontlike="";
@@ -234,20 +238,20 @@ public class TabTin extends AppCompatActivity{
                     like="Liked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtDontLike);
                     dontlike="NotLiked_"+mEdit.getText().toString();
-                    textfiletosend =generateNoteOnSD(TabTin.this,FileName,like+dontlike); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
                 else if(mViewPager.getCurrentItem()==2)
                 {
-                    FileName="LookandFeel_";
-                    textfiletosend =generateNoteOnSD(TabTin.this,FileName,CompleteAddress); //(context,Name of file,Content of file)
+                    FileName[0] ="LookandFeel_";
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],CompleteAddress); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
                 {
-                    FileName="Default";
-                    textfiletosend =generateNoteOnSD(TabTin.this,FileName,"hello"); //(context,Name of file,Content of file)
+                    FileName[0] ="Default";
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"hello"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
 
@@ -264,20 +268,25 @@ public class TabTin extends AppCompatActivity{
 
 
                     ArrayList<Uri> imageUris = new ArrayList<>();//create array list to store URI for image and Report
-                    imageUris.add(selectedImageUri); // Add your image URIs to array
-                    imageUris.add(Uri.parse("file://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
+                    if(selectedImageUri!=null) {
+                        imageUris.add(selectedImageUri); // Add your image URIs to array
+                    }
+                    if(textfiletosend!=null) {
+                        imageUris.add(Uri.parse("file://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
+                        Log.e("ok", textfiletosend.getAbsolutePath());
+                    }
+                    if(MP4File!=null) {
                     imageUris.add(Uri.parse("file://"+MP4File));
+                     Log.e("Link of Mp4",MP4File);
+                    }
 
                     Log.e("DEVICE_DETAILS", devicedetails);
-                    Log.e("Link of Mp4",MP4File);
-                    Log.e("ok", textfiletosend.getAbsolutePath());
-
                     Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
-                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"Feedback_for_@gmail.com"});
-                    i.putExtra(Intent.EXTRA_CC,new String[]{"Feedback_for_@gmail.com"});
-                    i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+                    i.putExtra(Intent.EXTRA_EMAIL, new String[]{"feedbacksysstem@gmail.com"});
+                    i.putExtra(Intent.EXTRA_CC,new String[]{"feedbacksysstem@gmail.com"});
+                    i.putExtra(Intent.EXTRA_SUBJECT, FileName[0]);
                     i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback");
                     //i.setType("image/*");
 
@@ -305,7 +314,16 @@ public class TabTin extends AppCompatActivity{
         super.onDestroy();
         unbindService(connection);
     }
+    public void showFloatingActionButton() {
 
+        FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
+        fabSend.show();
+    };
+
+    public void hideFloatingActionButton() {
+        FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
+        fabSend.hide();
+    };
     public File generateNoteOnSD(TabTin context, String sFileName, String sBody) {
         File gpxfile = null;
         try
@@ -784,8 +802,10 @@ public class TabTin extends AppCompatActivity{
 
             VideoView mVideoView  = (VideoView)findViewById(R.id.videoView2);
             mVideoView.setMediaController(new MediaController(this));
+            //mVideoView.setLayoutParams(new LinearLayout.LayoutParams(900,500));
             mVideoView.setVideoURI(uri);
             mVideoView.requestFocus();
+            //mVideoView.setZOrderOnTop(true);
             mVideoView.start();
 
             VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0)); // Green again Tint
@@ -800,14 +820,6 @@ public class TabTin extends AppCompatActivity{
             Intent captureIntent = projectionManager.createScreenCaptureIntent();
             startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
 
-//            //VideoView
-//            Uri uri = Uri.parse(MP4File); //Declare your url here.
-//
-//            VideoView mVideoView  = (VideoView)findViewById(R.id.videoView2);
-//            mVideoView.setMediaController(new MediaController(this));
-//            mVideoView.setVideoURI(uri);
-//            mVideoView.requestFocus();
-//            mVideoView.start();
         }
     }
 
@@ -835,7 +847,6 @@ public class TabTin extends AppCompatActivity{
              ActivityCompat.requestPermissions(TabTin.this,
                          new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                          11);
-
              return tab2;
          case 2:
              Tab_3 tab3=new Tab_3();
@@ -863,7 +874,7 @@ public class TabTin extends AppCompatActivity{
                     if (a == "de")
                         return "Vorschläge";
                     else
-                        return "Sugessions";
+                        return "Suggestions";
                 case 2:
                     if (a == "de")
                         return "Optik und Haptik";
@@ -891,5 +902,6 @@ public class TabTin extends AppCompatActivity{
         txtdontlike.setVisibility(view.VISIBLE);
 
     }
+
 
 }
