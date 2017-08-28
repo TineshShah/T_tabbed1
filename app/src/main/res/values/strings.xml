@@ -27,6 +27,10 @@
     <string name="something_is_confusing">A feature is confusing.</string>
     <string name="on_the_screen">On the Screen</string>
     <string name="it_is_in_the_background">It is in the Background</string>
+    <string name="issue_description_picture_and_location_send"><![CDATA[Issue Description->Picture and Location-->Send]]></string>
+    <string name="where_do_you_see_the_issue">Where do you see the issue?</string>
+    <string name="describe_the_feature_you_would_like_to_see">Describe the Feature you would like to see</string>
+    <string name="describe_the_feature_you_dont_like">Describe the Feature you dont like</string>
     <string-array name="country_arrays">
         <item>Malaysia</item>
         <item>United States</item>

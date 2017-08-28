@@ -220,7 +220,6 @@ public class TabTin extends AppCompatActivity{
                 if (mViewPager.getCurrentItem()==0)
                 {   EditText IssueDescription;
                     String issuedesc;
-
                     FileName[0] ="Issues_";
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
@@ -291,7 +290,6 @@ public class TabTin extends AppCompatActivity{
                     i.putExtra(Intent.EXTRA_SUBJECT, FileName[0]);
                     i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback");
                     //i.setType("image/*");
-
                     i.setType("message/rfc822");
                     i.putExtra(Intent.EXTRA_STREAM,imageUris);
                     i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");

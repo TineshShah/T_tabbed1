@@ -58,7 +58,7 @@
                 android:layout_width="343dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Describe the Feature you would like to see"
+                android:hint="@string/describe_the_feature_you_would_like_to_see"
                 android:inputType="textMultiLine"
                 android:visibility="visible" />
 
@@ -76,7 +76,7 @@
                 android:layout_width="302dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Describe the Feature you dont like"
+                android:hint="@string/describe_the_feature_you_dont_like"
                 android:inputType="textMultiLine"
                 android:visibility="invisible" />
         </RadioGroup>
