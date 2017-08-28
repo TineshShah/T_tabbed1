@@ -22,6 +22,11 @@
     <string name="information">Information..</string>
     <string name="record_screen">Record Screen</string>
     <string name="screenshot">Screenshot</string>
+    <string name="i_dont_understand_something">I don\'t understand a feature</string>
+    <string name="inconvenient_feature">A feature is inconvenient </string>
+    <string name="something_is_confusing">A feature is confusing.</string>
+    <string name="on_the_screen">On the Screen</string>
+    <string name="it_is_in_the_background">It is in the Background</string>
     <string-array name="country_arrays">
         <item>Malaysia</item>
         <item>United States</item>

@@ -21,11 +21,92 @@
 
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Issue Description->Picture and Location-->Send"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.07">
+
+                <RadioButton
+                    android:id="@+id/Doesnt_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="OnRadioClick_Issue"
+                    android:text="@string/something_doesnt_work" />
+
+                <RadioButton
+                    android:id="@+id/Too_slow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="OnRadioClick_Issue"
+                    android:text="@string/something_is_too_slow" />
+
+                <RadioButton
+                    android:id="@+id/Other_Issues"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="OnRadioClick_Issue"
+                    android:text="@string/other_issues" />
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="393dp"
+                android:layout_height="123dp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/editTextDescription1"
+                    android:layout_width="273dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.84"
+                    android:ems="10"
+                    android:hint="@string/describe_the_issue"
+                    android:inputType="textMultiLine" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    style="@android:style/Widget.ImageButton"
+                    android:layout_width="58dp"
+                    android:layout_height="75dp"
+                    android:layout_alignBottom="@+id/editTextDescription1"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="11dp"
+                    android:layout_weight="0.21"
+                    android:adjustViewBounds="true"
+                    android:background="@null"
+                    android:backgroundTint="@color/colorAccent"
+                    android:cropToPadding="true"
+                    android:elevation="1dp"
+                    android:onClick="btnSpeech"
+                    android:padding="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@android:drawable/presence_audio_online"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="369dp"
             android:layout_height="389dp"
             android:orientation="vertical"
-            android:weightSum="1"
-            >
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/textView4"
@@ -37,8 +118,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
-                android:orientation="horizontal"
-                android:background="@drawable/border">
+                android:background="@drawable/border"
+                android:orientation="horizontal">
 
                 <FrameLayout
                     android:layout_width="117dp"
@@ -142,89 +223,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Issue Description->Picture and Location-->Send"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.07">
-
-                <RadioButton
-                    android:id="@+id/Doesnt_work"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="OnRadioClick_Issue"
-                    android:text="@string/something_doesnt_work" />
-
-                <RadioButton
-                    android:id="@+id/Too_slow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="OnRadioClick_Issue"
-                    android:text="@string/something_is_too_slow" />
-
-                <RadioButton
-                    android:id="@+id/Other_Issues"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="OnRadioClick_Issue"
-                    android:text="@string/other_issues" />
-            </RadioGroup>
-
-            <LinearLayout
-                android:layout_width="393dp"
-                android:layout_height="123dp"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <EditText
-                    android:id="@+id/editTextDescription1"
-                    android:layout_width="273dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.84"
-                    android:ems="10"
-                    android:hint="@string/describe_the_issue"
-                    android:inputType="textMultiLine" />
-
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    style="@android:style/Widget.ImageButton"
-                    android:layout_width="58dp"
-                    android:layout_height="75dp"
-                    android:layout_alignBottom="@+id/editTextDescription1"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="11dp"
-                    android:layout_weight="0.21"
-                    android:adjustViewBounds="true"
-                    android:background="@null"
-                    android:backgroundTint="@color/colorAccent"
-                    android:cropToPadding="true"
-                    android:elevation="1dp"
-                    android:onClick="btnSpeech"
-                    android:padding="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@android:drawable/presence_audio_online"
-                    android:visibility="visible" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="423dp"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -234,6 +233,35 @@
                 android:layout_height="wrap_content"
                 android:text="Issue Description->Picture and Location-->Send"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Where do you see the issue? "
+                android:textColor="@color/colorPrimary" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="64dp">
+
+                <RadioButton
+                    android:id="@+id/IssueOntheScreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/on_the_screen"
+                    android:onClick="IssueOccursOn"
+                    />
+
+                <RadioButton
+                    android:id="@+id/IssueInBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:text="@string/it_is_in_the_background"
+                    android:onClick="IssueOccursOn"
+                   />
+            </RadioGroup>
 
             <RatingBar
                 android:id="@+id/ratingBar3"
@@ -248,6 +276,7 @@
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.17"
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/thank_you_for_the_information_please_click_on_the_send_button_below"
                 android:textStyle="bold" />/>

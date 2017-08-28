@@ -9,30 +9,29 @@
     android:scrollbars="none">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:id="@+id/tab1_layout"
-    android:onClick="tab1myMethod">
+        android:id="@+id/tab1_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="tab1myMethod">
 
 
         <EditText
             android:id="@+id/editTextAppname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/editTextDescription"
             android:ems="10"
             android:hint="@string/EnterAppName"
-            android:inputType="textMultiLine"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/editTextDescription" />
+            android:inputType="textMultiLine" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="23dp"
-            android:layout_weight="0.07"
-            android:layout_below="@+id/editTextAppname"
-            android:layout_alignParentStart="true">
+
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editTextAppname">
 
             <RadioButton
                 android:id="@+id/radioButton8"
@@ -60,12 +59,11 @@
             android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/radioGroup"
             android:ems="10"
             android:hint="@string/EnterIssue"
-            android:inputType="textMultiLine"
-            android:layout_below="@+id/radioGroup"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="30dp" />
+            android:inputType="textMultiLine" />
 
         <ImageButton
             android:id="@+id/btnSpeak"
@@ -73,7 +71,9 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/editTextDescription"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="11dp"
+
+            android:layout_below="@+id/radioGroup"
+            android:layout_toEndOf="@+id/ratingBar"
             android:adjustViewBounds="true"
             android:background="@null"
             android:cropToPadding="true"
@@ -82,72 +82,132 @@
             android:padding="16dp"
             android:scaleType="fitCenter"
             android:src="@android:drawable/presence_audio_online"
-            android:visibility="visible"
-            android:layout_toEndOf="@+id/ratingBar"
-            android:layout_below="@+id/radioGroup" />
+            android:visibility="visible" />
+
         <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="149dp"
-        android:layout_height="202dp"
-        android:adjustViewBounds="false"
-        android:cropToPadding="false"
-            android:layout_below="@+id/radioGroup"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="83dp" />
+            android:id="@+id/imgView"
+            android:layout_width="149dp"
+            android:layout_height="202dp"
+            android:layout_below="@+id/editTextDescription"
+            android:layout_marginEnd="46dp"
+
+            android:layout_toStartOf="@+id/btnSpeak"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="74dp"
+            android:layout_below="@+id/imgView"
+            android:layout_marginTop="290dp"
+            android:clickable="true"
+            android:onClick="recordVideo"
+            app:fabSize="mini"
+            app:srcCompat="@android:drawable/presence_video_busy"
+            android:layout_alignStart="@+id/floatingAdd" />
 
         <Switch
-        android:id="@+id/sharelocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="false"
-        android:text="@string/ShareLocation"
-        android:textSize="20sp"
-        android:layout_marginTop="9dp"
-        android:onClick="switchOn"
-            android:layout_below="@+id/floatingAdd"
-            android:layout_alignParentStart="true" />
+            android:id="@+id/sharelocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:checked="false"
+            android:onClick="switchOn"
+            android:text="@string/ShareLocation"
+            android:textSize="20sp"
+            android:layout_marginTop="129dp"
+            android:layout_below="@+id/videoView3"
+            android:layout_alignStart="@+id/ratingBar" />
 
 
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.17"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/thank_you_for_the_information_please_click_on_the_send_button_below"
+            android:textStyle="bold"
+            android:layout_below="@+id/radioGroup3"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="72dp" />
 
-    <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp" />
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="149dp"
+            android:layout_marginStart="16dp"
+            android:layout_below="@+id/radioGroup3"
+            android:layout_toEndOf="@+id/floatingActionButton3" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:text="@string/Coordinates"
-        android:textSize="30sp"
-        android:id="@+id/textView1"
-        android:layout_alignTop="@+id/sharelocation"
-        android:layout_alignStart="@+id/imgView" />
-    <Button
-        android:id="@+id/btnSendTab1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="Something"
-        android:text="@string/Send"
-        android:layout_marginTop="56dp"
-        android:layout_below="@+id/ratingBar"
-        android:layout_centerHorizontal="true" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Where do you see the issue? "
+            android:textColor="@color/colorPrimary"
+            android:layout_below="@+id/sharelocation"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="84dp" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="23dp"
+            android:id="@+id/radioGroup3"
+            android:layout_below="@+id/textView2"
+            android:layout_alignParentStart="true">
+
+            <RadioButton
+                android:id="@+id/radioButton5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="On the Screen" />
+
+            <RadioButton
+                android:id="@+id/radioButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="43dp"
+                android:text="It is in the Background" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/Coordinates"
+            android:textSize="30sp"
+            android:layout_below="@+id/ratingBar"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="90dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imgView"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="14dp"
+
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editTextDescription"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="53dp"
             android:clickable="true"
             android:onClick="AddPic"
             app:backgroundTint="@color/colorAccent"
             app:fabSize="mini"
             app:srcCompat="@android:drawable/ic_menu_camera" />
+
+        <VideoView
+            android:id="@+id/videoView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgView"
+            android:layout_marginTop="119dp"
+            android:layout_alignStart="@+id/imgView"
+            android:layout_alignBottom="@+id/floatingActionButton3" />
 
     </RelativeLayout>
 

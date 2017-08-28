@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import static android.widget.Toast.makeText;
+import static com.example.tinesh.t_tabbed.R.layout.tab3;
 import static com.example.tinesh.t_tabbed.R.layout.tab_3;
 
 /**
@@ -36,18 +37,18 @@ public class Tab_3 extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
 
-        View view=inflater.inflate(tab_3,container,false);
-        RelativeLayout fragment_linearlayout= (RelativeLayout)view.findViewById(R.id.tab1_layout);
-
-        fragment_linearlayout.setOnLongClickListener(new View.OnLongClickListener() {//On long press
-
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(container.getContext(), "Long Pressed", Toast.LENGTH_SHORT).show();
-                Log.e("Long press","Long press");
-                return true;
-
-            }});
+        View view=inflater.inflate(tab3,container,false);
+//        RelativeLayout fragment_linearlayout= (RelativeLayout)view.findViewById(R.id.tab1_layout);
+//
+//        fragment_linearlayout.setOnLongClickListener(new View.OnLongClickListener() {//On long press
+//
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Toast.makeText(container.getContext(), "Long Pressed", Toast.LENGTH_SHORT).show();
+//                Log.e("Long press","Long press");
+//                return true;
+//
+//            }});
 
         return view;
     }

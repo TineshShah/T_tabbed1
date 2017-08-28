@@ -16,8 +16,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -123,9 +121,12 @@ public class TabTin extends AppCompatActivity{
     ViewAnimator viewAnimator;
     TextView tv;
     public String CompleteAddress;
-    private String Mal_Per_other; //type of issue
+    private String Fail_Per_other;
+    private String IssueOccursOn;//type of issue
 
     private FloatingActionButton VideoStartBtn;
+    private String lookandfeel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,7 +152,7 @@ public class TabTin extends AppCompatActivity{
                         String postalCode = addresses.get(0).getPostalCode();
                         String knownName = addresses.get(0).getFeatureName();
                         textView = (TextView) findViewById(R.id.textView7);
-                        textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
+                        //textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
                         CompleteAddress="Complete Address_"+address + "  City_"+city + "  state_" + state + "  country_" + country +"  postalcode_" + postalCode + "  knownname_" + knownName;
                         Log.e("Address",CompleteAddress);
                     }
@@ -225,7 +226,7 @@ public class TabTin extends AppCompatActivity{
                     issuedesc=IssueDescription.getText().toString();
                     ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
                     String ratings=String.valueOf(ratingBar.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssue_"+Mal_Per_other+" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName+"IssueOccursOn_"+IssueOccursOn); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -245,7 +246,8 @@ public class TabTin extends AppCompatActivity{
                 else if(mViewPager.getCurrentItem()==2)
                 {
                     FileName[0] ="LookandFeel_";
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],CompleteAddress); //(context,Name of file,Content of file)
+                    EditText featuredetails=(EditText)findViewById(R.id.featureLookandFeel);
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeel_"+lookandfeel+"FeatureDetails_"+featuredetails); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
@@ -354,7 +356,7 @@ public class TabTin extends AppCompatActivity{
     {
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.btnSendTab1))
+                            .focusOn(findViewById(R.id.floSend))
                             .title("Click to send the report")
                             .build()
                     )
@@ -501,7 +503,7 @@ public class TabTin extends AppCompatActivity{
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
                             .title("Click to send the report")
-                            .focusOn(findViewById(R.id.btnSendTab1))
+                            .focusOn(findViewById(R.id.floSend))
                             .focusCircleRadiusFactor(2.0)
                             .build()
 
@@ -525,7 +527,7 @@ public class TabTin extends AppCompatActivity{
 
         new FancyShowCaseView.Builder(this)
                 .title("Focus")
-                .focusOn(findViewById(R.id.btnSendTab1))
+                .focusOn(findViewById(R.id.floSend))
                 //.focusOn(findViewById(R.id.tabs))
                 .focusCircleRadiusFactor(2.0)
                 .build()
@@ -660,7 +662,7 @@ public class TabTin extends AppCompatActivity{
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
                             .title("Click here to send the Report")
-                            .focusOn(findViewById(R.id.btnSendTab1))
+                            .focusOn(findViewById(R.id.floSend))
                             .focusCircleRadiusFactor(2.0)
                             .build()
                     )
@@ -777,17 +779,17 @@ public class TabTin extends AppCompatActivity{
         switch(view.getId()) {
             case R.id.Doesnt_work:
                 if (checked)
-                    Mal_Per_other="MalfunctionIssue";
+                    Fail_Per_other ="Failure";
                     // Pirates are the best
                     break;
             case R.id.Too_slow:
                 if (checked)
-                    Mal_Per_other="PerformanceIssue";
+                    Fail_Per_other ="Performance";
                     // Ninjas rule
                     break;
             case R.id.Other_Issues:
                 if (checked)
-                    Mal_Per_other="OtherIssues";
+                    Fail_Per_other ="OtherMalfunction";
                     // Ninjas rule
                     break;
 
@@ -819,6 +821,51 @@ public class TabTin extends AppCompatActivity{
             }
             Intent captureIntent = projectionManager.createScreenCaptureIntent();
             startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
+
+        }
+    }
+
+    public void IssueOccursOn(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.IssueOntheScreen:
+                if (checked)
+                    IssueOccursOn="Issue on the Screen";
+                // Pirates are the best
+                break;
+            case R.id.IssueInBackground:
+                if (checked)
+                    IssueOccursOn="Issue in the Background";
+                // Ninjas rule
+                break;
+
+        }
+
+
+    }
+
+    public void click_Rbtnlookandfeel(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.dontUnderstand:
+                if (checked)
+                    lookandfeel="Unawarness";
+                // Pirates are the best
+                break;
+            case R.id.isConfusing:
+                if (checked)
+                    lookandfeel="Confusion";
+                // Ninjas rule
+                break;
+            case R.id.isInconvenient:
+                if (checked)
+                    lookandfeel="Inconvenience";
+                // Ninjas rule
+                break;
 
         }
     }
