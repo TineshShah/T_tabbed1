@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tab2_layout"
     android:layout_width="match_parent"
@@ -8,11 +9,11 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="390dp"
-        android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/border"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/textView"
@@ -39,47 +40,80 @@
             android:padding="10dp"
             android:prompt="@string/country_prompt" />
 
-        <RadioGroup
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="29.12">
+            android:layout_height="match_parent"
+            android:layout_weight="36.31"
+            android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/RbtnliketoseeFeature"
+            <LinearLayout
+                android:layout_width="28dp"
+                android:layout_height="219dp"
+                android:orientation="vertical"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@mipmap/like" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="0.56" />
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="31dp"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@mipmap/dislike" />
+            </LinearLayout>
+
+            <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:onClick="Likeselected"
-                android:text="@string/Rbtn_LiketoseeFeature" />
+                android:layout_height="match_parent"
+                android:layout_weight="29.12">
 
-            <EditText
-                android:id="@+id/txtLike"
-                android:layout_width="343dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/describe_the_feature_you_would_like_to_see"
-                android:inputType="textMultiLine"
-                android:visibility="visible" />
+                <RadioButton
+                    android:id="@+id/RbtnliketoseeFeature"
+                    android:layout_width="334dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onClick="Likeselected"
+                    android:text="@string/Rbtn_LiketoseeFeature" />
 
-            <RadioButton
-                android:id="@+id/RbtndontLikeToSeeFeature"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="Dontlikeselected"
-                android:text="@string/Rbth_dontlikeFeature" />
+                <EditText
+                    android:id="@+id/txtLike"
+                    android:layout_width="343dp"
+                    android:layout_height="46dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/describe_the_feature_you_would_like_to_see"
+                    android:inputType="textMultiLine"
+                    android:visibility="visible" />
+
+                <RadioButton
+                    android:id="@+id/RbtndontLikeToSeeFeature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="Dontlikeselected"
+                    android:text="@string/Rbth_dontlikeFeature" />
+
+                <EditText
+                    android:id="@+id/txtDontLike"
+                    android:layout_width="302dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/describe_the_feature_you_dont_like"
+                    android:inputType="textMultiLine"
+                    android:visibility="invisible" />
 
 
-            <EditText
-                android:id="@+id/txtDontLike"
-                android:layout_width="302dp"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/describe_the_feature_you_dont_like"
-                android:inputType="textMultiLine"
-                android:visibility="invisible" />
-        </RadioGroup>
+            </RadioGroup>
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -72,6 +72,7 @@ import me.toptas.fancyshowcase.FocusShape;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
+import static com.example.tinesh.t_tabbed.R.id.animator1;
 import static com.example.tinesh.t_tabbed.R.id.container;
 import static com.example.tinesh.t_tabbed.RecordService.MP4File;
 
@@ -151,7 +152,7 @@ public class TabTin extends AppCompatActivity{
                         String country = addresses.get(0).getCountryName();
                         String postalCode = addresses.get(0).getPostalCode();
                         String knownName = addresses.get(0).getFeatureName();
-                        textView = (TextView) findViewById(R.id.textView7);
+                        //textView = (TextView) findViewById(R.id.textView7);
                         //textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
                         CompleteAddress="Complete Address_"+address + "  City_"+city + "  state_" + state + "  country_" + country +"  postalcode_" + postalCode + "  knownname_" + knownName;
                         Log.e("Address",CompleteAddress);
@@ -354,18 +355,22 @@ public class TabTin extends AppCompatActivity{
     {
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.floSend))
-                            .title("Click to send the report")
+                            .focusOn(findViewById(R.id.radiogrp1))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .title("Select the type of issue faced")
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
                             .focusOn(findViewById(R.id.tabs))
-                            .title("Seperate Tabs")
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .title("select one of the tabs to report issues, provide suggestions or for any interface query")
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.floatingAdd))
-                            .title("Click this button to load pictures")
+                            .focusCircleRadiusFactor(2.0)
+                            .focusOn(findViewById(R.id.imageButton6))
+                            .title("Change language here")
                             .build()
                     )
                     .show();
@@ -655,27 +660,55 @@ public class TabTin extends AppCompatActivity{
     public void btnhelp(View view) {
 
         mViewPager = (ViewPager) findViewById(container);
-        if (mViewPager.getCurrentItem()==0) //display the following when the viewpager is in first Tab.
+        View v=viewAnimator.getCurrentView();
+        if (mViewPager.getCurrentItem()==0 ) //display the following when the viewpager is in first Tab.
         {
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
-                            .title("Click here to send the Report")
-                            .focusOn(findViewById(R.id.floSend))
-                            .focusCircleRadiusFactor(2.0)
+                            .focusOn(findViewById(R.id.radiogrp1))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .title("Select the type of issue faced")
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
                             .focusOn(findViewById(R.id.tabs))
-                            .title("Seperate Tabs for Reporting Issues or providing Suggestions or for UI design improvements")
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .title("select one of the tabs to report issues, provide suggestions or for any interface query")
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.floatingAdd))
-                            .title("Click here to add pictures of the Issue faced")
+                            .focusCircleRadiusFactor(2.0)
+                            .focusOn(findViewById(R.id.imageButton6))
+                            .title("Change language here")
                             .build()
                     )
                     .show();
         }
+//        if(mViewPager.getCurrentItem()==0)
+//        { new FancyShowCaseQueue()
+//                .add(new FancyShowCaseView.Builder(this)
+//                        .focusOn(findViewById(R.id.floatingActionButton))
+//                        .focusShape(FocusShape.ROUNDED_RECTANGLE)
+//                        .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+//                        .title("Click to add pictures of the faced issue")
+//                        .build()
+//                )
+//                .add(new FancyShowCaseView.Builder(this)
+//                        .focusOn(findViewById(R.id.tabs))
+//                        .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+//                        .title("select one of the tabs to report issues, provide suggestions or for any interface query")
+//                        .build()
+//                )
+//                .add(new FancyShowCaseView.Builder(this)
+//                        .focusCircleRadiusFactor(2.0)
+//                        .focusOn(findViewById(R.id.imageButton6))
+//                        .title("Change language here")
+//                        .build()
+//                )
+//                .show();
+//
+//        }
 
         if (mViewPager.getCurrentItem()==1) //display the following when the viewpager is in first Tab.
         {

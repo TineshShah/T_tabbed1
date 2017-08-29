@@ -20,10 +20,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
@@ -90,8 +93,8 @@ Tab_1 extends Fragment{
                         String postalCode = addresses.get(0).getPostalCode();
                         String knownName = addresses.get(0).getFeatureName();
 
-                        txtView7 = (TextView)getView().findViewById(R.id.textView7);
-                        txtView7.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
+                        //txtView7 = (TextView)getView().findViewById(R.id.textView7);
+                        //txtView7.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
 
                     }
                 }
@@ -138,6 +141,14 @@ Tab_1 extends Fragment{
         slide_in_left = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         slide_out_right = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
 
+        final Animation animation = new AlphaAnimation(1, 0);
+        animation.setDuration(1000);
+        animation.setInterpolator(new LinearInterpolator());
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setRepeatMode(Animation.REVERSE);
+        ImageView img = (ImageView)view.findViewById(R.id.imageView4);
+
+        img.startAnimation(animation);
         buttonPrev.setOnClickListener(new View.OnClickListener(){
 
             @Override

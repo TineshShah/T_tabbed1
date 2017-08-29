@@ -16,7 +16,7 @@
     <string name="other_issues">Other Issues</string>
     <string name="describe_the_issue">Enter(or)Tap on Mike to describe the issue</string>
     <string name="Rbtn_LiketoseeFeature">I would like to see the following feature</string>
-    <string name="Rbth_dontlikeFeature">I dont like the following feature</string>
+    <string name="Rbth_dontlikeFeature">I dont like a feature</string>
     <string name="previous">previous</string>
     <string name="next">Next</string>
     <string name="information">Information..</string>
@@ -29,7 +29,7 @@
     <string name="it_is_in_the_background">It is in the Background</string>
     <string name="issue_description_picture_and_location_send"><![CDATA[Issue Description->Picture and Location-->Send]]></string>
     <string name="where_do_you_see_the_issue">Where do you see the issue?</string>
-    <string name="describe_the_feature_you_would_like_to_see">Describe the Feature you would like to see</string>
+    <string name="describe_the_feature_you_would_like_to_see">Describe the feature you would like to see</string>
     <string name="describe_the_feature_you_dont_like">Describe the Feature you dont like</string>
     <string-array name="country_arrays">
         <item>Malaysia</item>

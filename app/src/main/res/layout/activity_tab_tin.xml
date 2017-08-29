@@ -49,15 +49,6 @@
                 android:onClick="inEnglish"
                 app:srcCompat="@mipmap/us_fllag" />
 
-            <Spinner
-                android:id="@+id/spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_gravity="center_horizontal"
-                android:popupBackground="@android:color/background_light"
-                android:visibility="invisible" />
-
         </LinearLayout>
 
         <android.support.v7.widget.Toolbar
