@@ -660,7 +660,7 @@ public class TabTin extends AppCompatActivity{
     public void btnhelp(View view) {
 
         mViewPager = (ViewPager) findViewById(container);
-        View v=viewAnimator.getCurrentView();
+
         if (mViewPager.getCurrentItem()==0 ) //display the following when the viewpager is in first Tab.
         {
             new FancyShowCaseQueue()
