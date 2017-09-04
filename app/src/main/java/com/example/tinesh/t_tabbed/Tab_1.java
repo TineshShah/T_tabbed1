@@ -141,7 +141,7 @@ Tab_1 extends Fragment{
         slide_in_left = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         slide_out_right = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
 
-        final Animation animation = new AlphaAnimation(1, 0);
+        final Animation animation = new AlphaAnimation(1, 0); 
         animation.setDuration(1000);
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(Animation.INFINITE);

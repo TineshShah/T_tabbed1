@@ -16,6 +16,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
+import android.net.wifi.WifiManager;
+import android.telephony.CellInfoGsm;
+import android.telephony.CellSignalStrengthGsm;
+import android.telephony.TelephonyManager;
 import android.widget.MediaController;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -215,18 +219,56 @@ public class TabTin extends AppCompatActivity{
             public void onClick(View view) {
                 //Depending on the current position,Filename changes
                 mViewPager = (ViewPager) findViewById(container);
-                //String FileName;
+                //rating
                 RatingBar ratingBar;
+                //device details
+                String devicedetails = Build.MANUFACTURER
+                        + " " + Build.MODEL + " " + Build.VERSION.RELEASE
+                        + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+                //DeviceName
                 String deviceName = DeviceName.getDeviceName();
+
+                //Wifi&Signal strength in number
+                WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(getApplicationContext().WIFI_SERVICE);
+                int linkSpeed = wifiManager.getConnectionInfo().getRssi();
+
+                //WIFI signal strength in words
+                String Wifisignalstrength="Null";
+                if (linkSpeed>-50)
+                {
+                    Wifisignalstrength="Excellent";
+                }
+                else if (linkSpeed<-50 && linkSpeed>-60)
+                {
+                    Wifisignalstrength="Good";
+                }
+                else if(linkSpeed<-60 && linkSpeed>-70)
+                {
+                    Wifisignalstrength="Fair";
+                }
+                else
+                {
+                    Wifisignalstrength="Weak";
+                }
+
+//                TelephonyManager telephonyManager =(TelephonyManager)getApplicationContext().getSystemService(getApplicationContext().TELEPHONY_SERVICE);
+//                CellInfoGsm cellinfogsm = (CellInfoGsm)telephonyManager.getAllCellInfo().get(0);
+//                CellSignalStrengthGsm cellSignalStrengthGsm = cellinfogsm.getCellSignalStrength();
+//                int mobilesignalstrength=cellSignalStrengthGsm.getDbm();
+
                 if (mViewPager.getCurrentItem()==0)
                 {   EditText IssueDescription;
                     String issuedesc;
                     FileName[0] ="Issues_";
+
+                    //issues desc
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
+                    //Ratings
                     ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
                     String ratings=String.valueOf(ratingBar.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName+"IssueOccursOn_"+IssueOccursOn); //(context,Name of file,Content of file)
+
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName+"IssueOccursOn_"+IssueOccursOn+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -285,6 +327,7 @@ public class TabTin extends AppCompatActivity{
                     }
 
                     Log.e("DEVICE_DETAILS", devicedetails);
+
                     Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"feedbacksysstem@gmail.com"});
                     i.putExtra(Intent.EXTRA_CC,new String[]{"feedbacksysstem@gmail.com"});
@@ -660,31 +703,46 @@ public class TabTin extends AppCompatActivity{
     public void btnhelp(View view) {
 
         mViewPager = (ViewPager) findViewById(container);
-
+        viewAnimator = (ViewAnimator)findViewById(R.id.viewanimator);
         if (mViewPager.getCurrentItem()==0 ) //display the following when the viewpager is in first Tab.
         {
-            new FancyShowCaseQueue()
-                    .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.radiogrp1))
-                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                            .title("Select the type of issue faced")
-                            .build()
-                    )
-                    .add(new FancyShowCaseView.Builder(this)
-                            .focusOn(findViewById(R.id.tabs))
-                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                            .title("select one of the tabs to report issues, provide suggestions or for any interface query")
-                            .build()
-                    )
-                    .add(new FancyShowCaseView.Builder(this)
-                            .focusCircleRadiusFactor(2.0)
-                            .focusOn(findViewById(R.id.imageButton6))
-                            .title("Change language here")
-                            .build()
-                    )
-                    .show();
+            if(viewAnimator.getDisplayedChild()==0) {
+                new FancyShowCaseQueue()
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusOn(findViewById(R.id.radiogrp1))
+                                .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("Select the type of issue faced")
+                                .build()
+                        )
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusOn(findViewById(R.id.tabs))
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("select one of the tabs to report issues, provide suggestions or for any interface query")
+                                .build()
+                        )
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusCircleRadiusFactor(2.0)
+                                .focusOn(findViewById(R.id.imageButton6))
+                                .title("Change language here")
+                                .build()
+                        )
+                        .show();
+            }
+            if(viewAnimator.getDisplayedChild()==1) {
+                new FancyShowCaseQueue()
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusOn(findViewById(R.id.floatingActionButton))
+                                .focusShape(FocusShape.CIRCLE)
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("Click here to include the Screenshot of the issue")
+                                .build()
+                        )
+                        .show();
+
+            }
         }
+
 //        if(mViewPager.getCurrentItem()==0)
 //        { new FancyShowCaseQueue()
 //                .add(new FancyShowCaseView.Builder(this)
