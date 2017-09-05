@@ -24,11 +24,11 @@
 
 
         <LinearLayout
+            android:id="@+id/animator1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:weightSum="1"
-            android:id="@+id/animator1">
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/textView3"
@@ -72,9 +72,9 @@
                 </LinearLayout>
 
                 <RadioGroup
+                    android:id="@+id/radiogrp1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/radiogrp1">
+                    android:layout_height="match_parent">
 
                     <RadioButton
                         android:id="@+id/Doesnt_work"

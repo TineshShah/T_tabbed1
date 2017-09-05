@@ -118,16 +118,13 @@ Tab_1 extends Fragment{
             }
         };
         ((TabTin) getActivity()).hideFloatingActionButton(); //Hide send flo button initially
-
         buttonPrev = (Button)view.findViewById(R.id.prev);
         buttonNext = (Button)view.findViewById(R.id.next);
-
         viewAnimator = (ViewAnimator)view.findViewById(R.id.viewanimator);
         //text to display
         Spanned text = Html.fromHtml("<font color=\"purple\"><i>Issue Description</i></font>-->Picture & Location-->Send");
         Spanned text1 = Html.fromHtml("Issue Description--><font color=\"purple\"><i>Picture & Location</i></font>-->Send");
         Spanned text2 = Html.fromHtml("Issue Description-->Picture & Location--><font color=\"purple\"><i>Send</i></font>");
-
         txtviewPictureLocation =(TextView)view.findViewById(R.id.textView4);
         txtviewPictureLocation.setText(text1);
 
@@ -136,7 +133,6 @@ Tab_1 extends Fragment{
 
         txtviewSend =(TextView)view.findViewById(R.id.textView5);
         txtviewSend.setText(text2);
-
 
         slide_in_left = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         slide_out_right = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_out_right);
@@ -190,6 +186,5 @@ Tab_1 extends Fragment{
         }
         return view;
     }
-
 
 }

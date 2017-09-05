@@ -407,13 +407,13 @@ public class TabTin extends AppCompatActivity{
                     .add(new FancyShowCaseView.Builder(this)
                             .focusOn(findViewById(R.id.tabs))
                             .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                            .title("select one of the tabs to report issues, provide suggestions or for any interface query")
+                            .title("Select one of these to Report issues ,Share Suggestions or for Interface related query")
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
                             .focusCircleRadiusFactor(2.0)
                             .focusOn(findViewById(R.id.imageButton6))
-                            .title("Change language here")
+                            .title("Choose preferred language here")
                             .build()
                     )
                     .show();
@@ -730,6 +730,33 @@ public class TabTin extends AppCompatActivity{
                         .show();
             }
             if(viewAnimator.getDisplayedChild()==1) {
+                new FancyShowCaseQueue()
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusOn(findViewById(R.id.floatingActionButton))
+                                .focusShape(FocusShape.CIRCLE)
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("Select this to include the Screenshot of the issue")
+                                .build()
+                        )
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusOn(findViewById(R.id.floatingActionButton2))
+                                .focusShape(FocusShape.CIRCLE)
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("Tap here to start recording screen and Tap again to stop")
+                                .build()
+                        )
+                        .add(new FancyShowCaseView.Builder(this)
+                                //.focusOn(findViewById(R.id.switch1))
+                                .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                .focusRectAtPosition(400,1300,1200,100)
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("Switch on to share your location here(Note:location details may help in faster resolution of the issue)")
+                                .build()
+                        )
+                        .show();
+
+            }
+            if(viewAnimator.getDisplayedChild()==2) {
                 new FancyShowCaseQueue()
                         .add(new FancyShowCaseView.Builder(this)
                                 .focusOn(findViewById(R.id.floatingActionButton))
