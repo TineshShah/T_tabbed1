@@ -221,6 +221,8 @@ public class TabTin extends AppCompatActivity{
                 mViewPager = (ViewPager) findViewById(container);
                 //rating
                 RatingBar ratingBar;
+                RatingBar ratingBar2;
+                RatingBar ratingBar3;
                 //device details
                 String devicedetails = Build.MANUFACTURER
                         + " " + Build.MODEL + " " + Build.VERSION.RELEASE
@@ -259,13 +261,13 @@ public class TabTin extends AppCompatActivity{
                 if (mViewPager.getCurrentItem()==0)
                 {   EditText IssueDescription;
                     String issuedesc;
-                    FileName[0] ="Issues_";
+                    FileName[0] ="Malfunction_";
 
                     //issues desc
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
                     //Ratings
-                    ratingBar = (RatingBar) findViewById(R.id.ratingBar3);
+                    ratingBar = (RatingBar) findViewById(R.id.ratingBar1);
                     String ratings=String.valueOf(ratingBar.getRating());
 
                     textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName+"IssueOccursOn_"+IssueOccursOn+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
@@ -281,7 +283,11 @@ public class TabTin extends AppCompatActivity{
                     like="Liked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtDontLike);
                     dontlike="NotLiked_"+mEdit.getText().toString();
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike); //(context,Name of file,Content of file)
+
+                    ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
+                    String rating2=String.valueOf(ratingBar2.getRating());
+
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+"Rating_"+rating2); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
@@ -295,7 +301,7 @@ public class TabTin extends AppCompatActivity{
                 else
                 {
                     FileName[0] ="Default";
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"hello"); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"Nothing"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
 
@@ -332,7 +338,7 @@ public class TabTin extends AppCompatActivity{
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"feedbacksysstem@gmail.com"});
                     i.putExtra(Intent.EXTRA_CC,new String[]{"feedbacksysstem@gmail.com"});
                     i.putExtra(Intent.EXTRA_SUBJECT, FileName[0]);
-                    i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback");
+                    i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback."+"Feedback Type reported is"+FileName[0]);
                     //i.setType("image/*");
                     i.setType("message/rfc822");
                     i.putExtra(Intent.EXTRA_STREAM,imageUris);
@@ -759,12 +765,19 @@ public class TabTin extends AppCompatActivity{
             if(viewAnimator.getDisplayedChild()==2) {
                 new FancyShowCaseQueue()
                         .add(new FancyShowCaseView.Builder(this)
-                                .focusOn(findViewById(R.id.floatingActionButton))
-                                .focusShape(FocusShape.CIRCLE)
+                                .focusOn(findViewById(R.id.radiogrp2))
+                                .focusShape(FocusShape.ROUNDED_RECTANGLE)
                                 .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                                .title("Click here to include the Screenshot of the issue")
+                                .title("Select where you see the issue")
                                 .build()
                         )
+                        .add(new FancyShowCaseView.Builder(this)
+                                .focusOn(findViewById(R.id.ratingBar))
+                                .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                                .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                                .title("Provide overall ratings of the App")
+                                .build()
+                )
                         .show();
 
             }

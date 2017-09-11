@@ -285,10 +285,10 @@
                 android:textColor="@color/colorPrimary" />
 
             <RadioGroup
+                android:id="@+id/radiogrp2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/border"
-                android:id="@+id/radiogrp2">
+                android:background="@drawable/border">
 
                 <RadioButton
                     android:id="@+id/IssueOntheScreen"
@@ -306,7 +306,7 @@
             </RadioGroup>
 
             <RatingBar
-                android:id="@+id/ratingBar3"
+                android:id="@+id/ratingBar1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
