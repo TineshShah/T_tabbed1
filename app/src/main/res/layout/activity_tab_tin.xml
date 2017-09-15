@@ -37,7 +37,7 @@
                 android:background="#0000"
                 android:cropToPadding="false"
                 android:onClick="inGerman"
-                app:srcCompat="@mipmap/ic_launcher" />
+                app:srcCompat="@mipmap/german" />
 
             <ImageButton
                 android:id="@+id/imageButton7"

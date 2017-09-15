@@ -287,7 +287,7 @@ public class TabTin extends AppCompatActivity{
                     ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
                     String rating2=String.valueOf(ratingBar2.getRating());
 
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+"Rating_"+rating2); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+"Ratings_"+rating2+"DeviceName_"+deviceName+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
@@ -295,7 +295,9 @@ public class TabTin extends AppCompatActivity{
                 {
                     FileName[0] ="LookandFeel_";
                     EditText featuredetails=(EditText)findViewById(R.id.featureLookandFeel);
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeel_"+lookandfeel+"FeatureDetails_"+featuredetails); //(context,Name of file,Content of file)
+                    ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
+                    String rating3=String.valueOf(ratingBar3.getRating());
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelType_"+lookandfeel+"LookandFeelDetails_"+featuredetails+"Ratings_"+rating3+"DeviceName_"+deviceName+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
