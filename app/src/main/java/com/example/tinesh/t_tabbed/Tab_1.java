@@ -52,6 +52,7 @@ Tab_1 extends Fragment{
     TextView txtviewPictureLocation;
     TextView txtviewSend;
     TextView tv;
+    TextView textthankyou;
     private LocationListener listener;
     ViewAnimator viewAnimator;
     Animation slide_in_left, slide_out_right;
@@ -121,6 +122,7 @@ Tab_1 extends Fragment{
         buttonPrev = (Button)view.findViewById(R.id.prev);
         buttonNext = (Button)view.findViewById(R.id.next);
         viewAnimator = (ViewAnimator)view.findViewById(R.id.viewanimator);
+        textthankyou=(TextView)view.findViewById(R.id.textView9);
         //text to display
         Spanned text = Html.fromHtml("<font color=\"purple\"><i>Issue Description</i></font>-->Picture & Location-->Send");
         Spanned text1 = Html.fromHtml("Issue Description--><font color=\"purple\"><i>Picture & Location</i></font>-->Send");
@@ -170,18 +172,21 @@ Tab_1 extends Fragment{
         {
             buttonNext.setVisibility(view.INVISIBLE);
             buttonPrev.setVisibility(view.VISIBLE);
+            textthankyou.setVisibility(view.VISIBLE);
             ((TabTin) getActivity()).showFloatingActionButton(); //Show send button finally
         }
         if(viewAnimator.getDisplayedChild()==1)
         {
             buttonNext.setVisibility(view.VISIBLE);
             buttonPrev.setVisibility(view.VISIBLE);
+            textthankyou.setVisibility(view.INVISIBLE);
             ((TabTin) getActivity()).hideFloatingActionButton();
         }
         if(viewAnimator.getDisplayedChild()==0)
         {
             buttonNext.setVisibility(view.VISIBLE);
             buttonPrev.setVisibility(view.INVISIBLE);
+            textthankyou.setVisibility(view.INVISIBLE);
             ((TabTin) getActivity()).hideFloatingActionButton();//hide send button
         }
         return view;

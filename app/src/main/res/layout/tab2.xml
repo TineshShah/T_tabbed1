@@ -10,27 +10,26 @@
         android:id="@+id/linearLayout"
         android:layout_width="390dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
+
         android:orientation="vertical"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true">
+        android:layout_alignParentStart="true"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="36.31"
-            android:text="App Name" />
+            android:text="Select app to " />
 
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
 
 
-            android:layout_marginLeft="22dp"
-            android:layout_marginRight="22dp"
-            android:layout_marginTop="23dp"
+
             android:layout_weight="1"
             android:animationCache="true"
             android:background="@android:drawable/btn_dropdown"
@@ -42,72 +41,118 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="36.31"
-            android:orientation="horizontal">
+            android:layout_height="300dp"
+            android:background="@drawable/border"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <LinearLayout
-                android:layout_width="36dp"
-                android:layout_height="219dp"
+                android:layout_width="33dp"
+                android:layout_height="335dp"
                 android:orientation="vertical"
                 android:weightSum="1">
 
                 <ImageView
                     android:id="@+id/imageView5"
-                    android:layout_width="30dp"
+                    android:layout_width="33dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.06"
                     app:srcCompat="@mipmap/like" />
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:layout_weight="0.56" />
+                    android:layout_height="45dp"
+                    android:layout_weight="0.03" />
 
                 <ImageView
                     android:id="@+id/imageView6"
                     android:layout_width="31dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     app:srcCompat="@mipmap/dislike" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp"
+                    android:layout_weight="0.17" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="36dp"
+                    android:layout_alignStart="@+id/linearLayout"
+                    android:layout_below="@+id/linearLayout"
+                    android:layout_marginTop="14dp"
+                    app:srcCompat="@mipmap/ide" />
+
             </LinearLayout>
 
             <RadioGroup
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="29.12">
+                android:layout_height="314dp">
 
-                <RadioButton
-                    android:id="@+id/RbtnliketoseeFeature"
-                    android:layout_width="334dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
+                <CheckBox
+                    android:id="@+id/cbLike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="63dp"
                     android:onClick="Likeselected"
-                    android:text="@string/Rbtn_LiketoseeFeature" />
+                    android:text="I Like" />
+
+                <!--<RadioButton-->
+                <!--android:id="@+id/RbtnliketoseeFeature"-->
+                <!--android:layout_width="334dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:checked="true"-->
+                <!--android:onClick="Likeselected"-->
+                <!--android:text="@string/Rbtn_LiketoseeFeature" />-->
 
                 <EditText
                     android:id="@+id/txtLike"
                     android:layout_width="343dp"
-                    android:layout_height="46dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/describe_the_feature_you_would_like_to_see"
                     android:inputType="textMultiLine"
                     android:visibility="visible" />
 
-                <RadioButton
-                    android:id="@+id/RbtndontLikeToSeeFeature"
+                <CheckBox
+                    android:id="@+id/cbDislike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:onClick="Dontlikeselected"
-                    android:text="@string/Rbth_dontlikeFeature" />
+                    android:text="I dont like" />
+
+                <!--<RadioButton-->
+                <!--android:id="@+id/RbtndontLikeToSeeFeature"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:onClick="Dontlikeselected"-->
+                <!--android:text="@string/Rbth_dontlikeFeature" />-->
 
                 <EditText
                     android:id="@+id/txtDontLike"
-                    android:layout_width="302dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/describe_the_feature_you_dont_like"
+                    android:inputType="textMultiLine"
+                    android:visibility="invisible" />
+
+                <CheckBox
+                    android:id="@+id/cbHaveidea"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="haveIdea"
+                    android:text="I have an Idea!" />
+
+                <EditText
+                    android:id="@+id/txtHaveidea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Give us ideas to improve your experience"
                     android:inputType="textMultiLine"
                     android:visibility="invisible" />
 
@@ -117,32 +162,21 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ide"
-        android:layout_marginTop="14dp"
-        android:layout_below="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout" />
-
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/ratingBar2"
-        android:layout_below="@+id/ratingBar2"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="29dp"
         android:layout_weight="1"
-        android:text="@string/txtoverallRating" />
+        android:text="@string/txtoverallRating"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignStart="@+id/ratingBar2" />
 
     <RatingBar
         android:id="@+id/ratingBar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
-        android:layout_below="@+id/imageView2"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginStart="42dp"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

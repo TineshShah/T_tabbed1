@@ -29,9 +29,10 @@
     <string name="it_is_in_the_background">It is in the Background</string>
     <string name="issue_description_picture_and_location_send"><![CDATA[Issue Description->Picture and Location-->Send]]></string>
     <string name="where_do_you_see_the_issue">Where do you see the issue?</string>
-    <string name="describe_the_feature_you_would_like_to_see">Describe something you like in the app</string>
-    <string name="describe_the_feature_you_dont_like">Describe something you dont like in the app</string>
-    <string name="txtoverallRating">I rate this app</string>
+    <string name="describe_the_feature_you_would_like_to_see">Tell us something you like in the app</string>
+    <string name="describe_the_feature_you_dont_like">Tell us something you dont like in the app</string>
+    <string name="txtoverallRating">Overall,how would you rate the app?</string>
+    <string name="overall_how_would_you_rate_the_app">Overall,how would you rate the app?</string>
     <string-array name="country_arrays">
         <item>Malaysia</item>
         <item>United States</item>

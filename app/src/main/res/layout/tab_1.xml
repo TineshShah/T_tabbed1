@@ -264,7 +264,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="423dp"
+            android:layout_height="402dp"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -282,12 +282,13 @@
                 android:layout_marginTop="10dp"
                 android:layout_weight="0.10"
                 android:text="@string/where_do_you_see_the_issue"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioGroup
                 android:id="@+id/radiogrp2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="66dp"
+                android:layout_weight="0.12"
                 android:background="@drawable/border">
 
                 <RadioButton
@@ -305,6 +306,15 @@
                     android:text="@string/it_is_in_the_background" />
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/overall_how_would_you_rate_the_app"
+                android:textStyle="bold"
+                android:layout_weight="0.12" />
+
             <RatingBar
                 android:id="@+id/ratingBar1"
                 android:layout_width="wrap_content"
@@ -312,44 +322,22 @@
                 android:layout_gravity="center_horizontal"
                 android:foregroundGravity="center_horizontal"
                 android:isIndicator="false"
-                android:numStars="5" />
+                android:numStars="5" /><![CDATA[
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.17"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="@string/thank_you_for_the_information_please_click_on_the_send_button_below"
-                android:textStyle="bold" />
 
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="270dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.32"
-                app:srcCompat="@mipmap/arrow" />/>
+
+            />
+
+        ]]>
         </LinearLayout>
 
     </ViewAnimator>
 
-    <TextView
-        android:id="@+id/mywidget"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="marquee"
-        android:fadingEdge="horizontal"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:maxLines="1"
-        android:scrollHorizontally="true"
-        android:singleLine="true"
-        android:text="@string/information"
-        android:textColor="#ff4500"
-        android:layout_weight="0.05" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="59dp"
         android:orientation="horizontal">
 
         <Button
@@ -368,5 +356,36 @@
             android:text="@string/next" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/mywidget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.05"
+        android:ellipsize="marquee"
+        android:fadingEdge="horizontal"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/information"
+        android:textColor="#ff4500"
+        android:visibility="visible" />
 
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.11"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/thank_you_for_the_information_please_click_on_the_send_button_below"
+        android:textStyle="bold"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.11"
+        android:visibility="invisible"
+        app:srcCompat="@mipmap/arrow" />
 </LinearLayout>

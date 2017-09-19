@@ -41,4 +41,23 @@
         android:ems="10"
         android:hint="Describe more about the feature.."
         android:inputType="textMultiLine" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_weight="0.02" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="274dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/txtoverallRating" />
+
+    <RatingBar
+        android:id="@+id/ratingBar4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:numStars="5" />
 </LinearLayout>

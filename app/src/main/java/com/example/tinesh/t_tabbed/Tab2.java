@@ -16,7 +16,7 @@ public class Tab2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-
+        //((TabTin) getActivity()).showFloatingActionButton();
 
         return inflater.inflate(R.layout.tab2,container,false);
 

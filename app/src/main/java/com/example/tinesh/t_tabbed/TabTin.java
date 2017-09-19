@@ -17,6 +17,8 @@ import android.location.LocationManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.wifi.WifiManager;
+import android.os.StrictMode;
+import android.support.v4.content.FileProvider;
 import android.telephony.CellInfoGsm;
 import android.telephony.CellSignalStrengthGsm;
 import android.telephony.TelephonyManager;
@@ -64,6 +66,7 @@ import com.jaredrummler.android.device.DeviceName;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -134,9 +137,19 @@ public class TabTin extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
         hideFloatingActionButton();//Hide send button
+
+//        if(Build.VERSION.SDK_INT>=24){
+//            try{
+//                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
+//                m.invoke(null);
+//            }catch(Exception e){
+//                e.printStackTrace();
+//            }
+//        }
         projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         //location Manager for getting location Details
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -295,9 +308,9 @@ public class TabTin extends AppCompatActivity{
                 {
                     FileName[0] ="LookandFeel_";
                     EditText featuredetails=(EditText)findViewById(R.id.featureLookandFeel);
-                    ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
-                    String rating3=String.valueOf(ratingBar3.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelType_"+lookandfeel+"LookandFeelDetails_"+featuredetails+"Ratings_"+rating3+"DeviceName_"+deviceName+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
+//                    ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
+//                    String rating3=String.valueOf(ratingBar3.getRating());
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelType_"+lookandfeel+"LookandFeelDetails_"+featuredetails+"DeviceName_"+deviceName+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
@@ -324,13 +337,13 @@ public class TabTin extends AppCompatActivity{
                         imageUris.add(selectedImageUri); // Add your image URIs to array
                     }
                     if(textfiletosend!=null) {
-                        imageUris.add(Uri.parse("file://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
+                        imageUris.add(Uri.parse("content://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
                         Log.e("ok", textfiletosend.getAbsolutePath());
                     }
                     if(MP4File!=null) {
-                    imageUris.add(Uri.parse("file://"+MP4File));
+                    imageUris.add(Uri.parse("content://"+MP4File));
                      Log.e("Link of Mp4",MP4File);
                     }
 
@@ -341,14 +354,17 @@ public class TabTin extends AppCompatActivity{
                     i.putExtra(Intent.EXTRA_CC,new String[]{"feedbacksysstem@gmail.com"});
                     i.putExtra(Intent.EXTRA_SUBJECT, FileName[0]);
                     i.putExtra(Intent.EXTRA_TEXT, "This Email is to report the feedback."+"Feedback Type reported is"+FileName[0]);
-                    //i.setType("image/*");
+                    //i.setData(Uri.parse("mailto:"));
                     i.setType("message/rfc822");
                     i.putExtra(Intent.EXTRA_STREAM,imageUris);
-                    i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
+
+                    //i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
                     //all the Urls in the arraylist are added to the email application(text file and image)
                     //i.putExtra(Intent.EXTRA_STREAM,Uri.parse("file://" + filetosend.getAbsoluteFile()));
                     try {
-                        startActivity(Intent.createChooser(i, "Select an Email application"));
+
+                            startActivity(Intent.createChooser(i,"Select an Email Application to send your feedback" ));
+
                     }
                     catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
@@ -359,6 +375,19 @@ public class TabTin extends AppCompatActivity{
             //Gathering values
             });
 
+
+    }
+
+    public void haveIdea(View view) {
+        EditText haveidea;
+
+        haveidea = (EditText)findViewById(R.id.txtHaveidea);
+
+        haveidea.setVisibility(view.VISIBLE);
+
+    }
+
+    public class GenericFileProvider extends FileProvider {
 
     }
     @Override
@@ -1055,9 +1084,9 @@ public class TabTin extends AppCompatActivity{
                         return "Suggestions";
                 case 2:
                     if (a == "de")
-                        return "Optik und Haptik";
+                        return "Fragen";
                     else
-                        return "Look & Feel";
+                        return "Questions";
             }
             return null;
         }
@@ -1068,7 +1097,7 @@ public class TabTin extends AppCompatActivity{
         txtlike = (EditText)findViewById(R.id.txtLike);
         txtdontlike = (EditText)findViewById(R.id.txtDontLike);
         txtlike.setVisibility(view.VISIBLE);
-        txtdontlike.setVisibility(view.INVISIBLE);
+        //txtdontlike.setVisibility(view.INVISIBLE);
     }
 
     public void Dontlikeselected(View view) {
@@ -1076,7 +1105,7 @@ public class TabTin extends AppCompatActivity{
         EditText txtdontlike;
         txtlike = (EditText)findViewById(R.id.txtLike);
         txtdontlike = (EditText)findViewById(R.id.txtDontLike);
-        txtlike.setVisibility(view.INVISIBLE);
+        //txtlike.setVisibility(view.INVISIBLE);
         txtdontlike.setVisibility(view.VISIBLE);
 
     }
