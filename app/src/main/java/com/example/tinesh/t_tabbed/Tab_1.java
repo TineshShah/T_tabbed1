@@ -63,9 +63,7 @@ Tab_1 extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         View view=inflater.inflate(tab_1,container,false);
-
 
         tv = (TextView) view.findViewById(R.id.mywidget);
         tv.setSelected(true);

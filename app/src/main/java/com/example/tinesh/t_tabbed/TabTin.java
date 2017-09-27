@@ -1,5 +1,6 @@
 package com.example.tinesh.t_tabbed;
 import android.Manifest;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -18,10 +19,13 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.wifi.WifiManager;
 import android.os.StrictMode;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.telephony.CellInfoGsm;
 import android.telephony.CellSignalStrengthGsm;
 import android.telephony.TelephonyManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.MediaController;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -60,9 +64,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 import android.widget.ViewAnimator;
-
 import com.jaredrummler.android.device.DeviceName;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -80,13 +82,43 @@ import me.toptas.fancyshowcase.FocusShape;
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 import static com.example.tinesh.t_tabbed.R.id.animator1;
+import static com.example.tinesh.t_tabbed.R.id.cbLike;
 import static com.example.tinesh.t_tabbed.R.id.container;
 import static com.example.tinesh.t_tabbed.RecordService.MP4File;
 
 
-public class TabTin extends AppCompatActivity{
+public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
+    private String Connection_Status="Not Detected";
 
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+
+    }
+
+    public static class MyApplication extends Application {
+        private static MyApplication mInstance;
+
+        @Override
+        public void onCreate() {
+            super.onCreate();
+
+            mInstance = this;
+        }
+
+        public static synchronized MyApplication getInstance() {
+            return mInstance;
+        }
+
+        public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+            ConnectivityReceiver.connectivityReceiverListener = listener;
+        }
+
+        // This class can access everything from its parent...
+    }
     //For recording
+    private Button btnCheck;
+
     private static final int RECORD_REQUEST_CODE  = 105;
     private static final int STORAGE_REQUEST_CODE = 102;
     private static final int AUDIO_REQUEST_CODE   = 103;
@@ -102,6 +134,7 @@ public class TabTin extends AppCompatActivity{
     private LocationManager locationManager;
     private LocationListener listener;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
+    private CheckBox chkIos;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -113,7 +146,6 @@ public class TabTin extends AppCompatActivity{
      */
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -131,17 +163,16 @@ public class TabTin extends AppCompatActivity{
     public String CompleteAddress;
     private String Fail_Per_other;
     private String IssueOccursOn;//type of issue
-
     private FloatingActionButton VideoStartBtn;
     private String lookandfeel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_tin);
         hideFloatingActionButton();//Hide send button
-
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 //        if(Build.VERSION.SDK_INT>=24){
 //            try{
 //                Method m = StrictMode.class.getMethod("disableDeathOnFileUriExposure");
@@ -178,7 +209,6 @@ public class TabTin extends AppCompatActivity{
                 catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -192,6 +222,14 @@ public class TabTin extends AppCompatActivity{
                 startActivity(i);
             }
         };
+
+        //check internet connection
+
+
+        // Manually checking internet connection
+        checkConnection();
+
+
 
         Locale.getDefault().getDisplayLanguage();  //Load Default language
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -226,14 +264,13 @@ public class TabTin extends AppCompatActivity{
         final String[] FileName = new String[1];
         //send button
         final FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
-
         fabSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Depending on the current position,Filename changes
                 mViewPager = (ViewPager) findViewById(container);
                 //rating
-                RatingBar ratingBar;
+                RatingBar ratingBar1;
                 RatingBar ratingBar2;
                 RatingBar ratingBar3;
                 //device details
@@ -242,6 +279,9 @@ public class TabTin extends AppCompatActivity{
                         + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
                 //DeviceName
                 String deviceName = DeviceName.getDeviceName();
+
+
+
 
                 //Wifi&Signal strength in number
                 WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(getApplicationContext().WIFI_SERVICE);
@@ -280,10 +320,10 @@ public class TabTin extends AppCompatActivity{
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
                     //Ratings
-                    ratingBar = (RatingBar) findViewById(R.id.ratingBar1);
-                    String ratings=String.valueOf(ratingBar.getRating());
+                    ratingBar1 = (RatingBar) findViewById(R.id.ratingBar1);
+                    String ratings=String.valueOf(ratingBar1.getRating());
 
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+"Rating_"+ratings+"DeviceName_"+deviceName+"IssueOccursOn_"+IssueOccursOn+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+" Rating_"+ratings+" DeviceName_"+deviceName+" IssueOccursOn_"+IssueOccursOn+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" ConnectionStatus_"+Connection_Status); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -300,17 +340,19 @@ public class TabTin extends AppCompatActivity{
                     ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
                     String rating2=String.valueOf(ratingBar2.getRating());
 
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+"Ratings_"+rating2+"DeviceName_"+deviceName+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+" DeviceName_"+deviceName+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" ConnectionStatus_"+Connection_Status+" Ratings_"+rating2); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
                 else if(mViewPager.getCurrentItem()==2)
                 {
                     FileName[0] ="LookandFeel_";
+                    String FDetails;
                     EditText featuredetails=(EditText)findViewById(R.id.featureLookandFeel);
-//                    ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
-//                    String rating3=String.valueOf(ratingBar3.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelType_"+lookandfeel+"LookandFeelDetails_"+featuredetails+"DeviceName_"+deviceName+"DeviceDetails_"+devicedetails+"WIFILinkSpeed_"+linkSpeed+"WifiSignalStrength_"+Wifisignalstrength); //(context,Name of file,Content of file)
+                    FDetails=featuredetails.getText().toString();
+                    ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
+                    String rating3=String.valueOf(ratingBar3.getRating());
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," LookandFeelIssueType_"+lookandfeel+"LookandFeelDetails_"+ FDetails+" DeviceName_"+deviceName+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" Ratings_"+rating3); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
@@ -332,18 +374,21 @@ public class TabTin extends AppCompatActivity{
                             + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
 
 
-                    ArrayList<Uri> imageUris = new ArrayList<>();//create array list to store URI for image and Report
+                    ArrayList<Uri> imageUris = new ArrayList<Uri>();//create array list to store URI for image and Report
                     if(selectedImageUri!=null) {
                         imageUris.add(selectedImageUri); // Add your image URIs to array
                     }
                     if(textfiletosend!=null) {
-                        imageUris.add(Uri.parse("content://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
+
+                         imageUris.add(Uri.parse("file://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
+
+                        //imageUris.add(FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName() + ".my.package.name.provider", textfiletosend.getAbsoluteFile()));
                         Log.e("ok", textfiletosend.getAbsolutePath());
                     }
                     if(MP4File!=null) {
-                    imageUris.add(Uri.parse("content://"+MP4File));
+                    imageUris.add(Uri.parse("file://"+MP4File));
                      Log.e("Link of Mp4",MP4File);
                     }
 
@@ -357,6 +402,7 @@ public class TabTin extends AppCompatActivity{
                     //i.setData(Uri.parse("mailto:"));
                     i.setType("message/rfc822");
                     i.putExtra(Intent.EXTRA_STREAM,imageUris);
+                    i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                     //i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
                     //all the Urls in the arraylist are added to the email application(text file and image)
@@ -378,13 +424,41 @@ public class TabTin extends AppCompatActivity{
 
     }
 
+    private void checkConnection() {
+
+            boolean isConnected = ConnectivityReceiver.isConnected();
+            showSnack(isConnected);
+
+    }
+
+    private void showSnack(boolean isConnected) {
+
+        int color;
+        if (isConnected) {
+            Connection_Status="Connected";
+            Toast.makeText(getApplicationContext(), "Connected to Internet", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Connection_Status="Disconnected";
+            Toast.makeText(getApplicationContext(), "Is Not Connected to Internet", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener(Internet connection)
+        MyApplication.getInstance().setConnectivityListener(this);
+    }
+
     public void haveIdea(View view) {
         EditText haveidea;
-
         haveidea = (EditText)findViewById(R.id.txtHaveidea);
-
         haveidea.setVisibility(view.VISIBLE);
-
     }
 
     public class GenericFileProvider extends FileProvider {
@@ -396,7 +470,6 @@ public class TabTin extends AppCompatActivity{
         unbindService(connection);
     }
     public void showFloatingActionButton() {
-
         FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
         fabSend.show();
     };
@@ -527,34 +600,8 @@ public class TabTin extends AppCompatActivity{
 
             //End of case2
         } //End of switch
-//        if (requestCode == RECORD_REQUEST_CODE && resultCode == RESULT_OK) {
-//            mediaProjection = projectionManager.getMediaProjection(resultCode, data);
-//            recordService.setMediaProject(mediaProjection);
-//            recordService.startRecord();
-//            startBtn = (ImageButton)findViewById(R.id.imageButton2);
-//            VideoStartBtn=(FloatingActionButton)findViewById(R.id.floatingActionButton2) ;
-//            startBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
-//            VideoStartBtn.setColorFilter(Color.argb(255, 255, 0, 0));//starts and becomes red to indicate it is running and busy.
-//
-//            Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {//Stops and becomes Green again in 30 seconds
-//                @Override
-//                public void run() {
-//
-//                    Toast.makeText(getApplicationContext(), "30 seconds finished.", Toast.LENGTH_SHORT).show();
-//                    recordService.stopRecord();
-//
-//                    startBtn = (ImageButton)findViewById(R.id.imageButton2);
-//                    VideoStartBtn=(FloatingActionButton)findViewById(R.id.floatingActionButton2);
-//                    VideoStartBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
-//                    startBtn.setColorFilter(Color.argb(255, 0, 255, 0));//Green one.It is available again.
-//                }
-//            }, DELAY);
-//
-//        }
+
     }
-            //selectedImagePath = getPath(selectedImageUri);
-            //uritv=selectedImagePath.toString();
 
     private ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -564,8 +611,7 @@ public class TabTin extends AppCompatActivity{
             RecordService.RecordBinder binder = (RecordService.RecordBinder) service;
             recordService = binder.getRecordService();
             recordService.setConfig(metrics.widthPixels, metrics.heightPixels, metrics.densityDpi);
-            //////startBtn.setText(recordService.isRunning() ? R.string.stop_record : R.string.start_record);
-        }
+           }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {}
@@ -625,22 +671,13 @@ public class TabTin extends AppCompatActivity{
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
-
-
         finish();//refresh the view
         startActivity(getIntent());
-
     }
 
        public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-           //super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//           if (requestCode == STORAGE_REQUEST_CODE || requestCode == AUDIO_REQUEST_CODE) {
-//               if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-//                   finish();
-//               }
-//           }
         switch (requestCode) {
             case STORAGE_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
@@ -703,9 +740,6 @@ public class TabTin extends AppCompatActivity{
                 }
                 return;
             }
-
-
-            // other 'case' lines to check for other
             // permissions this app might request
         }
     }
@@ -721,8 +755,6 @@ public class TabTin extends AppCompatActivity{
                 }
                 return;
             }
-            // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
-            //noinspection MissingPermission
             locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
         }
             else
@@ -814,47 +846,30 @@ public class TabTin extends AppCompatActivity{
             }
         }
 
-//        if(mViewPager.getCurrentItem()==0)
-//        { new FancyShowCaseQueue()
-//                .add(new FancyShowCaseView.Builder(this)
-//                        .focusOn(findViewById(R.id.floatingActionButton))
-//                        .focusShape(FocusShape.ROUNDED_RECTANGLE)
-//                        .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-//                        .title("Click to add pictures of the faced issue")
-//                        .build()
-//                )
-//                .add(new FancyShowCaseView.Builder(this)
-//                        .focusOn(findViewById(R.id.tabs))
-//                        .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-//                        .title("select one of the tabs to report issues, provide suggestions or for any interface query")
-//                        .build()
-//                )
-//                .add(new FancyShowCaseView.Builder(this)
-//                        .focusCircleRadiusFactor(2.0)
-//                        .focusOn(findViewById(R.id.imageButton6))
-//                        .title("Change language here")
-//                        .build()
-//                )
-//                .show();
-//
-//        }
-
         if (mViewPager.getCurrentItem()==1) //display the following when the viewpager is in first Tab.
         {
             new FancyShowCaseQueue()
                     .add(new FancyShowCaseView.Builder(this)
-                            .title("Select to describe the feature you would like to see in future")
-                            .focusOn(findViewById(R.id.txtLike))
+                            .title("Select to describe the feature/design you would like to see in future")
+                            .focusOn(findViewById(R.id.cbLike))
                             .focusShape(FocusShape.ROUNDED_RECTANGLE)
                             .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                            .focusCircleRadiusFactor(0.25)
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
                             .focusOn(findViewById(R.id.txtDontLike))
                             .focusShape(FocusShape.ROUNDED_RECTANGLE)
-                            .title("Select to describe the feature you dont like or want to improve in future")
+                            .title("Select to describe the function/design you dont like or want to improve in future")
                             .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.cbHaveidea))
+                            .focusOn(findViewById(R.id.txtHaveidea))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .title("select if you have any intersting ideas or suggestions")
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .roundRectRadius(100)
                             .build()
                     )
                     .add(new FancyShowCaseView.Builder(this)
@@ -865,7 +880,6 @@ public class TabTin extends AppCompatActivity{
                     .show();
         }
     }
-
     public void btnSpeech(View view) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -877,7 +891,6 @@ public class TabTin extends AppCompatActivity{
             Toast.makeText(getApplicationContext(),
                     "Sorry! Speech recognition is not supported in this device.",
                     Toast.LENGTH_SHORT).show();
-
         }
     }
 
@@ -952,7 +965,6 @@ public class TabTin extends AppCompatActivity{
                     Fail_Per_other ="OtherMalfunction";
                     // Ninjas rule
                     break;
-
         }
     }
 
@@ -983,11 +995,11 @@ public class TabTin extends AppCompatActivity{
             startActivityForResult(captureIntent, RECORD_REQUEST_CODE);
 
         }
+
     }
 
     public void IssueOccursOn(View view) {
         boolean checked = ((RadioButton) view).isChecked();
-
         // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.IssueOntheScreen:
@@ -1000,15 +1012,12 @@ public class TabTin extends AppCompatActivity{
                     IssueOccursOn="Issue in the Background";
                 // Ninjas rule
                 break;
-
         }
-
 
     }
 
     public void click_Rbtnlookandfeel(View view) {
         boolean checked = ((RadioButton) view).isChecked();
-
         // Check which radio button was clicked
         switch(view.getId()) {
             case R.id.dontUnderstand:
@@ -1050,6 +1059,7 @@ public class TabTin extends AppCompatActivity{
              return new Tab_1();
           case 1:
              Tab2 tab2=new Tab2();
+
                  //On startup request for permissions for reading content on the device.
              ActivityCompat.requestPermissions(TabTin.this,
                          new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -1090,23 +1100,35 @@ public class TabTin extends AppCompatActivity{
             }
             return null;
         }
+
+
+
     }
     public void Likeselected(View view) {
-        EditText txtlike;
-        EditText txtdontlike;
-        txtlike = (EditText)findViewById(R.id.txtLike);
-        txtdontlike = (EditText)findViewById(R.id.txtDontLike);
-        txtlike.setVisibility(view.VISIBLE);
-        //txtdontlike.setVisibility(view.INVISIBLE);
+//        EditText txtlike;
+//        txtlike = (EditText)view.findViewById(R.id.txtLike);
+//        if ( view.is )
+//        {
+//
+//            txtlike.setVisibility(buttonView.VISIBLE);// perform logic
+//        }
+//        else {
+//            txtlike.setVisibility(buttonView.INVISIBLE);
+//        }
+
+
+
+
+//        EditText txtlike;
+//        EditText txtdontlike;
+//        txtlike = (EditText)findViewById(R.id.txtLike);
+//        txtdontlike = (EditText)findViewById(R.id.txtDontLike);
+//        txtlike.setVisibility(view.VISIBLE);
+
     }
 
     public void Dontlikeselected(View view) {
-        EditText txtlike;
-        EditText txtdontlike;
-        txtlike = (EditText)findViewById(R.id.txtLike);
-        txtdontlike = (EditText)findViewById(R.id.txtDontLike);
-        //txtlike.setVisibility(view.INVISIBLE);
-        txtdontlike.setVisibility(view.VISIBLE);
+//
 
     }
 
