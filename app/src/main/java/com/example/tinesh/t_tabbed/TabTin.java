@@ -187,9 +187,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                //setContentView(R.layout.tab_3);
-                // textView = (TextView) findViewById(R.id.textView1);
-                //textView.setText("\n " + location.getLongitude() + " " + location.getLatitude());
                 Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
                 try {
                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -202,7 +199,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                         String knownName = addresses.get(0).getFeatureName();
                         //textView = (TextView) findViewById(R.id.textView7);
                         //textView.setText(address + "City is :" + city + "state is :" + state + "country is " + country + "postal code " + postalCode + "known name " + knownName);
-                        CompleteAddress="Complete Address_"+address + "  City_"+city + "  state_" + state + "  country_" + country +"  postalcode_" + postalCode + "  knownname_" + knownName;
+                        CompleteAddress=address+"_City_"+city + "_state_" + state + "_country_" + country +"_postalcode_" + postalCode + "_knownname_" + knownName;
                         Log.e("Address",CompleteAddress);
                     }
                 }
@@ -222,15 +219,9 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                 startActivity(i);
             }
         };
-
         //check internet connection
-
-
         // Manually checking internet connection
         checkConnection();
-
-
-
         Locale.getDefault().getDisplayLanguage();  //Load Default language
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -314,16 +305,20 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                 if (mViewPager.getCurrentItem()==0)
                 {   EditText IssueDescription;
                     String issuedesc;
-                    FileName[0] ="Malfunction_";
-
+                    FileName[0] ="Issues_";
                     //issues desc
                     IssueDescription   = (EditText)findViewById(R.id.editTextDescription1);
                     issuedesc=IssueDescription.getText().toString();
                     //Ratings
                     ratingBar1 = (RatingBar) findViewById(R.id.ratingBar1);
                     String ratings=String.valueOf(ratingBar1.getRating());
-
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," ReportedIssueType_"+ Fail_Per_other +" IssueDescription_"+issuedesc+" Address_"+ CompleteAddress+" Rating_"+ratings+" DeviceName_"+deviceName+" IssueOccursOn_"+IssueOccursOn+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" ConnectionStatus_"+Connection_Status); //(context,Name of file,Content of file)
+                    if(CompleteAddress!=null) {
+                        //Do Nothing()
+                    }else
+                    {
+                        CompleteAddress="Not Shared"+"_City_"+"Not Shared"+ "_state_" +"Not Shared"+ "_country_" +"Not Shared"+"_postalcode_" +"Not Shared"+ "_knownname_" +"Not Shared";
+                    }
+                    textfiletosend = generateNoteOnSD(TabTin.this, FileName[0], "ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -332,15 +327,18 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     EditText mEdit;
                     String like="";
                     String dontlike="";
+                    String haveidea="";
+
                     mEdit   = (EditText)findViewById(R.id.txtLike);
                     like="Liked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtDontLike);
-                    dontlike="NotLiked_"+mEdit.getText().toString();
-
+                    dontlike="_NotLiked_"+mEdit.getText().toString();
+                    mEdit   = (EditText)findViewById(R.id.txtHaveidea);
+                    haveidea = "_Idea_" + mEdit.getText().toString();
                     ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
                     String rating2=String.valueOf(ratingBar2.getRating());
 
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+" DeviceName_"+deviceName+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" ConnectionStatus_"+Connection_Status+" Ratings_"+rating2); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+haveidea+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating2+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
@@ -352,7 +350,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     FDetails=featuredetails.getText().toString();
                     ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
                     String rating3=String.valueOf(ratingBar3.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0]," LookandFeelIssueType_"+lookandfeel+"LookandFeelDetails_"+ FDetails+" DeviceName_"+deviceName+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" Ratings_"+rating3); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelIssueType_"+lookandfeel+"LookandFeelDetails_"+ FDetails+" DeviceName_"+deviceName+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
@@ -443,10 +441,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
             Toast.makeText(getApplicationContext(), "Is Not Connected to Internet", Toast.LENGTH_SHORT).show();
 
         }
-
-
     }
-
     @Override
     protected void onResume() {
         super.onResume();

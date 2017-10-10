@@ -21,7 +21,7 @@
     <string name="information">Information..</string>
     <string name="where_do_you_see_the_issue">Where do you see the issue?</string>
     <string name="describe_the_feature_you_would_like_to_see">Describe the Feature you would like to see</string>
-    <string name="txtoverallRating">Overall Rating</string>
-    <string name="overall_how_would_you_rate_the_app">Overall,how would you rate the app?</string>
+    <string name="txtoverallRating">Gesamtbewertung</string>
+    <string name="overall_how_would_you_rate_the_app">Insgesamt, wie würdest du die App bewerten?</string>
 
 </resources>
