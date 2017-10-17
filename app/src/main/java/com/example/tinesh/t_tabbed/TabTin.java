@@ -89,6 +89,7 @@ import static com.example.tinesh.t_tabbed.RecordService.MP4File;
 
 public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
     private String Connection_Status="Not Detected";
+    private String SelectedImageName;
 
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
@@ -318,7 +319,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     {
                         CompleteAddress="Not Shared"+"_City_"+"Not Shared"+ "_state_" +"Not Shared"+ "_country_" +"Not Shared"+"_postalcode_" +"Not Shared"+ "_knownname_" +"Not Shared";
                     }
-                    textfiletosend = generateNoteOnSD(TabTin.this, FileName[0], "ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_End"); //(context,Name of file,Content of file)
+                    textfiletosend = generateNoteOnSD(TabTin.this, FileName[0], "ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_SelectedImageName_"+SelectedImageName+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -330,7 +331,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     String haveidea="";
 
                     mEdit   = (EditText)findViewById(R.id.txtLike);
-                    like="Liked_"+mEdit.getText().toString();
+                    like="_Liked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtDontLike);
                     dontlike="_NotLiked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtHaveidea);
@@ -350,7 +351,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     FDetails=featuredetails.getText().toString();
                     ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
                     String rating3=String.valueOf(ratingBar3.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelIssueType_"+lookandfeel+"LookandFeelDetails_"+ FDetails+" DeviceName_"+deviceName+" DeviceDetails_"+devicedetails+" WIFILinkSpeed_"+linkSpeed+" WifiSignalStrength_"+Wifisignalstrength+" Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelIssueType_"+lookandfeel+"_LookandFeelDetails_"+ FDetails+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
@@ -554,6 +555,8 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                 imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
 
                 selectedImageUri = data.getData();
+                SelectedImageName=picturePath.substring(picturePath.lastIndexOf("/")+1);
+
                 }
                 break;
              }
