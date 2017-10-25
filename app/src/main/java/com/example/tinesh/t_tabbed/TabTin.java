@@ -272,9 +272,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                 //DeviceName
                 String deviceName = DeviceName.getDeviceName();
 
-
-
-
                 //Wifi&Signal strength in number
                 WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(getApplicationContext().WIFI_SERVICE);
                 int linkSpeed = wifiManager.getConnectionInfo().getRssi();
@@ -329,7 +326,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     String like="";
                     String dontlike="";
                     String haveidea="";
-
                     mEdit   = (EditText)findViewById(R.id.txtLike);
                     like="_Liked_"+mEdit.getText().toString();
                     mEdit   = (EditText)findViewById(R.id.txtDontLike);
@@ -338,7 +334,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     haveidea = "_Idea_" + mEdit.getText().toString();
                     ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
                     String rating2=String.valueOf(ratingBar2.getRating());
-
                     textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+haveidea+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating2+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
@@ -371,18 +366,14 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     String devicedetails = Build.MANUFACTURER
                             + " " + Build.MODEL + " " + Build.VERSION.RELEASE
                             + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
-
-
                     ArrayList<Uri> imageUris = new ArrayList<Uri>();//create array list to store URI for image and Report
                     if(selectedImageUri!=null) {
                         imageUris.add(selectedImageUri); // Add your image URIs to array
                     }
                     if(textfiletosend!=null) {
-
                          imageUris.add(Uri.parse("file://" + textfiletosend.getAbsoluteFile())); //add Report/textfile Uri to array
 //                                       Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                                               .setAction("Action", null).show();
-
                         //imageUris.add(FileProvider.getUriForFile(getApplicationContext(),getApplicationContext().getPackageName() + ".my.package.name.provider", textfiletosend.getAbsoluteFile()));
                         Log.e("ok", textfiletosend.getAbsolutePath());
                     }
@@ -390,9 +381,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     imageUris.add(Uri.parse("file://"+MP4File));
                      Log.e("Link of Mp4",MP4File);
                     }
-
                     Log.e("DEVICE_DETAILS", devicedetails);
-
                     Intent i = new Intent(Intent.ACTION_SEND_MULTIPLE);//to send multiple attachments
                     i.putExtra(Intent.EXTRA_EMAIL, new String[]{"feedbacksysstem@gmail.com"});
                     i.putExtra(Intent.EXTRA_CC,new String[]{"feedbacksysstem@gmail.com"});
@@ -402,14 +391,11 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     i.setType("message/rfc822");
                     i.putExtra(Intent.EXTRA_STREAM,imageUris);
                     i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-
                     //i.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");
                     //all the Urls in the arraylist are added to the email application(text file and image)
                     //i.putExtra(Intent.EXTRA_STREAM,Uri.parse("file://" + filetosend.getAbsoluteFile()));
                     try {
-
                             startActivity(Intent.createChooser(i,"Select an Email Application to send your feedback" ));
-
                     }
                     catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
@@ -419,8 +405,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
             }
             //Gathering values
             });
-
-
     }
 
     private void checkConnection() {
@@ -431,7 +415,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
     }
 
     private void showSnack(boolean isConnected) {
-
         int color;
         if (isConnected) {
             Connection_Status="Connected";
@@ -446,7 +429,6 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
     @Override
     protected void onResume() {
         super.onResume();
-
         // register connection status listener(Internet connection)
         MyApplication.getInstance().setConnectivityListener(this);
     }
@@ -485,14 +467,12 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_FFF");
             Date now = new Date();
             String yymmdd = formatter.format(now) ;
-
             gpxfile = new File(root, sFileName+yymmdd+".txt");
             FileWriter writer = new FileWriter(gpxfile);
             writer.append(sBody);
             writer.flush();
             writer.close();
             Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
-
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -873,6 +853,35 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     .add(new FancyShowCaseView.Builder(this)
                             .focusOn(findViewById(R.id.floSend))
                             .title("Once done,click here to send the feedback")
+                            .build()
+                    )
+                    .show();
+        }
+        if (mViewPager.getCurrentItem()==2) //display the following when the viewpager is in second Tab.
+        {
+            new FancyShowCaseQueue()
+                    .add(new FancyShowCaseView.Builder(this)
+                            .title("Select the type of question")
+                            .focusOn(findViewById(R.id.radiogrp3))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .build()
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.featureLookandFeel))
+                            .focusShape(FocusShape.ROUNDED_RECTANGLE)
+                            .title("Mention your question regarding the app here")
+                            .roundRectRadius(100)
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
+                            .build()
+
+                    )
+                    .add(new FancyShowCaseView.Builder(this)
+                            .focusOn(findViewById(R.id.floatingActionButton2))
+                            .focusShape(FocusShape.CIRCLE)
+                            .focusCircleRadiusFactor(2)
+                            .title("Tap to record your screen where you are facing the trouble")
+                            .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
                             .build()
                     )
                     .show();

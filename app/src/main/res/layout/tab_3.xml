@@ -116,9 +116,8 @@
             android:onClick="switchOn"
             android:text="@string/ShareLocation"
             android:textSize="20sp"
-            android:layout_marginTop="129dp"
-            android:layout_below="@+id/videoView3"
-            android:layout_alignStart="@+id/ratingBar" />
+            android:layout_marginTop="49dp"
+            android:layout_below="@+id/videoView3" />
 
 
         <TextView
@@ -139,7 +138,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="149dp"
-            android:layout_marginStart="16dp"
             android:layout_below="@+id/radioGroup3"
             android:layout_toEndOf="@+id/floatingActionButton3" />
 
@@ -174,17 +172,6 @@
                 android:text="It is in the Background" />
         </RadioGroup>
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/Coordinates"
-            android:textSize="30sp"
-            android:layout_below="@+id/ratingBar"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="90dp" />
-
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingAdd"
             android:layout_width="wrap_content"
@@ -208,6 +195,16 @@
             android:layout_marginTop="119dp"
             android:layout_alignStart="@+id/imgView"
             android:layout_alignBottom="@+id/floatingActionButton3" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:fabSize="mini"
+            app:srcCompat="@android:drawable/ic_dialog_email"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/ratingBar" />
 
     </RelativeLayout>
 

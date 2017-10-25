@@ -20,8 +20,126 @@
         android:layout_height="336dp"
         android:accessibilityLiveRegion="none"
         android:backgroundTint="@android:drawable/screen_background_light"
-        android:layout_weight="0.11">
+        android:layout_weight="0.63">
 
+
+        <LinearLayout
+            android:layout_width="369dp"
+            android:layout_height="387dp"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.40"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="117dp"
+                    android:layout_height="86dp"
+                    android:layout_marginBottom="1dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:background="@android:color/background_light"
+                        android:elevation="7dp"
+                        android:text="@string/screenshot"
+                        android:textColor="@color/colorAccent" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/floatingActionButton"
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:onClick="AddPic"
+                        app:backgroundTint="@color/colorAccent"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_menu_camera" />
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/imgView"
+                    android:layout_width="379dp"
+                    android:layout_height="108dp"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="false"
+                    android:cropToPadding="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:background="@drawable/border"
+                android:orientation="horizontal">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="86dp"
+                    android:layout_marginBottom="1dp"
+                    android:elevation="7dp">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/floatingActionButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="74dp"
+                        android:clickable="true"
+                        android:onClick="recordVideo"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/presence_video_busy" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30dp"
+                        android:background="@android:color/background_light"
+                        android:elevation="8dp"
+                        android:text="@string/record_screen"
+                        android:textColor="@color/colorAccent" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="213dp"
+                    android:layout_marginLeft="100dp">
+
+                    <VideoView
+                        android:id="@+id/videoView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerInParent="true"
+                        android:focusable="false" />
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <Switch
+                android:id="@+id/switch1"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:layout_marginTop="9dp"
+                android:checked="false"
+                android:onClick="switchOn3"
+                android:text="@string/ShareLocation"
+                android:textSize="20sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/animator1"
@@ -140,126 +258,6 @@
 
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="369dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="1">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.40"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:background="@drawable/border"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="117dp"
-                    android:layout_height="86dp"
-                    android:layout_marginBottom="1dp">
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:background="@android:color/background_light"
-                        android:elevation="7dp"
-                        android:text="@string/screenshot"
-                        android:textColor="@color/colorAccent" />
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/floatingActionButton"
-                        android:layout_width="90dp"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:onClick="AddPic"
-                        app:backgroundTint="@color/colorAccent"
-                        app:fabSize="mini"
-                        app:srcCompat="@android:drawable/ic_menu_camera" />
-                </FrameLayout>
-
-                <ImageView
-                    android:id="@+id/imgView"
-                    android:layout_width="379dp"
-                    android:layout_height="108dp"
-                    android:layout_weight="1"
-                    android:adjustViewBounds="false"
-                    android:cropToPadding="false" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="158dp"
-                android:layout_weight="0.69"
-                android:background="@drawable/border"
-                android:orientation="horizontal">
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="86dp"
-                    android:layout_marginBottom="1dp"
-                    android:elevation="7dp">
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/floatingActionButton2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="74dp"
-                        android:clickable="true"
-                        android:onClick="recordVideo"
-                        app:fabSize="mini"
-                        app:srcCompat="@android:drawable/presence_video_busy" />
-
-                    <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:background="@android:color/background_light"
-                        android:elevation="8dp"
-                        android:text="@string/record_screen"
-                        android:textColor="@color/colorAccent" />
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="100dp">
-
-                    <VideoView
-                        android:id="@+id/videoView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerInParent="true"
-                        android:focusable="false" />
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <Switch
-                android:id="@+id/switch1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:layout_weight="1.39"
-                android:checked="false"
-                android:onClick="switchOn3"
-                android:text="@string/ShareLocation"
-                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
