@@ -387,11 +387,4 @@
         android:textStyle="bold"
         android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.11"
-        android:visibility="invisible"
-        app:srcCompat="@mipmap/arrow" />
 </LinearLayout>

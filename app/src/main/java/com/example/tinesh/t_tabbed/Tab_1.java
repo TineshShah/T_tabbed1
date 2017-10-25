@@ -142,9 +142,9 @@ Tab_1 extends Fragment{
         animation.setInterpolator(new LinearInterpolator());
         animation.setRepeatCount(Animation.INFINITE);
         animation.setRepeatMode(Animation.REVERSE);
-        ImageView img = (ImageView)view.findViewById(R.id.imageView4);
-
-        img.startAnimation(animation);
+//        ImageView img = (ImageView)view.findViewById(R.id.imageView4);
+//
+//        img.startAnimation(animation);
         buttonPrev.setOnClickListener(new View.OnClickListener(){
 
             @Override
