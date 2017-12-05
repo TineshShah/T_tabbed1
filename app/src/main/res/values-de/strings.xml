@@ -8,7 +8,7 @@
     <string name="ShareLocation">Ort Tielen</string>
     <string name="button">Taste</string>
     <string name="EnterIssue">Das Thema</string>
-    <string name="country_prompt">Choose country</string>
+    <string name="country_prompt">App wählen</string>
     <string name="thank_you_for_the_information_please_click_on_the_send_button_below">Vielen Dank für die Informationen.Bitte klicken Sie auf die Schaltfläche "Senden" unten.</string>
     <string name="something_doesnt_work">Etwas funktioniert nicht</string>
     <string name="something_is_too_slow">Etwas ist zu langsam</string>
@@ -19,9 +19,15 @@
     <string name="previous">Zurück</string>
     <string name="next">Weiter</string>
     <string name="information">Information..</string>
-    <string name="where_do_you_see_the_issue">Where do you see the issue?</string>
-    <string name="describe_the_feature_you_would_like_to_see">Describe the Feature you would like to see</string>
+    <string name="where_do_you_see_the_issue">Wo sehen Sie das Problem?</string>
+    <string name="describe_the_feature_you_would_like_to_see">Beschreibe das Feature, das sie sehen möchtest</string>
     <string name="txtoverallRating">Gesamtbewertung</string>
     <string name="overall_how_would_you_rate_the_app">Insgesamt, wie würdest du die App bewerten?</string>
+    <string name="issue_description_picture_and_location_send"><![CDATA[Issue Description em dash em dash>Picture and Location em dash em dash>Send]]></string>
+    <string name="i_have_an_idea">ich habe eine Idee!</string>
+    <string name="i_like">ich mag</string>
+    <string name="i_dont_like">ich mag nicht</string>
+    <string name="describe_more_about_the_feature">Describe more about the feature..</string>
+    <string name="select_app">Select app</string>
 
 </resources>

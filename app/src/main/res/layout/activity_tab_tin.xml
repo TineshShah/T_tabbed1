@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.tinesh.t_tabbed.TabTin">
+    tools:context="com.example.tinesh.t_tabbed.MyActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floSend"

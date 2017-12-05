@@ -1,5 +1,4 @@
 package com.example.tinesh.t_tabbed;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -52,7 +50,7 @@ public class Tab2 extends Fragment {
                 //is chkIos checked?
                 if (((CheckBox) v).isChecked()) {
                     txtlike.setVisibility(VISIBLE);// perform logic
-                    ((TabTin) getActivity()).showFloatingActionButton();
+                    ((MyActivity) getActivity()).showFloatingActionButton();
                 }
                 else {
                     txtlike.setVisibility(INVISIBLE);// perform logic

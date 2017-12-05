@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">T_tabbed</string>
+    <string name="app_name">Smart Feedback</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="button">Button</string>
@@ -9,7 +9,7 @@
     <string name="EnterAppName">App Name</string>
     <string name="EnterIssue">Enter(or)Tap on Mike to describe the issue</string>
     <string name="Category">Category</string>
-    <string name="country_prompt">Choose a country</string>
+    <string name="country_prompt">Choose the app</string>
     <string name="thank_you_for_the_information_please_click_on_the_send_button_below">Thank you for the information.Please click on the Send Button below.</string>
     <string name="something_doesnt_work">Something doesnt work</string>
     <string name="something_is_too_slow">Something is too slow</string>
@@ -33,14 +33,17 @@
     <string name="describe_the_feature_you_dont_like">Tell us something you dont like in the app</string>
     <string name="txtoverallRating">Overall,how would you rate the app?</string>
     <string name="overall_how_would_you_rate_the_app">Overall,how would you rate the app?</string>
+    <string name="i_have_an_idea">I have an Idea!</string>
+    <string name="i_like">I Like</string>
+    <string name="i_dont_like">I dont like</string>
+    <string name="describe_more_about_the_feature">Describe more about the feature..</string>
+    <string name="select_app">Select app</string>
     <string-array name="country_arrays">
-        <item>Malaysia</item>
-        <item>United States</item>
+        <item>--Select App--</item>
+        <item>FaceBook</item>
         <item>Indonesia</item>
         <item>France</item>
         <item>Italy</item>
         <item>Singapore</item>
-        <item>New Zealand</item>
-        <item>India</item>
     </string-array>
 </resources>

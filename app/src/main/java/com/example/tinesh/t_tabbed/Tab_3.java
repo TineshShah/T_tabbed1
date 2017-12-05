@@ -22,22 +22,12 @@ import static com.example.tinesh.t_tabbed.R.layout.tab_3;
  */
 
 public class Tab_3 extends Fragment  {
-    TextView mTextView;
-//    //For recording
-//    private static final int RECORD_REQUEST_CODE  = 101;
-//    private static final int STORAGE_REQUEST_CODE = 102;
-//    private static final int AUDIO_REQUEST_CODE   = 103;
-//    private static final long DELAY = 31000;
-//    private MediaProjectionManager projectionManager;
-//    private MediaProjection mediaProjection;
-//    private RecordService recordService;
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         View view=inflater.inflate(tab3,container,false);
+
 //        RelativeLayout fragment_linearlayout= (RelativeLayout)view.findViewById(R.id.tab1_layout);
 //
 //        fragment_linearlayout.setOnLongClickListener(new View.OnLongClickListener() {//On long press
@@ -53,13 +43,4 @@ public class Tab_3 extends Fragment  {
         return view;
     }
 
-
-
-   /* public void setTextViewText(String value){
-        TextView textView = (TextView) getView().findViewById(R.id.textView1);
-        textView.setText(value);
-    }
-    public TextView getTextView1(){
-        return mTextView;
-    }*/
 }

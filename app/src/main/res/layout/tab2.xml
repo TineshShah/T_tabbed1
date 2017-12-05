@@ -18,19 +18,12 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Select app to " />
-
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
 
-            android:layout_weight="0.05"
             android:animationCache="true"
             android:background="@android:drawable/btn_dropdown"
             android:entries="@array/country_arrays"
@@ -95,7 +88,7 @@
                     android:id="@+id/cbLike"
                     android:layout_width="wrap_content"
                     android:layout_height="63dp"
-                    android:text="I Like" />
+                    android:text="@string/i_like" />
 
                 <!--<RadioButton-->
                 <!--android:id="@+id/RbtnliketoseeFeature"-->
@@ -120,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="Dontlikeselected"
-                    android:text="I dont like" />
+                    android:text="@string/i_dont_like" />
 
                 <!--<RadioButton-->
                 <!--android:id="@+id/RbtndontLikeToSeeFeature"-->
@@ -144,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="haveIdea"
-                    android:text="I have an Idea!" />
+                    android:text="@string/i_have_an_idea" />
 
                 <EditText
                     android:id="@+id/txtHaveidea"

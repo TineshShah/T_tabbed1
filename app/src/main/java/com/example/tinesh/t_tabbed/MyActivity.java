@@ -19,13 +19,8 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.wifi.WifiManager;
 import android.os.StrictMode;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
-import android.telephony.CellInfoGsm;
-import android.telephony.CellSignalStrengthGsm;
-import android.telephony.TelephonyManager;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.MediaController;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -68,7 +63,6 @@ import com.jaredrummler.android.device.DeviceName;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,13 +75,11 @@ import me.toptas.fancyshowcase.FocusShape;
 
 import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
-import static com.example.tinesh.t_tabbed.R.id.animator1;
-import static com.example.tinesh.t_tabbed.R.id.cbLike;
 import static com.example.tinesh.t_tabbed.R.id.container;
 import static com.example.tinesh.t_tabbed.RecordService.MP4File;
 
 
-public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
+public class MyActivity extends AppCompatActivity  implements ConnectivityReceiver.ConnectivityReceiverListener {
     private String Connection_Status="Not Detected";
     private String SelectedImageName;
 
@@ -182,6 +174,8 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
 //                e.printStackTrace();
 //            }
 //        }
+
+
         projectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         //location Manager for getting location Details
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -236,9 +230,9 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         tabLayout.setupWithViewPager(mViewPager);
         //For Video Recording
 
-        if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(MyActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)    {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(TabTin.this,
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MyActivity.this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 Toast.makeText(getApplicationContext(),"Permission denied again.Providing the permission helps in storing & sending the required data", Toast.LENGTH_SHORT).show();
                 // Show an explanation to the user *asynchronously* -- don't block
@@ -316,7 +310,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     {
                         CompleteAddress="Not Shared"+"_City_"+"Not Shared"+ "_state_" +"Not Shared"+ "_country_" +"Not Shared"+"_postalcode_" +"Not Shared"+ "_knownname_" +"Not Shared";
                     }
-                    textfiletosend = generateNoteOnSD(TabTin.this, FileName[0], "ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_SelectedImageName_"+SelectedImageName+"_End"); //(context,Name of file,Content of file)
+                    textfiletosend = generateNoteOnSD(MyActivity.this, FileName[0], "ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_SelectedImageName_"+SelectedImageName+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -334,7 +328,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     haveidea = "_Idea_" + mEdit.getText().toString();
                     ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
                     String rating2=String.valueOf(ratingBar2.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],like+dontlike+haveidea+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating2+"_End"); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],like+dontlike+haveidea+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating2+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
@@ -346,13 +340,13 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     FDetails=featuredetails.getText().toString();
                     ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
                     String rating3=String.valueOf(ratingBar3.getRating());
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"LookandFeelIssueType_"+lookandfeel+"_LookandFeelDetails_"+ FDetails+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],"LookandFeelIssueType_"+lookandfeel+"_LookandFeelDetails_"+ FDetails+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else
                 {
                     FileName[0] ="Default";
-                    textfiletosend =generateNoteOnSD(TabTin.this, FileName[0],"Nothing"); //(context,Name of file,Content of file)
+                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],"Nothing"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
 
@@ -398,7 +392,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                             startActivity(Intent.createChooser(i,"Select an Email Application to send your feedback" ));
                     }
                     catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(TabTin.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                     }
                     return null;
                 }
@@ -456,7 +450,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         FloatingActionButton fabSend = (FloatingActionButton) findViewById(R.id.floSend);
         fabSend.hide();
     };
-    public File generateNoteOnSD(TabTin context, String sFileName, String sBody) {
+    public File generateNoteOnSD(MyActivity context, String sFileName, String sBody) {
         File gpxfile = null;
         try
         {
@@ -672,12 +666,12 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        Toast.makeText(TabTin.this, "Permission denied for location access. Note:Providing access will help in quicker resolution of the issue.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyActivity.this, "Permission denied for location access. Note:Providing access will help in quicker resolution of the issue.", Toast.LENGTH_SHORT).show();
                         //return;
                     }
                     else
                     {
-                        Toast.makeText(TabTin.this, "Permission granted for location access.Please switch on Location", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyActivity.this, "Permission granted for location access.Please switch on Location", Toast.LENGTH_SHORT).show();
                     // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
                          locationManager.requestLocationUpdates(locationManager.NETWORK_PROVIDER, 5000, 0, listener);
                     }
@@ -701,7 +695,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(TabTin.this, "Permission has been denied.Please accept the Permission to share the picture from your storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyActivity.this, "Permission has been denied.Please accept the Permission to share the picture from your storage.Sharing screenshot increases the resolution time of issue by 20%", Toast.LENGTH_SHORT).show();
                     }
                     return;
             }
@@ -712,7 +706,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
-                    Toast.makeText(TabTin.this, "Permission denied to read your storage Files.Providing the permission would help in quicker issue resolution", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyActivity.this, "Permission denied to read your storage Files.Providing the permission would help in quicker issue resolution", Toast.LENGTH_SHORT).show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -726,7 +720,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         simpleSwitch1 = (Switch) findViewById(R.id.sharelocation);
         if (simpleSwitch1.isChecked())
         {
-            if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(MyActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
                             , 10);
@@ -737,12 +731,12 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         }
             else
         {
-            Toast.makeText(TabTin.this, "Switch is off", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyActivity.this, "Switch is off", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void AddPic(View view) {
-        ActivityCompat.requestPermissions(TabTin.this,
+        ActivityCompat.requestPermissions(MyActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 1);
 
@@ -782,14 +776,14 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
                                 .focusOn(findViewById(R.id.floatingActionButton))
                                 .focusShape(FocusShape.CIRCLE)
                                 .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                                .title("Select this to include the Screenshot of the issue")
+                                .title("Select this to include the Screenshot of the issue & increase the quality of bug report by 10%")
                                 .build()
                         )
                         .add(new FancyShowCaseView.Builder(this)
                                 .focusOn(findViewById(R.id.floatingActionButton2))
                                 .focusShape(FocusShape.CIRCLE)
                                 .titleStyle(0, Gravity.BOTTOM | Gravity.CENTER)
-                                .title("Tap here to start recording screen and Tap again to stop")
+                                .title("Tap here to start recording screen and tap again to stop.")
                                 .build()
                         )
                         .add(new FancyShowCaseView.Builder(this)
@@ -906,7 +900,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         simpleSwitch1 = (Switch) findViewById(R.id.switch1);
         if (simpleSwitch1.isChecked())
         {
-            if (ActivityCompat.checkSelfPermission(TabTin.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(MyActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET}
                             , 10);
@@ -919,7 +913,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
         }
         else
         {
-            Toast.makeText(TabTin.this, "Switch is off.Location data wont be shared", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyActivity.this, "Switch is off.Location data wont be shared", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -993,7 +987,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
 
         } else {
 
-            if (ContextCompat.checkSelfPermission(TabTin.this, Manifest.permission.RECORD_AUDIO)
+            if (ContextCompat.checkSelfPermission(MyActivity.this, Manifest.permission.RECORD_AUDIO)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[] {Manifest.permission.RECORD_AUDIO}, AUDIO_REQUEST_CODE);
@@ -1068,7 +1062,7 @@ public class TabTin extends AppCompatActivity  implements ConnectivityReceiver.C
              Tab2 tab2=new Tab2();
 
                  //On startup request for permissions for reading content on the device.
-             ActivityCompat.requestPermissions(TabTin.this,
+             ActivityCompat.requestPermissions(MyActivity.this,
                          new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                          11);
              return tab2;

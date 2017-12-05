@@ -31,7 +31,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     public static boolean isConnected() {
         ConnectivityManager
-                cm = (ConnectivityManager) TabTin.MyApplication.getInstance().getApplicationContext()
+                cm = (ConnectivityManager) MyActivity.MyApplication.getInstance().getApplicationContext()
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null
