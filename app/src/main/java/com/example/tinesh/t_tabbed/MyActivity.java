@@ -54,6 +54,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -304,13 +305,17 @@ public class MyActivity extends AppCompatActivity  implements ConnectivityReceiv
                     //Ratings
                     ratingBar1 = (RatingBar) findViewById(R.id.ratingBar1);
                     String ratings=String.valueOf(ratingBar1.getRating());
+
+                    Spinner myspinner=(Spinner)findViewById(R.id.spinner);
+                    String selectedApp=myspinner.getSelectedItem().toString();
+
                     if(CompleteAddress!=null) {
                         //Do Nothing()
                     }else
                     {
                         CompleteAddress="Not Shared"+"_City_"+"Not Shared"+ "_state_" +"Not Shared"+ "_country_" +"Not Shared"+"_postalcode_" +"Not Shared"+ "_knownname_" +"Not Shared";
                     }
-                    textfiletosend = generateNoteOnSD(MyActivity.this, FileName[0], "ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_SelectedImageName_"+SelectedImageName+"_End"); //(context,Name of file,Content of file)
+                    textfiletosend = generateNoteOnSD(MyActivity.this, FileName[0],"SelectedApp_"+selectedApp+"_ReportedIssueType_" + Fail_Per_other + "_IssueDescription_" + issuedesc + "_Address_" + CompleteAddress + "_Rating_" + ratings + "_DeviceName_" + deviceName + "_IssueOccursOn_" + IssueOccursOn + "_DeviceDetails_" + devicedetails + "_WIFILinkSpeed_" + linkSpeed + "_WifiSignalStrength_" + Wifisignalstrength + "_ConnectionStatus_" + Connection_Status+"_SelectedImageName_"+SelectedImageName+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else if(mViewPager.getCurrentItem()==1)
@@ -328,7 +333,10 @@ public class MyActivity extends AppCompatActivity  implements ConnectivityReceiv
                     haveidea = "_Idea_" + mEdit.getText().toString();
                     ratingBar2 = (RatingBar) findViewById(R.id.ratingBar2);
                     String rating2=String.valueOf(ratingBar2.getRating());
-                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],like+dontlike+haveidea+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating2+"_End"); //(context,Name of file,Content of file)
+                    Spinner myspinner=(Spinner)findViewById(R.id.spinner2);
+                    String selectedApp=myspinner.getSelectedItem().toString();
+
+                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],"SelectedApp_"+selectedApp+like+dontlike+haveidea+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating2+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
 
                 }
@@ -340,7 +348,11 @@ public class MyActivity extends AppCompatActivity  implements ConnectivityReceiv
                     FDetails=featuredetails.getText().toString();
                     ratingBar3 = (RatingBar) findViewById(R.id.ratingBar3);
                     String rating3=String.valueOf(ratingBar3.getRating());
-                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],"LookandFeelIssueType_"+lookandfeel+"_LookandFeelDetails_"+ FDetails+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
+
+                    Spinner myspinner=(Spinner)findViewById(R.id.spinner3);
+                    String selectedApp=myspinner.getSelectedItem().toString();
+
+                    textfiletosend =generateNoteOnSD(MyActivity.this, FileName[0],"SelectedApp_"+selectedApp+"_LookandFeelIssueType_"+lookandfeel+"_LookandFeelDetails_"+ FDetails+"_DeviceName_"+deviceName+"_DeviceDetails_"+devicedetails+"_WIFILinkSpeed_"+linkSpeed+"_WifiSignalStrength_"+Wifisignalstrength+"_ConnectionStatus_"+Connection_Status+"_Ratings_"+rating3+"_End"); //(context,Name of file,Content of file)
                     new SaveAsyncTask().execute(); //new thread
                 }
                 else

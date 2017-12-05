@@ -34,8 +34,6 @@
                 android:id="@+id/spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
-
                 android:layout_weight="0.05"
                 android:animationCache="true"
                 android:background="@android:drawable/btn_dropdown"
@@ -97,7 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:onClick="OnRadioClick_Issue"
-                        android:text="@string/something_doesnt_work" />
+                        android:text="@string/something_doesnt_work"
+                        />
 
                     <RadioButton
                         android:id="@+id/Too_slow"
